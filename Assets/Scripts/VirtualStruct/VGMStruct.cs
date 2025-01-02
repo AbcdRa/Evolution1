@@ -5,8 +5,19 @@ using Unity.Burst;
 [BurstCompile]
 public struct PairAnimalId
 {
+    public static PairAnimalId DOING_NEXT_TURN = new(-1, -1, -1, -1);
+    public static PairAnimalId NOT_DOING_NEXT_TURN = new(-2, -1, -1, -1);
+    public static PairAnimalId DESTROY_FOOD = new(-3, 1, -1, -1);
+    public static PairAnimalId PIRACY_FOOD = new(-4, -1, -1, -1);
+    public static PairAnimalId PLAY_INSTANT_SIDE_MOVE = new(-5, -1, -1, -1);
     public AnimalId first;
     public AnimalId second;
+
+    public PairAnimalId(in AnimalId first, in AnimalId second) 
+    {
+        this.first = first;
+        this.second = second;
+    }
 
     public PairAnimalId(int owner1, int local1, int owner2, int local2) 
     {
@@ -14,6 +25,7 @@ public struct PairAnimalId
         second = new(owner2, local2);
     }
 }
+
 
 
 [BurstCompile]
@@ -33,7 +45,9 @@ public struct VGMstruct
 
     public int _currentSideTurn;
     public int currentTurn => (_currentSideTurn == -1) ? _currentTurn : _currentSideTurn;
-    public bool IsOver => currentPhase == -1;
+    public bool isOver => currentPhase == -1;
+    public bool isSideTurns => _currentSideTurn != -1;
+    private PairAnimalId _sideTurnsInfo;
 
     public VGMstruct(in PlayerManangerStruct pm, in DeckStruct deck,  in FoodManangerStruct foodMananger, int currentPivot, int currentPhase, int currentTurn, int currentSideTurn)
     {
@@ -44,6 +58,7 @@ public struct VGMstruct
         this.currentPhase = currentPhase;
         _currentSideTurn = currentSideTurn;
         _currentTurn = currentTurn;
+        _sideTurnsInfo = new PairAnimalId();
     }
 
 
@@ -128,11 +143,17 @@ public struct VGMstruct
 
     internal void PlayProp(int playerId, in CardStruct card, in AnimalId target1, in AnimalId target2, bool isRotated=false)
     {
-        int sideNextTurn = GameInteractionStruct.PlayProp(playerMananger, playerId, card, target1, target2, isRotated);
-        if (sideNextTurn != -2)
+        _sideTurnsInfo = GameInteractionStruct.PlayProp(playerMananger, playerId, card, target1, target2, isRotated);
+        if (_sideTurnsInfo.Equals(PairAnimalId.NOT_DOING_NEXT_TURN)) return;
+        if(_sideTurnsInfo.Equals(PairAnimalId.DESTROY_FOOD)) { foodMananger.Consume(1); return; }
+        if(_sideTurnsInfo.first.Equals(PairAnimalId.PIRACY_FOOD.first))
         {
-            NextTurn(sideNextTurn);
+            playerMananger.players[_sideTurnsInfo.second.ownerId].animalArea.spots[_sideTurnsInfo.second.localId].animal.DecreaseFood();
+            return;
         }
+        if(_sideTurnsInfo.E)
+        NextTurn(_sideTurnsInfo.second.ownerId);
+
     }
 
     private void SetupPhase(int phase)
@@ -185,8 +206,38 @@ public struct VGMstruct
 
     public NativeList<MoveStruct> GetAllPossibleSidesMoves()
     {
-        throw new NotImplementedException();
-        //TODO Да тут жеско надо подумать помни о скорости, отбрасывании хвоста и мимикрии
+        AnimalId myAnimalId = _sideTurnsInfo.second;
+        AnimalId enemyId = _sideTurnsInfo.first;
+        NativeList<MoveStruct> moves = new NativeList<MoveStruct>(4, Allocator.TempJob);
+        for(int i = 0; i < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps.Length; i++)
+        {
+            AnimalProp prop = playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps[i];
+            if(!prop.IsActivable) continue;
+            if(prop.name == AnimalPropName.Fast)
+            {
+                moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+            } else if(prop.name == AnimalPropName.DropTail)
+            {
+                moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+            } else if(prop.name == AnimalPropName.Mimic)
+            {
+                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.amount; j++)
+                {
+                    if (j == myAnimalId.localId) continue;
+                    bool isCanMimic = GameInteractionStruct.
+                        IsCanAttack(playerMananger.players[enemyId.ownerId].animalArea.spots[enemyId.localId].animal,
+                            playerMananger.players[currentTurn].animalArea.spots[j].animal);
+                    if (isCanMimic)
+                    {
+                        prop.mainAnimalId = myAnimalId;
+                        prop.secondAnimalId = new(currentTurn, j);
+                        moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                    }
+                }
+            }
+        }
+        return moves;
+
     }
 
     public NativeList<MoveStruct> GetAllPossibleMoves()
@@ -389,9 +440,9 @@ public struct VGMstruct
     {
         int k = 0;
 
-        while (IsOver)
+        while (isOver)
         {
-            NativeList<MoveStruct> moves = GetAllPossibleMoves();
+            NativeList<MoveStruct> moves = isSideTurns ? GetAllPossibleSidesMoves() : GetAllPossibleMoves();
             //МДА НЕ ИДЕАЛЬНО КОНЕЧНО TODO оптимизировать
             MoveStruct randomMove = moves[UnityEngine.Random.Range(0, moves.Length)];
             MoveStruct.ExecuteMove(this, randomMove);
@@ -402,7 +453,10 @@ public struct VGMstruct
         return targetPlayer == GetWinner();
     }
 
-
+    internal void ResposeToAttack(int playerId, in AnimalProp prop, in AnimalId friendId, in AnimalId enemyId)
+    {
+        
+    }
 }
 
 

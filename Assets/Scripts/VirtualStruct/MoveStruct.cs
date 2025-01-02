@@ -4,7 +4,7 @@ using Unity.Collections;
 using UnityEngine;
 using fstring = Unity.Collections.FixedString32Bytes;
 
-public enum MoveType { Pass, PlayProp, CreateAnimal, AddPropToAnimal, Feed}
+public enum MoveType { Pass, PlayProp, CreateAnimal, AddPropToAnimal, Feed, ResponseToAttack}
 
 [BurstCompile]
 public struct MoveData
@@ -59,6 +59,8 @@ public struct MoveStruct
                 vgm.Feed(move.data.playerId, move.data.target1); break;
             case MoveType.PlayProp:
                 vgm.PlayProp(move.data.playerId, move.data.card, move.data.target1, move.data.target2); break;
+            case MoveType.ResponseToAttack:
+                vgm.ResposeToAttack(move.data.playerId, move.data.prop, move.data.target1, move.data.target2); break;
         }
     }
 
@@ -84,6 +86,14 @@ public struct MoveStruct
     {
         fstring notation = playerId + "pass";
         MoveData data = new MoveData(MoveType.Pass, playerId, CardStruct.NULL, AnimalProp.NULL, AnimalId.NULL, AnimalId.NULL);
+        MoveStruct move = new MoveStruct(notation, data, 0f);
+        return move;
+    }
+
+    public static MoveStruct GetResponceToAttackMove(int playerId, in AnimalId friendId, in AnimalId enemyId, in AnimalProp prop)
+    {
+        fstring notation = playerId + "pass";
+        MoveData data = new MoveData(MoveType.ResponseToAttack, playerId, CardStruct.NULL, prop, friendId, enemyId);
         MoveStruct move = new MoveStruct(notation, data, 0f);
         return move;
     }

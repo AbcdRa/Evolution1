@@ -123,7 +123,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     private void StartPreDevelopPhase()
     {
-        playerMananger.StartPreDevelopPhase(currentPivot);
+        playerMananger.StartPreDevelopPhase(currentPivot, deck);
         NextPhase();
     }
 

@@ -51,7 +51,7 @@ public struct AnimalStruct
 
     internal bool IsPiracyTarget()
     {
-        return food < maxFood;
+        return food > 0 && food < maxFood;
     }
 
     internal bool AddProp(in CardStruct card, bool isRotated)
@@ -170,5 +170,25 @@ public struct AnimalStruct
         {
             singleProps[i].UpdateTurnCooldown();
         }
+    }
+
+    internal void ActivateSleepProp()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void ActivateFasciestProp()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void DecreaseFood()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void ActivatePiraceProp()
+    {
+        throw new NotImplementedException();
     }
 }

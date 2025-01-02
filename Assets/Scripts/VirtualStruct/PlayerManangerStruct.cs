@@ -65,4 +65,9 @@ public struct PlayerManangerStruct
             players[i].UpdatTurnCooldown();
         }
     }
+
+    internal void KillById(AnimalId predatorId, AnimalId victimId)
+    {
+        throw new NotImplementedException();
+    }
 }
