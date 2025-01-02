@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AnimalProp" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BCAAAAAAAAAAoAAEgAgABIAAAgCEAgAAgAEAAAAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\AnimalProp.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BaseAnimal" Collapsed="true">
+    <Position X="3.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAiAUoIQAGAABCAIgAAAEBAAAAAAAAAACAAAAiYAAAY=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseAnimal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseAnimalArea" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIAEAAAAAAAAgAAABAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseAnimalArea.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BaseAnimalSpot" Collapsed="true">
+    <Position X="7.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseAnimalSpot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseCard" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAAAAAAAAgAAAAIEEABAAQAAAgAAACAAAAAQDAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseCard.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BaseDeck" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseDeck.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BaseFoodMananger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAIAIAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseFoodMananger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BaseGameMananger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAIEAFAkBAACAACAAAQICAAAAAAkIAAAAIAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseGameMananger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BaseHand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAAAgAAAAAAAAAAAAAgBAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseHand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BasePlayer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQWAABkFAAAEAAAQAAAAAAAAQAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Base\BasePlayer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BasePlayerMananger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEAACAAAAAAAAAQEAAAABAAAAIAAAAAoAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BasePlayerMananger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Animal" Collapsed="true">
+    <Position X="6" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAGAAACAAAAAAAAAAAAAAAAAAAAgAAAQAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\Animal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnimalArea" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MIAEAAAAQAAAgABgDAAAEgACAAAAAEAAAIgAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Real\AnimalArea.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="AnimalPropInteractionMananger" Collapsed="true">
+    <Position X="15.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAACAAAAAAAAAQAAAAAAAAAAQQAAAggACQAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\AnimalPropInteractionStatic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnimalSpot" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAIIAAAAAGECAAhEBIGAAAACIgIAAAAAABAQAAAQE=</HashCode>
+      <FileName>Assets\Scripts\Real\AnimalSpot.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ArcWithArrows" Collapsed="true">
+    <Position X="19" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIACBAACAAAABAABAAAAAsAQAQAAAQAAAAIIIAAgA=</HashCode>
+      <FileName>Assets\Scripts\Real\ArcWithArrows.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraSpot" Collapsed="true">
+    <Position X="20.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAASAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\CameraSpot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraSpotsController" Collapsed="true">
+    <Position X="13.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACBAIBIAABAAAAAAAAAAEAAQAAAAQgAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Real\CameraSpotsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Card" Collapsed="true">
+    <Position X="11.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAACIEIAAAAAAAIEEABACQAQBgEEACAAQABQCAIAAEE=</HashCode>
+      <FileName>Assets\Scripts\Real\Card.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Deck" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAACAAAAAAAAEAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\Deck.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DevExtension" Collapsed="true">
+    <Position X="17.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Assets\Scripts\Real\DevExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Dice" Collapsed="true">
+    <Position X="19" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAABCAAAAAAACAAAAAAQAAAAAIAAEAAACAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\DIce.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DiceMananger" Collapsed="true">
+    <Position X="20.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAABCAAAAASCAAAAAEEAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\DiceMananger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DrawArc" Collapsed="true">
+    <Position X="13.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGwAAAAAACBAAgAAAAAAAAAKAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\DrawArc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FoodMananger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAICAAIAAAQAAAAAEAIAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\FoodMananger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GameMananger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEIEABBoBAAAAASAAAQACAAABAAEAAQAIAAgACAEA=</HashCode>
+      <FileName>Assets\Scripts\Real\GameMananger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GameState" Collapsed="true">
+    <Position X="19" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAEABAAAAAACAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\GameState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Hand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIAAAIAAAAAABQAAAAAAAAAAAAAAAAAgBAAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\Hand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Player" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAgABSQGEABkFBgAUgEgSABAAAQAAQAAAAADAgI=</HashCode>
+      <FileName>Assets\Scripts\Real\Player.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayerMananger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAIAKAAEAAQAAAAAgAAAAAAEAAAgAABAAQAgAA=</HashCode>
+      <FileName>Assets\Scripts\Real\PlayerMananger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PlayerUI" Collapsed="true">
+    <Position X="17.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAQIQCBAAAAAAIAAAAAAAAEAAAAAAAAAACBAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\PlayerUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PrefabDataSingleton" Collapsed="true">
+    <Position X="19" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gACCAAABAABkQAAAAABAAAAABABAAAAIgECAAAgAAEg=</HashCode>
+      <FileName>Assets\Scripts\Real\PrefabDataSingleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SelectionableObject" Collapsed="true">
+    <Position X="20.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAFBAAAAEAFCAAAABAAAAAAAAAAAAUAA=</HashCode>
+      <FileName>Assets\Scripts\Real\SelectionableObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SelectionController" Collapsed="true">
+    <Position X="13.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACBAEAACAAAAAAAAQBAAEAAAAAAAAAAQAgA=</HashCode>
+      <FileName>Assets\Scripts\Real\SelectionController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpecialCard" Collapsed="true">
+    <Position X="11.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAIAAAAAAAAAAAABAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Assets\Scripts\Real\SpecialCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TextInfoCard" Collapsed="true">
+    <Position X="15.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\TextInfoCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualSimulation" Collapsed="true">
+    <Position X="48.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAIAABAAAAAEAQAAAAEAAAAAAQAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtaulSimulation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualAnimal" Collapsed="true">
+    <Position X="46.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQCAAgAAAAAAAAAAAAAKAAAAAAAAAgAIAAgA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualAnimal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualAnimalArea" Collapsed="true">
+    <Position X="48.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAABACAAAAAAABAAAAAAQAAAAAAAAAAAE=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualAnimalArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualAnimalPair" Collapsed="true">
+    <Position X="50" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAgABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualAnimalPair.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualCard" Collapsed="true">
+    <Position X="46.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAADAAABBA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualDeck" Collapsed="true">
+    <Position X="44" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualDeck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualGameMananger" Collapsed="true">
+    <Position X="41.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualGameMananger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualHand" Collapsed="true">
+    <Position X="48.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualHand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualMove" Collapsed="true">
+    <Position X="50" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAgAAAACAAAgAAAAAEQAAAAAAIAAAAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualMove.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualPlayer" Collapsed="true">
+    <Position X="39" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualPlayerMananger" Collapsed="true">
+    <Position X="5.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualPlayerMananger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VirtualProp" Collapsed="true">
+    <Position X="46.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAIgAAAAAAQAAAAAAAAAgEAAAAABAA=</HashCode>
+      <FileName>Assets\Scripts\Virtual\VirtualProp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="IAnimalArea" Collapsed="true">
+    <Position X="8.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIAEAAAAAAAAgAAABAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IAnimalArea.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IAnimalProp" Collapsed="true">
+    <Position X="9.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BCAAAAAAAAAAoAAAAAgABIAAAgCEAgAAgAEAAAAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IAnimalProp.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IAnimalSpot" Collapsed="true">
+    <Position X="11.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAACAABABAEAAAAAIAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IAnimalSpot.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ICard">
+    <Position X="13.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAAAAAAAAAAAAAIAAABAAQAAAgAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\ICard.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IDeck" Collapsed="true">
+    <Position X="8" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IDeck.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IFoodMananger" Collapsed="true">
+    <Position X="9.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAIAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IFoodMananger.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IGameMananger">
+    <Position X="11.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIEABAgBAAAAACAAAQACAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IGameMananger.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IHand" Collapsed="true">
+    <Position X="17.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAgBAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IHand.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPlayer" Collapsed="true">
+    <Position X="8" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQGAABgFAAAEAAAQAAAAAAAAQAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IPlayerMananger" Collapsed="true">
+    <Position X="9.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAQAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interfaces\IPlayerMananger.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="IMove" Collapsed="true">
+    <Position X="13.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\GameState.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="AnimalFlag" Collapsed="true">
+    <Position X="2" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Base\BaseAnimal.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SelectionableObjectSpecification" Collapsed="true">
+    <Position X="13.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAACAAAAAAAAAAAABAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\SelectionableObject.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SpecialCardSpecification" Collapsed="true">
+    <Position X="15.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Real\SpecialCard.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
