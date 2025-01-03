@@ -66,15 +66,12 @@ public struct GameInteractionStruct
             if (!prop.IsActivable) continue;
             if(IsSideInteractable(prop.name)) sideProps.Add(prop);
         }
-        if(sideProps.Length >= 2) return sideTurnsInfo;
         if (sideProps.Length == 0)
         {
             playerMananger.KillById(predatorId, victimId);
             return PairAnimalId.DOING_NEXT_TURN;
         }
-        if (sideProps[0].name != AnimalPropName.Mimic) return PairAnimalId.PLAY_INSTANT_SIDE_MOVE;
-        if(playerMananger.players[victimId.ownerId].animalArea.amount <= 2) return PairAnimalId.PLAY_INSTANT_SIDE_MOVE;
-        //HERE
+        return sideTurnsInfo;
     }
 
     public static int PlayProp(IPlayerMananger playerMananger, int playerId, ICard card, in AnimalId target1, in AnimalId target2, bool isRotated)

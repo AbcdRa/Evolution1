@@ -9,7 +9,8 @@ public struct PairAnimalId
     public static PairAnimalId NOT_DOING_NEXT_TURN = new(-2, -1, -1, -1);
     public static PairAnimalId DESTROY_FOOD = new(-3, 1, -1, -1);
     public static PairAnimalId PIRACY_FOOD = new(-4, -1, -1, -1);
-    public static PairAnimalId PLAY_INSTANT_SIDE_MOVE = new(-5, -1, -1, -1);
+    //public static PairAnimalId PLAY_INSTANT_SIDE_MOVE = new(-5, -1, -1, -1);
+    //public static PairAnimalId TRY_TO_PLAY_INSTANT_SIDE_MOVE = new(-6, -1, -1, -1);
     public AnimalId first;
     public AnimalId second;
 
@@ -151,7 +152,11 @@ public struct VGMstruct
             playerMananger.players[_sideTurnsInfo.second.ownerId].animalArea.spots[_sideTurnsInfo.second.localId].animal.DecreaseFood();
             return;
         }
-        if(_sideTurnsInfo.E)
+        NativeList<MoveStruct> moves = GetAllPossibleSidesMoves(_sideTurnsInfo);
+        if(moves.Length == 1)
+        {
+            MoveStruct.ExecuteMove(this, moves[0]);
+        } 
         NextTurn(_sideTurnsInfo.second.ownerId);
 
     }
@@ -204,10 +209,10 @@ public struct VGMstruct
     }
 
 
-    public NativeList<MoveStruct> GetAllPossibleSidesMoves()
+    public NativeList<MoveStruct> GetAllPossibleSidesMoves(in PairAnimalId sideTurnsInfo)
     {
-        AnimalId myAnimalId = _sideTurnsInfo.second;
-        AnimalId enemyId = _sideTurnsInfo.first;
+        AnimalId myAnimalId = sideTurnsInfo.second;
+        AnimalId enemyId = sideTurnsInfo.first;
         NativeList<MoveStruct> moves = new NativeList<MoveStruct>(4, Allocator.TempJob);
         for(int i = 0; i < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps.Length; i++)
         {
@@ -442,7 +447,7 @@ public struct VGMstruct
 
         while (isOver)
         {
-            NativeList<MoveStruct> moves = isSideTurns ? GetAllPossibleSidesMoves() : GetAllPossibleMoves();
+            NativeList<MoveStruct> moves = isSideTurns ? GetAllPossibleSidesMoves(_sideTurnsInfo) : GetAllPossibleMoves();
             //МДА НЕ ИДЕАЛЬНО КОНЕЧНО TODO оптимизировать
             MoveStruct randomMove = moves[UnityEngine.Random.Range(0, moves.Length)];
             MoveStruct.ExecuteMove(this, randomMove);
@@ -453,9 +458,22 @@ public struct VGMstruct
         return targetPlayer == GetWinner();
     }
 
+    private int GetDiceResult()
+    {
+        return UnityEngine.Random.Range(1, 7);
+    }
+
     internal void ResposeToAttack(int playerId, in AnimalProp prop, in AnimalId friendId, in AnimalId enemyId)
     {
-        
+        switch(prop.name)
+        {
+            case AnimalPropName.Fast:
+                break;
+            case AnimalPropName.Mimic:
+                break;
+            case AnimalPropName.DropTail:
+                break;
+        }
     }
 }
 

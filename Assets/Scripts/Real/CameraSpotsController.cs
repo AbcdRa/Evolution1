@@ -6,7 +6,7 @@ public class CameraSpotsController : MonoBehaviour
     [SerializeField] private CameraSpot[] cameraSpots;
     [SerializeField] private CameraSpot mainCameraSpot;
     [SerializeField] private Transform mainCamera;
-    private PlayerMananger playerMananger;
+    private IPlayerMananger playerMananger;
 
     /// <summary>
     /// -3 - MyHand
@@ -20,9 +20,9 @@ public class CameraSpotsController : MonoBehaviour
 
     private void Start()
     {
-        playerMananger = GameMananger.instance.GetRawPlayerMananger();
-        cameraSpotsPlayerAnimals = new Dictionary<int, CameraSpot>();
-        cameraSpotsPlayerHands = new Dictionary<int, CameraSpot>();
+        playerMananger = GameMananger.instance.playerMananger;
+        cameraSpotsPlayerAnimals = new();
+        cameraSpotsPlayerHands = new();
         for (int i = 0; i < cameraSpots.Length; i++)
         {
             if (cameraSpots[i].IsPrivate())

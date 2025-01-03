@@ -4,6 +4,7 @@ public interface IPlayer
 {
     bool isAbleToMove { get; }
     IAnimalArea animalArea { get; }
+    int id { get; }
 
     bool AddPropToAnimal(int playerId, ICard card, int localId, bool isRotated);
     bool CreateAnimal(ICard card);
