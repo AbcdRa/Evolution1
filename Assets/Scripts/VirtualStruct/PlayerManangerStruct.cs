@@ -1,7 +1,9 @@
 ﻿
 using System;
+using Unity.Burst;
 using Unity.Collections;
 
+[BurstCompile]
 public struct PlayerManangerStruct
 {
     public NativeArray<PlayerStruct> players;
@@ -68,7 +70,7 @@ public struct PlayerManangerStruct
 
     public void KillById(in AnimalId predatorId, in AnimalId victimId)
     {
-        if (players[victimId.ownerId].animalArea.spots[victimId.localId].animal.propFlags.HasFlag(AnimalPropName.Poison))
+        if (players[victimId.ownerId].animalArea.spots[victimId.localId].animal.propFlags.HasFlagFast(AnimalPropName.Poison))
             players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.AddFlag(AnimalPropName.RIsPoisoned);
         players[victimId.ownerId].animalArea.Kill(victimId.localId);
         players[victimId.ownerId].animalArea.OrganizateSpots();

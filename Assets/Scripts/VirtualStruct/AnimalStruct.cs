@@ -2,9 +2,11 @@
 
 using NUnit.Framework;
 using System;
+using Unity.Burst;
 using Unity.Collections;
 using UnityEngine.SocialPlatforms.Impl;
 
+[BurstCompile]
 public struct AnimalStruct
 {
     public static AnimalStruct NULL = new AnimalStruct() { localId = -1, food = -1, fat = -1, maxFat = -2, maxFood = -2 };
@@ -101,9 +103,9 @@ public struct AnimalStruct
             }
             return true;
         }
-        if(propFlags.HasFlag(prop.name)) return false;
-        if(prop.name == AnimalPropName.Predator && propFlags.HasFlag(AnimalPropName.Piracy)) return false;
-        if(prop.name == AnimalPropName.Piracy && propFlags.HasFlag(AnimalPropName.Predator)) return false;
+        if(propFlags.HasFlagFast(prop.name)) return false;
+        if(prop.name == AnimalPropName.Predator && propFlags.HasFlagFast(AnimalPropName.Piracy)) return false;
+        if(prop.name == AnimalPropName.Piracy && propFlags.HasFlagFast(AnimalPropName.Predator)) return false;
         return true;
     }
 

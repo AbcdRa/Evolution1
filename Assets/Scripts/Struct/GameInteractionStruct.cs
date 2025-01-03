@@ -25,7 +25,7 @@ public struct GameInteractionStruct
             case AnimalPropName.Predator:
                 return PlayPredator(playerMananger, target1, target2);
         }
-        throw new Exception("GameBreaking Rule trying to play a strange prop " + prop);
+        throw new Exception("GameBreaking Rule trying to play a strange prop " + prop.ToFString());
     }
 
     private static PairAnimalId PlaySleep(in PlayerManangerStruct playerMananger, in AnimalId target)
@@ -141,11 +141,11 @@ public struct GameInteractionStruct
     public static bool IsCanAttack(in AnimalStruct predator, in AnimalStruct victim)
     {
         if(predator.isFull()) return false;
-        if(victim.propFlags.HasFlag(AnimalPropName.Camouflage) && !predator.propFlags.HasFlag(AnimalPropName.SharpEye)) return false;
-        if(victim.propFlags.HasFlag(AnimalPropName.Aqua) && !predator.propFlags.HasFlag(AnimalPropName.Aqua)) return false;
-        if(victim.propFlags.HasFlag(AnimalPropName.Big) && !predator.propFlags.HasFlag(AnimalPropName.Big)) return false;
-        if(victim.propFlags.HasFlag(AnimalPropName.RIsSymbiontSlave)) return false;
-        if(victim.propFlags.HasFlag(AnimalPropName.Borrow) && (victim.food >= victim.maxFood)) return false;
+        if(victim.propFlags.HasFlagFast(AnimalPropName.Camouflage) && !predator.propFlags.HasFlagFast(AnimalPropName.SharpEye)) return false;
+        if(victim.propFlags.HasFlagFast(AnimalPropName.Aqua) && !predator.propFlags.HasFlagFast(AnimalPropName.Aqua)) return false;
+        if(victim.propFlags.HasFlagFast(AnimalPropName.Big) && !predator.propFlags.HasFlagFast(AnimalPropName.Big)) return false;
+        if(victim.propFlags.HasFlagFast(AnimalPropName.RIsSymbiontSlave)) return false;
+        if(victim.propFlags.HasFlagFast(AnimalPropName.Borrow) && (victim.food >= victim.maxFood)) return false;
         return true;
 
     }

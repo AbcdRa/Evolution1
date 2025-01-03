@@ -6,12 +6,25 @@ using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEditorInternal.VR;
 using fstring = Unity.Collections.FixedString32Bytes;
+using Unity.Burst;
+
 
 [Flags]
 public enum AnimalPropName
 {
     Empty, Aqua, Big, Borrow, Camouflage, Cooperation, DropTail, Fasciest, Fast, Fat, Interaction,
     Mimic, Parasite, Piracy, Poison, Predator, Scavenger, SharpEye, Sleep, Symbiosis, ERROR, RIsPoisoned, RIsSymbiontSlave
+}
+
+
+[BurstCompile]
+public static class AnimalPropExtensions
+{
+    // Метод-расширение для проверки флага
+    public static bool HasFlagFast(this AnimalPropName value, in AnimalPropName flag)
+    {
+        return (value & flag) != 0;
+    }
 }
 
 //[Flags]

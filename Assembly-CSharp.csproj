@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Real\SelectionController.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDeck.cs" />
     <Compile Include="Assets\Scripts\Real\CameraSpot.cs" />
+    <Compile Include="Assets\UIPlayerInfo.cs" />
     <Compile Include="Assets\Scripts\Struct\AnimalId.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayerMananger.cs" />
     <Compile Include="Assets\Scripts\Real\AnimalSpot.cs" />
@@ -119,6 +120,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\Shaders\ImageEnchantedShader.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Shaders\GlowShader.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />

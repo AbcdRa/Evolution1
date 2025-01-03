@@ -9,7 +9,7 @@ public struct AnimalId
     public int ownerId;
     public int localId;
 
-    public static AnimalId NULL = new() { localId = -1, ownerId = -1 };
+    public static readonly AnimalId NULL = new() { localId = -1, ownerId = -1 };
 
     public AnimalId(int ownerId, int localId)
     {
@@ -23,5 +23,9 @@ public struct AnimalId
     public fstring ToFString()
     {
         return new fstring(ownerId+"~"+localId);
+    }
+
+    public bool Equals(AnimalId other) { 
+        return ownerId == other.ownerId && localId == other.localId;
     }
 }

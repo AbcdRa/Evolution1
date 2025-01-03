@@ -1,7 +1,9 @@
 ﻿
 using System;
+using Unity.Burst;
 using Unity.Collections;
 
+[BurstCompile]
 public struct HandStruct
 {
     public int amount => cards.Length;

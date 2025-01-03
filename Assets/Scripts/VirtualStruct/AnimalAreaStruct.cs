@@ -65,13 +65,13 @@ public struct AnimalAreaStruct
     {
         if (foodIncrease == 1)
         {
-            if (spots[localId].animal.propFlags.HasFlag(AnimalPropName.Interaction))
+            if (spots[localId].animal.propFlags.HasFlagFast(AnimalPropName.Interaction))
             {
                 int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
                 return consumedAmount;
             }
 
-            else if (spots[localId].animal.propFlags.HasFlag(AnimalPropName.Cooperation))
+            else if (spots[localId].animal.propFlags.HasFlagFast(AnimalPropName.Cooperation))
             {
                 int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
                 return consumedAmount;
