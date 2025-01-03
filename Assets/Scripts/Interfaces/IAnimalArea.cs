@@ -4,6 +4,7 @@ using UnityEngine;
 public interface IAnimalArea
 {
     int amount { get; }
+    List<IAnimalSpot> spots { get; }
 
     bool AddPropToAnimal(ICard card, int localId, bool isRotated);
     bool CreateAnimal(ICard card);

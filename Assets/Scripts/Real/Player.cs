@@ -9,6 +9,7 @@ public class Player : MonoBehaviour, IPlayer
     private bool _isAbleToMove = false;
     public bool isAbleToMove => _isAbleToMove;
     public IAnimalArea animalArea => _animalArea;
+    public int id => _id;
 
     public bool AddPropToAnimal(int playerId, ICard card, int localId, bool isRotated)
     {

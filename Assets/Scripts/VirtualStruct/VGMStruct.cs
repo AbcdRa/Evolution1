@@ -5,7 +5,8 @@ using Unity.Burst;
 [BurstCompile]
 public struct PairAnimalId
 {
-    public static PairAnimalId DOING_NEXT_TURN = new(-1, -1, -1, -1);
+    internal static readonly PairAnimalId NULL = new(-1,-1,-1,-1);
+    public static PairAnimalId DOING_NEXT_TURN = NULL;
     public static PairAnimalId NOT_DOING_NEXT_TURN = new(-2, -1, -1, -1);
     public static PairAnimalId DESTROY_FOOD = new(-3, 1, -1, -1);
     public static PairAnimalId PIRACY_FOOD = new(-4, -1, -1, -1);
@@ -145,6 +146,10 @@ public struct VGMstruct
     internal void PlayProp(int playerId, in CardStruct card, in AnimalId target1, in AnimalId target2, bool isRotated=false)
     {
         _sideTurnsInfo = GameInteractionStruct.PlayProp(playerMananger, playerId, card, target1, target2, isRotated);
+        if(_sideTurnsInfo.Equals(PairAnimalId.DOING_NEXT_TURN))
+        {
+            NextTurn(); return;
+        }
         if (_sideTurnsInfo.Equals(PairAnimalId.NOT_DOING_NEXT_TURN)) return;
         if(_sideTurnsInfo.Equals(PairAnimalId.DESTROY_FOOD)) { foodMananger.Consume(1); return; }
         if(_sideTurnsInfo.first.Equals(PairAnimalId.PIRACY_FOOD.first))
@@ -159,6 +164,39 @@ public struct VGMstruct
         } 
         NextTurn(_sideTurnsInfo.second.ownerId);
 
+    }
+
+    internal void PlaySideProp(int playerId, in AnimalProp prop, in AnimalId friendId, in AnimalId enemyId)
+    {
+        switch (prop.name)
+        {
+            case AnimalPropName.Fast:
+                playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.ActivateFastProp();
+                int diceResult = GetDiceResult();
+                if (diceResult >= 4)
+                {
+                    _sideTurnsInfo = PairAnimalId.NULL;
+                    return;
+                }
+                if(GetAllPossibleSidesMoves(_sideTurnsInfo).Length == 0)
+                {
+                    playerMananger.KillById(enemyId, friendId);
+                }
+                break;
+            case AnimalPropName.Mimic:
+                playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.ActivateMimicProp();
+                _sideTurnsInfo.second = prop.secondAnimalId;
+                break;
+            case AnimalPropName.DropTail:
+                playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.ActivateDropTailProp();
+                _sideTurnsInfo = PairAnimalId.NULL;
+                playerMananger.players[enemyId.ownerId].animalArea.spots[enemyId.localId].animal.Feed();
+                AnimalProp targetProp = prop.secondAnimalId.ownerId == 0 ?
+                    playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.singleProps[prop.secondAnimalId.localId] :
+                    playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.pairProps[prop.secondAnimalId.localId];
+                playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.RemoveProp(targetProp);
+                break;
+        }
     }
 
     private void SetupPhase(int phase)
@@ -190,7 +228,9 @@ public struct VGMstruct
     {
         for (int i = currentPivot; i <= currentPivot + playerMananger.players.Length; i++)
         {
-            int cardAmount = playerMananger.players[i % playerMananger.players.Length].animalArea.amount;
+            int cardAmount = playerMananger.players[i % playerMananger.players.Length].animalArea.amount + 1;
+            if (cardAmount == 1 && playerMananger.players[i % playerMananger.players.Length].hand.amount == 0)
+                cardAmount = 6;
             playerMananger.players[i % playerMananger.players.Length].GetCardsFromDeck(deck, cardAmount);
         }
         NextPhase();
@@ -223,7 +263,19 @@ public struct VGMstruct
                 moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
             } else if(prop.name == AnimalPropName.DropTail)
             {
-                moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                for(int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps.Length;j++)
+                {
+                    prop.mainAnimalId = myAnimalId;
+                    prop.secondAnimalId = new(0, j);
+                    moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                }
+                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.pairProps.Length; j++)
+                {
+                    prop.mainAnimalId = myAnimalId;
+                    prop.secondAnimalId = new(1, j);
+                    moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                }
+
             } else if(prop.name == AnimalPropName.Mimic)
             {
                 for (int j = 0; j < playerMananger.players[currentTurn].animalArea.amount; j++)
@@ -463,18 +515,7 @@ public struct VGMstruct
         return UnityEngine.Random.Range(1, 7);
     }
 
-    internal void ResposeToAttack(int playerId, in AnimalProp prop, in AnimalId friendId, in AnimalId enemyId)
-    {
-        switch(prop.name)
-        {
-            case AnimalPropName.Fast:
-                break;
-            case AnimalPropName.Mimic:
-                break;
-            case AnimalPropName.DropTail:
-                break;
-        }
-    }
+
 }
 
 

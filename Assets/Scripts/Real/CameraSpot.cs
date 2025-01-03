@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class CameraSpot : MonoBehaviour
 {
+    [SerializeField] private int _player_id;
+    [SerializeField] private bool _is_private;
+
     internal int GetPlayerId()
     {
-        throw new NotImplementedException();
+        return _player_id;
     }
 
     internal bool IsPrivate()
     {
-        throw new NotImplementedException();
+        return _is_private;
     }
 }
 

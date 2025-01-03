@@ -107,10 +107,10 @@ public struct AnimalStruct
         return true;
     }
 
-    public int Feed()
+    public int Feed(int foodIncrease=1)
     {
-        if(food < maxFood) { food++; return 1; }
-        if (fat < maxFat) { fat++; return 1; }
+        if(food < maxFood) { food+=foodIncrease; return 1; }
+        if (fat < maxFat) { fat+=foodIncrease; return 1; }
         return 0;
     }
 
@@ -188,6 +188,26 @@ public struct AnimalStruct
     }
 
     internal void ActivatePiraceProp()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void ActivateFastProp()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void ActivateMimicProp()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void ActivateDropTailProp()
+    {
+        throw new NotImplementedException();
+    }
+
+    internal void AddFlag(AnimalPropName rIsPoisoned)
     {
         throw new NotImplementedException();
     }

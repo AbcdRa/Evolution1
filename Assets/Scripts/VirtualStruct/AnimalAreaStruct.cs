@@ -22,7 +22,7 @@ public struct AnimalAreaStruct
         OrganizateSpots();
     }
 
-    private void Kill(int localId)
+    public void Kill(int localId)
     {
         AnimalId myId = new(ownerId, localId);
         for (int i = 0; i < spots[localId].animal.pairProps.Length; i++)
@@ -36,7 +36,7 @@ public struct AnimalAreaStruct
  
 
 
-    private void OrganizateSpots()
+    public void OrganizateSpots()
     {
         //TODO Можно оптимизировать!!
         NativeList<AnimalSpotStruct> newSpots = new NativeList<AnimalSpotStruct>(amount, Allocator.TempJob);
@@ -55,25 +55,34 @@ public struct AnimalAreaStruct
     {
         bool isCreated = freeSpot.CreateAnimal(card, spots.Length);
         if(!isCreated) return false;
+        freeSpot.SetLocalId(spots.Length);
         spots.Add(freeSpot);
         freeSpot = new();
         return isCreated; 
     }
 
-    public int Feed(int localId, in FoodManangerStruct foodMananger)
+    public int Feed(int localId, in FoodManangerStruct foodMananger, int foodIncrease=1)
     {
-        if (spots[localId].animal.propFlags.HasFlag(AnimalPropName.Interaction))
+        if (foodIncrease == 1)
         {
-            int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
-            return consumedAmount;
-        }
+            if (spots[localId].animal.propFlags.HasFlag(AnimalPropName.Interaction))
+            {
+                int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
+                return consumedAmount;
+            }
 
-        else if (spots[localId].animal.propFlags.HasFlag(AnimalPropName.Cooperation))
+            else if (spots[localId].animal.propFlags.HasFlag(AnimalPropName.Cooperation))
+            {
+                int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
+                return consumedAmount;
+            }
+            return spots[localId].Feed(foodMananger.food, foodIncrease);
+        } else
         {
-            int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
-            return consumedAmount;
+            spots[localId].Feed(2);
+            PairFeed(localId, localId, foodMananger.food, true, false);
+            return 0;
         }
-        return spots[localId].Feed(foodMananger.food);
     }
 
     private int PairFeed(int localId, int breakingId, int food, bool isFirstInit=false, bool isConsumedFood=true)
@@ -86,7 +95,7 @@ public struct AnimalAreaStruct
         if(isConsumedFood) food -= foodConsumed;
 
         for (int i = 0; i < spots[localId].animal.pairProps.Length; i++) {
-            if (spots[localId].animal.pairProps[i].name == AnimalPropName.Interaction && food > 0)
+            if (isConsumedFood && spots[localId].animal.pairProps[i].name == AnimalPropName.Interaction && food > 0)
             { 
                 AnimalId oth = spots[localId].animal.pairProps[i].GetOtherAnimalId(new(ownerId, localId));
                 if (oth.ownerId != ownerId) throw new Exception("GAMEBREAKING RULE Trying to feed another animal");

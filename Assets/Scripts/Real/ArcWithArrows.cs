@@ -31,12 +31,12 @@ public class ArcWithArrows : MonoBehaviour
         PlaceArrows();
     }
 
-    public void SetEventHolder(AnimalArea area)
-    {
-        area.OnCardPosUpdateChanged += CreateArc;
-        area.OnCardPosUpdateChanged += PlaceArrows;
+    //public void SetEventHolder(AnimalArea area)
+    //{
+    //    area.OnCardPosUpdateChanged += CreateArc;
+    //    area.OnCardPosUpdateChanged += PlaceArrows;
 
-    }
+    //}
 
     public void UpdateArcWithArrows(Transform startTransform, Transform endTransform, Vector3 arcOffset, Vector3 midPointOffset, float arrowSize = 0.5f)
     {

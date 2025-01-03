@@ -10,8 +10,8 @@ public class CardSO : ScriptableObject, ICard
     public AnimalPropSO secondPropSO;
     
     public bool isRotated { get; set; }
-    public AnimalProp main { get => mainPropSO.BuildProp(null); set => main = value; }
-    public AnimalProp second { get => secondPropSO.BuildProp(null); set => second = value; }
+    public AnimalProp main { get => mainPropSO.BuildProp(); set => main = value; }
+    public AnimalProp second { get => secondPropSO.BuildProp(); set => second = value; }
     public AnimalProp current => isRotated ? second : main;
 
     public Transform transform => GetTransform();

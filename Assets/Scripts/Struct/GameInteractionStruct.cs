@@ -74,9 +74,68 @@ public struct GameInteractionStruct
         return sideTurnsInfo;
     }
 
-    public static int PlayProp(IPlayerMananger playerMananger, int playerId, ICard card, in AnimalId target1, in AnimalId target2, bool isRotated)
+    private static PairAnimalId PlaySleep(in IPlayerMananger playerMananger, in AnimalId target)
     {
-        throw new NotImplementedException();
+        playerMananger.players[target.ownerId].animalArea.spots[target.localId].animal.ActivateSleepProp();
+        //TODO именнованым статическим переменным не учили, че за magic number
+        return PairAnimalId.NOT_DOING_NEXT_TURN;
+    }
+
+    private static PairAnimalId PlayFasciest(in IPlayerMananger playerMananger, in AnimalId target)
+    {
+        playerMananger.players[target.ownerId].animalArea.spots[target.localId].animal.ActivateFasciestProp();
+        return PairAnimalId.DESTROY_FOOD;
+    }
+
+    private static PairAnimalId PlayPiracy(in IPlayerMananger playerMananger, in AnimalId pirate, in AnimalId victim)
+    {
+        //TODO Ну ты хоть бы проверил возможно ли пиратство
+        //Я знаю что двойные проверки не супер круто, но все таки
+        playerMananger.players[pirate.ownerId].animalArea.spots[pirate.localId].animal.ActivatePiraceProp();
+        PairAnimalId sideTurnsInfo = PairAnimalId.PIRACY_FOOD;
+        sideTurnsInfo.second = victim;
+        return sideTurnsInfo;
+    }
+
+    private static PairAnimalId PlayPredator(in IPlayerMananger playerMananger, in AnimalId predatorId, in AnimalId victimId)
+    {
+        PairAnimalId sideTurnsInfo = new(predatorId, victimId);
+        if (!IsCanAttack(playerMananger.players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal,
+                         playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal))
+            throw new Exception("GameBreaking Trying to attack immortal victim");
+
+        AnimalPropName victimFlags = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.propFlags;
+        NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Temp);
+        for (int i = 0; i < playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.singleProps.Length; i++)
+        {
+            AnimalProp prop = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.singleProps[i];
+            if (!prop.IsActivable) continue;
+            if (IsSideInteractable(prop.name)) sideProps.Add(prop);
+        }
+        if (sideProps.Length == 0)
+        {
+            playerMananger.KillById(predatorId, victimId);
+            return PairAnimalId.DOING_NEXT_TURN;
+        }
+        return sideTurnsInfo;
+    }
+
+
+    public static PairAnimalId PlayProp(IPlayerMananger playerMananger, int playerId, ICard card, in AnimalId target1, in AnimalId target2, bool isRotated)
+    {
+        AnimalProp prop = isRotated ? card.second : card.main;
+        switch (prop.name)
+        {
+            case AnimalPropName.Sleep:
+                return PlaySleep(playerMananger, target1);
+            case AnimalPropName.Fasciest:
+                return PlayFasciest(playerMananger, target1);
+            case AnimalPropName.Piracy:
+                return PlayPiracy(playerMananger, target1, target2);
+            case AnimalPropName.Predator:
+                return PlayPredator(playerMananger, target1, target2);
+        }
+        throw new Exception("GameBreaking Rule trying to play a strange prop " + prop);
     }
 
     public static bool IsCanAttack(in AnimalStruct predator, in AnimalStruct victim)

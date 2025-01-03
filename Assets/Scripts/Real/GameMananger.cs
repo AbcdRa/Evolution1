@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 
 public class GameMananger : MonoBehaviour, IGameMananger
@@ -26,7 +27,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     private int _currentTurn;
     private int _currentSideTurn;
-
+    private PairAnimalId _sideTurnsInfo;
 
     private void Awake()
     {
@@ -166,11 +167,78 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     public void PlayProp(int playerId, ICard card, in AnimalId target1, in AnimalId target2, bool isRotated = false)
     {
-        int sideNextTurn = GameInteractionStruct.PlayProp(playerMananger, playerId, card, target1, target2, isRotated);
-        if (sideNextTurn != -2)
+        _sideTurnsInfo = GameInteractionStruct.PlayProp(playerMananger, playerId, card, target1, target2, isRotated);
+        if (_sideTurnsInfo.Equals(PairAnimalId.DOING_NEXT_TURN))
         {
-            NextTurn(sideNextTurn);
+            NextTurn(); return;
         }
+        if (_sideTurnsInfo.Equals(PairAnimalId.NOT_DOING_NEXT_TURN)) return;
+        if (_sideTurnsInfo.Equals(PairAnimalId.DESTROY_FOOD)) { foodMananger.Consume(1); return; }
+        if (_sideTurnsInfo.first.Equals(PairAnimalId.PIRACY_FOOD.first))
+        {
+            playerMananger.players[_sideTurnsInfo.second.ownerId].animalArea.spots[_sideTurnsInfo.second.localId].animal.DecreaseFood();
+            return;
+        }
+        List<MoveStruct> moves = GetAllPossibleSidesMoves(_sideTurnsInfo);
+        if (moves.Count == 1)
+        {
+            MoveStruct.ExecuteMove(this, moves[0]);
+        }
+        NextTurn(_sideTurnsInfo.second.ownerId);
     }
 
+    public List<MoveStruct> GetAllPossibleSidesMoves(in PairAnimalId sideTurnsInfo)
+    {
+        AnimalId myAnimalId = sideTurnsInfo.second;
+        AnimalId enemyId = sideTurnsInfo.first;
+        List<MoveStruct> moves = new();
+        for (int i = 0; i < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps.Length; i++)
+        {
+            AnimalProp prop = playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps[i];
+            if (!prop.IsActivable) continue;
+            if (prop.name == AnimalPropName.Fast)
+            {
+                moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+            }
+            else if (prop.name == AnimalPropName.DropTail)
+            {
+                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps.Length; j++)
+                {
+                    prop.mainAnimalId = myAnimalId;
+                    prop.secondAnimalId = new(0, j);
+                    moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                }
+                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.pairProps.Length; j++)
+                {
+                    prop.mainAnimalId = myAnimalId;
+                    prop.secondAnimalId = new(1, j);
+                    moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                }
+
+            }
+            else if (prop.name == AnimalPropName.Mimic)
+            {
+                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.amount; j++)
+                {
+                    if (j == myAnimalId.localId) continue;
+                    bool isCanMimic = GameInteractionStruct.
+                        IsCanAttack(playerMananger.players[enemyId.ownerId].animalArea.spots[enemyId.localId].animal,
+                            playerMananger.players[currentTurn].animalArea.spots[j].animal);
+                    if (isCanMimic)
+                    {
+                        prop.mainAnimalId = myAnimalId;
+                        prop.secondAnimalId = new(currentTurn, j);
+                        moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                    }
+                }
+            }
+        }
+        return moves;
+
+    }
+
+    internal VGMstruct GetStruct(Player player)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -6,13 +6,13 @@ public struct PlayerManangerStruct
 {
     public NativeArray<PlayerStruct> players;
 
-    internal bool AddPropToAnimal(int playerId, in CardStruct card, in AnimalId target, bool isRotated)
+    public bool AddPropToAnimal(int playerId, in CardStruct card, in AnimalId target, bool isRotated)
     {
         if (target.ownerId != playerId) throw new Exception("RuleBreaker as you like");
         return players[playerId].AddPropToAnimal(card, target, isRotated);
     }
 
-    internal bool CreateAnimal(int playerId, in CardStruct card)
+    public bool CreateAnimal(int playerId, in CardStruct card)
     {
         return players[playerId].CreateAnimal(card);
     }
@@ -23,7 +23,7 @@ public struct PlayerManangerStruct
         return players[playerId].Feed(target, foodMananger);
     }
 
-    internal int GetWinner()
+    public int GetWinner()
     {
         int bestScore = 0;
         int winnerId = 0;
@@ -37,12 +37,12 @@ public struct PlayerManangerStruct
         return winnerId;
     }
 
-    internal void Pass(int playerId)
+    public void Pass(int playerId)
     {
         players[playerId].Pass();
     }
 
-    internal void ResetPass()
+    public void ResetPass()
     {
         for (int i = 0; i < players.Length; i++)
         {
@@ -50,7 +50,7 @@ public struct PlayerManangerStruct
         }
     }
 
-    internal void UpdatePhaseCooldown()
+    public void UpdatePhaseCooldown()
     {
         for (int i = 0; i < players.Length; i++)
         {
@@ -58,7 +58,7 @@ public struct PlayerManangerStruct
         }
     }
 
-    internal void UpdateTurnCooldown()
+    public void UpdateTurnCooldown()
     {
         for (int i = 0; i < players.Length; i++)
         {
@@ -66,8 +66,12 @@ public struct PlayerManangerStruct
         }
     }
 
-    internal void KillById(AnimalId predatorId, AnimalId victimId)
+    public void KillById(in AnimalId predatorId, in AnimalId victimId)
     {
-        throw new NotImplementedException();
+        if (players[victimId.ownerId].animalArea.spots[victimId.localId].animal.propFlags.HasFlag(AnimalPropName.Poison))
+            players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.AddFlag(AnimalPropName.RIsPoisoned);
+        players[victimId.ownerId].animalArea.Kill(victimId.localId);
+        players[victimId.ownerId].animalArea.OrganizateSpots();
+        players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.Feed(2);
     }
 }

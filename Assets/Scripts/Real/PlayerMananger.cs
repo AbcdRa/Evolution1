@@ -6,9 +6,12 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
 {
     [SerializeField] private Player[] _players;
     [SerializeField] private PlayerUI ui;
+    [SerializeField] private int _interactablePlayerId;
 
     public IPlayer[] players => _players;
     public int playerAmount => _players.Length;
+    public IPlayer interactablePlayer => players[_interactablePlayerId];
+    
 
 
     public bool AddPropToAnimal(int playerId, ICard card, AnimalId target, bool isRotated)
@@ -26,6 +29,13 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
     {
         if (playerId != target.ownerId) throw new Exception("RULEBREAKING trying to feed otherAnimal");
         return players[playerId].Feed(target.localId, foodMananger);
+    }
+
+
+
+    public void KillById(AnimalId predatorId, AnimalId victimId)
+    {
+        throw new NotImplementedException();
     }
 
     public void Pass(int playerId)

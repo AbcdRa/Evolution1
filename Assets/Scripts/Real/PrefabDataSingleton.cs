@@ -27,7 +27,7 @@ public class PrefabDataSingleton : MonoBehaviour
             Debug.LogError("SINGLETON DESTROYED");
         }
         instance = this;
-        instance.errorProp = errorPropSO.BuildProp(null);
+        instance.errorProp = errorPropSO.BuildProp();
     }
 
     public static PrefabDataSingleton GetInstance()

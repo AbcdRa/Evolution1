@@ -48,7 +48,7 @@ public class CameraSpotsController : MonoBehaviour
             }
             else if (currentPos == -1)
             {
-                currentPos = (playerMananger.GetInteractablePlayer().id + 2) % 4;
+                currentPos = (playerMananger.interactablePlayer.id + 2) % 4;
             }
             else if (currentPos > -1)
             {
@@ -61,11 +61,11 @@ public class CameraSpotsController : MonoBehaviour
         }
         else if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && currentPos == -1)
         {
-            currentPos = (playerMananger.GetInteractablePlayer().id + 1) % 4;
+            currentPos = (playerMananger.interactablePlayer.id + 1) % 4;
         }
         else if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && currentPos == -1)
         {
-            currentPos = (playerMananger.GetInteractablePlayer().id + 3) % 4;
+            currentPos = (playerMananger.interactablePlayer.id + 3) % 4;
         }
         UpdateCurrentPos(currentPos);
 
@@ -95,9 +95,9 @@ public class CameraSpotsController : MonoBehaviour
     {
         if (currentPos == -3)
         {
-            return cameraSpotsPlayerHands[playerMananger.GetInteractablePlayer().id];
+            return cameraSpotsPlayerHands[playerMananger.interactablePlayer.id];
         }
-        if (currentPos == -2) { return cameraSpotsPlayerAnimals[playerMananger.GetInteractablePlayer().id]; };
+        if (currentPos == -2) { return cameraSpotsPlayerAnimals[playerMananger.interactablePlayer.id]; };
         return currentPos == -1 ? mainCameraSpot : cameraSpotsPlayerAnimals[currentPos];
     }
 }

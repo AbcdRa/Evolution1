@@ -60,7 +60,7 @@ public struct MoveStruct
             case MoveType.PlayProp:
                 vgm.PlayProp(move.data.playerId, move.data.card, move.data.target1, move.data.target2); break;
             case MoveType.ResponseToAttack:
-                vgm.ResposeToAttack(move.data.playerId, move.data.prop, move.data.target1, move.data.target2); break;
+                vgm.PlaySideProp(move.data.playerId, move.data.prop, move.data.target1, move.data.target2); break;
         }
     }
 

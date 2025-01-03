@@ -3,5 +3,5 @@ using UnityEngine;
 
 public interface IAnimalSpot
 {
-
+    AnimalStruct animal { get; }
 }

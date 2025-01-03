@@ -8,7 +8,7 @@ public class AnimalPropSO : ScriptableObject
     public int HungerIncrease;
     public bool IsPair;
 
-    public AnimalProp BuildProp(BaseAnimal owner)
+    public AnimalProp BuildProp()
     {
         AnimalProp animalPropStruct = new AnimalProp();
         return animalPropStruct;

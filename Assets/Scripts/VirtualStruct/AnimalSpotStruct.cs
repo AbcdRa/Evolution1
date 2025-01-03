@@ -43,10 +43,10 @@ public struct AnimalSpotStruct
         return true;
     }
 
-    public int Feed(int food)
+    public int Feed(int food, int foodIncrease=1)
     {
         if(food <= 0) return 0;
-        return animal.Feed();
+        return animal.Feed(foodIncrease);
     }
 
 
