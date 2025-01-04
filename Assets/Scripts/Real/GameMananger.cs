@@ -14,7 +14,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
     [SerializeField] private IPlayerMananger _playerMananger;
     [SerializeField] private IFoodMananger _foodMananger;
     [SerializeField] private IDeck _deck;
-    [SerializeField] private PlayerUI _playerUI;
+    [SerializeField] private UIMananger uiMananger;
 
     public IPlayerMananger playerMananger => _playerMananger;
     public IDeck deck => _deck;
@@ -131,7 +131,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     private void Update()
     {
-        _playerUI.UpdateLogInfo(this);
+        uiMananger.UpdateLogInfo(this);
     }
 
     public void AddPropToAnimal(int playerId, ICard card, in AnimalId target, bool isRotated)

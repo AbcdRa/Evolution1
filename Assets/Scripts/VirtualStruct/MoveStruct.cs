@@ -5,6 +5,18 @@ using UnityEngine;
 using fstring = Unity.Collections.FixedString32Bytes;
 
 public enum MoveType { Pass, PlayProp, CreateAnimal, AddPropToAnimal, Feed, ResponseToAttack}
+[BurstCompile]
+public struct MoveNotationMG
+{
+    public readonly static FixedString32Bytes[] runes = new FixedString32Bytes[]
+      { "pass", "play", "newa", "addp", "feed", "sply"};
+
+    public static fstring GetName(in MoveType name)
+    {
+        //TODO Сложнее но Можно оптимизировать
+        return runes[(int)name];
+    }
+}
 
 [BurstCompile]
 public struct MoveData
@@ -84,7 +96,8 @@ public struct MoveStruct
 
     public static MoveStruct GetPassMove(int playerId)
     {
-        fstring notation = playerId + "pass";
+        fstring notation = playerId.ToFString();
+        notation.Append(MoveNotationMG.GetName(MoveType.Pass));
         MoveData data = new MoveData(MoveType.Pass, playerId, CardStruct.NULL, AnimalProp.NULL, AnimalId.NULL, AnimalId.NULL);
         MoveStruct move = new MoveStruct(notation, data, 0f);
         return move;
@@ -92,7 +105,9 @@ public struct MoveStruct
 
     public static MoveStruct GetResponceToAttackMove(int playerId, in AnimalId friendId, in AnimalId enemyId, in AnimalProp prop)
     {
-        fstring notation = playerId + "pass";
+        fstring notation = playerId.ToFString();
+        notation.Append(MoveNotationMG.GetName(MoveType.ResponseToAttack));
+        //TODO Подробней нотацию расписать
         MoveData data = new MoveData(MoveType.ResponseToAttack, playerId, CardStruct.NULL, prop, friendId, enemyId);
         MoveStruct move = new MoveStruct(notation, data, 0f);
         return move;
@@ -100,7 +115,9 @@ public struct MoveStruct
 
     public static MoveStruct GetCreateAnimalMove(int playerId, in CardStruct card)
     {
-        fstring notation = playerId + "newa>" + card.ToFString();
+        fstring notation = playerId.ToFString();
+        notation.Append(MoveNotationMG.GetName(MoveType.CreateAnimal));
+        notation.Append(card.ToFString());
         MoveData data = new MoveData(MoveType.CreateAnimal, playerId, card, AnimalProp.NULL, AnimalId.NULL, AnimalId.NULL);
         MoveStruct move = new MoveStruct(notation, data, 0f);
         return move;
@@ -108,7 +125,9 @@ public struct MoveStruct
 
     public static MoveStruct GetAddPropMove(int playerId, in CardStruct card, in AnimalId target1, in AnimalId target2, bool isRotated)
     {
-        fstring notation = playerId + "addp>" + card.ToFString();
+        fstring notation = playerId.ToFString();
+        notation.Append(MoveNotationMG.GetName(MoveType.AddPropToAnimal));
+        notation.Append(card.ToFString());
         MoveData data = new MoveData(MoveType.AddPropToAnimal, playerId, card, AnimalProp.NULL, target1, target2, isRotated);
         MoveStruct move = new MoveStruct(notation, data, 0f);
         return move;
@@ -117,7 +136,9 @@ public struct MoveStruct
 
     public static MoveStruct GetFeedMove(int playerId, in AnimalId target)
     {
-        fstring notation = playerId + "feed>" + target.ToFString();
+        fstring notation = playerId.ToFString();
+        notation.Append(MoveNotationMG.GetName(MoveType.Feed));
+        notation.Append(target.ToFString());
         MoveData data = new MoveData(MoveType.Feed, playerId, CardStruct.NULL, AnimalProp.NULL, target, AnimalId.NULL);
         MoveStruct move = new MoveStruct(notation, data, 0f);
         return move;
@@ -125,7 +146,13 @@ public struct MoveStruct
 
     public static MoveStruct GetPlayPropMove(int playerId, in AnimalProp prop, in AnimalId target1, in AnimalId target2)
     {
-        fstring notation = playerId + "play>" + prop.ToFString() + ">>" + target1.ToFString()+"||"+target2.ToFString();
+        fstring notation = playerId.ToFString();
+        notation.Append(MoveNotationMG.GetName(MoveType.PlayProp));
+        notation.Append(prop.ToFString());
+        notation.Append('>');
+        notation.Append(target1.ToFString());
+        notation.Append('|');
+        notation.Append(target2.ToFString());
         MoveData data = new MoveData(MoveType.PlayProp, playerId, CardStruct.NULL, prop, target1, target2);
         MoveStruct move = new MoveStruct(notation, data, 0f);
         return move;

@@ -1,13 +1,14 @@
 ﻿
 using System;
 using Unity.Burst;
+using Unity.Collections;
 using UnityEngine;
 using fstring = Unity.Collections.FixedString32Bytes;
 
 [BurstCompile]
 public struct CardStruct : ICard
 {
-    public static CardStruct NULL = new CardStruct() { main = AnimalProp.NULL };
+    public static readonly CardStruct NULL = new CardStruct() { main = AnimalProp.NULL };
     public bool IsNull() => main.isNull();
     public AnimalProp main;
     public AnimalProp second;
@@ -16,7 +17,14 @@ public struct CardStruct : ICard
 
     internal fstring ToFString()
     {
-        return new fstring("cs["+main.ToFString()+"/"+second.ToFString()+"]");
+        fstring result = new();
+        result.Append('c');
+        result.Append('[');
+        result.Append(main.ToFString());
+        result.Append('/');
+        result.Append(second.ToFString());
+        result.Append(']');
+        return result;
     }
 
 

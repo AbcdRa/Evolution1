@@ -25,6 +25,14 @@ public static class AnimalPropExtensions
     {
         return (value & flag) != 0;
     }
+
+    //TODO ПО ФАКТУ НЕ НУЖЕН
+    public static fstring ToFString(this int value)
+    {
+        fstring fixedString = default;
+        fixedString.Append(value); // Добавляет число в строку
+        return fixedString;
+    }
 }
 
 //[Flags]
@@ -52,7 +60,7 @@ public struct AnimalPropNameToFString
 
 public struct AnimalProp
 {
-    public static AnimalProp NULL = new AnimalProp() { name = AnimalPropName.ERROR };
+    public static readonly AnimalProp NULL = new AnimalProp() { name = AnimalPropName.ERROR };
     public bool isNull() => name == AnimalPropName.ERROR;
     public AnimalPropName name;
     public int hungerIncrease;

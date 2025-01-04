@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerUI : MonoBehaviour
+public class UIMananger: MonoBehaviour
 {
     internal void UpdateLogInfo(GameMananger gameMananger)
     {

@@ -61,7 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Interfaces\ICard.cs" />
-    <Compile Include="Assets\Scripts\Real\PlayerUI.cs" />
+    <Compile Include="Assets\Scripts\UI\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\Real\SelectionableObject.cs" />
     <Compile Include="Assets\Scripts\Real\GameMananger.cs" />
     <Compile Include="Assets\Scripts\DevExtension.cs" />

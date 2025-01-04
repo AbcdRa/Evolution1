@@ -5,29 +5,6 @@ using fstring = Unity.Collections.FixedString32Bytes;
 
 
 [BurstCompile]
-public struct PropId
-{
-
-    public int spotlId;
-    public int proplId;
-
-    public static PropId NULL = new() { proplId = -1, spotlId = -1 };
-
-    public PropId(int spotlId, int proplId)
-    {
-        this.spotlId = spotlId;
-        this.proplId = proplId;
-    }
-
-    public bool isNull() => proplId == -1 && spotlId == -1;
-
-
-    public fstring ToFString()
-    {
-        return new fstring(spotlId + "~" + proplId);
-    }
-}
-
 public struct PlayerStruct
 {
     public bool isAbleToMove;

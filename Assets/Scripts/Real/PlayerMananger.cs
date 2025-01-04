@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerMananger : MonoBehaviour, IPlayerMananger
 {
     [SerializeField] private Player[] _players;
-    [SerializeField] private PlayerUI ui;
     [SerializeField] private int _interactablePlayerId;
 
     public IPlayer[] players => _players;
