@@ -894,7 +894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d157bbc1918f6ab4da731ed4add838b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundColor: {fileID: 0}
+  backgroundColor: {fileID: 4466749675529695158}
   playerNameText: {fileID: 2586268587293556971}
   animalAmountText: {fileID: 3320624051963568504}
   handCardsAmountText: {fileID: 6319457221408767955}

@@ -122,6 +122,7 @@ public struct AnimalStruct
             if (animalProp.SoftEquals(pairProps[i]))
             {
                 pairProps.RemoveAt(i);
+                propFlags &= ~animalProp.name;
                 return;
             }
         }
@@ -176,22 +177,45 @@ public struct AnimalStruct
 
     internal void ActivateSleepProp()
     {
-        throw new NotImplementedException();
+        for(int i = 0; i < singleProps.Length; i++)
+        {
+            if (singleProps[i].name == AnimalPropName.Sleep)
+            {
+                singleProps[i].Activate();
+                food = maxFood;
+                return;
+            }
+        }
     }
 
     internal void ActivateFasciestProp()
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < singleProps.Length; i++)
+        {
+            if (singleProps[i].name == AnimalPropName.Fasciest)
+            {
+                singleProps[i].Activate();
+                return;
+            }
+        }
     }
 
     internal void DecreaseFood()
     {
-        throw new NotImplementedException();
+        food--;
     }
 
     internal void ActivatePiraceProp()
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < singleProps.Length; i++)
+        {
+            if (singleProps[i].name == AnimalPropName.Piracy)
+            {
+                singleProps[i].Activate();
+                food++;
+                return;
+            }
+        }
     }
 
     internal void ActivateFastProp()
@@ -209,8 +233,8 @@ public struct AnimalStruct
         throw new NotImplementedException();
     }
 
-    internal void AddFlag(AnimalPropName rIsPoisoned)
+    internal void AddFlag(AnimalPropName flag)
     {
-        throw new NotImplementedException();
+        propFlags |= flag;
     }
 }

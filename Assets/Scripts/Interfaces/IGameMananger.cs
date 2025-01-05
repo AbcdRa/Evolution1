@@ -8,6 +8,7 @@ public interface IGameMananger
     public int currentPivot { get; }
     public int currentPhase { get;  }
     public int currentTurn { get; }
+    public long turnInfo { get; }
     public bool isOver {  get; }
     void Pass(int playerId);
     void CreateAnimal(int playerId, ICard card);

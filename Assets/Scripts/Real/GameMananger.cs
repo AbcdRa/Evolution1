@@ -29,6 +29,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
     private int _currentTurn;
     private int _currentSideTurn;
     private PairAnimalId _sideTurnsInfo;
+    public long turnInfo => _currentTurn << 32 | _currentSideTurn;
 
     private void Awake()
     {
@@ -46,6 +47,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
         foodMananger.SetupGame();
         deck.SetupGame();
         playerMananger.SetupGame(deck, FIRST_TURN_CARDS_AMOUNT);
+        onNextTurn.Invoke();
     }
 
 

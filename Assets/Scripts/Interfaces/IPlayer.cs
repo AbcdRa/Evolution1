@@ -2,10 +2,10 @@ using Unity.VisualScripting;
 
 public interface IPlayer
 {
-    bool isAbleToMove { get; }
-    IAnimalArea animalArea { get; }
     public int id { get; }
-
+    public IAnimalArea animalArea { get; }
+    public IHand hand { get; }
+    bool isAbleToMove { get; }
     bool AddPropToAnimal(int playerId, ICard card, int localId, bool isRotated);
     bool CreateAnimal(ICard card);
     int Feed(int localId, IFoodMananger foodMananger);

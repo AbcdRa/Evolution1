@@ -4,12 +4,16 @@ using UnityEngine;
 public class Player : MonoBehaviour, IPlayer
 {
     [SerializeField] private IAnimalArea _animalArea;
+    [SerializeField] private IHand _hand;
     [SerializeField] private bool _isBot;
     [SerializeField] private int _id;
+
     private bool _isAbleToMove = false;
+
     public bool isAbleToMove => _isAbleToMove;
     public IAnimalArea animalArea => _animalArea;
     public int id => _id;
+    public IHand hand => _hand;
 
     public bool AddPropToAnimal(int playerId, ICard card, int localId, bool isRotated)
     {
@@ -39,16 +43,16 @@ public class Player : MonoBehaviour, IPlayer
 
     public void Pass()
     {
-        throw new System.NotImplementedException();
+        _isAbleToMove = false;
     }
 
     public void ResetPass()
     {
-        throw new System.NotImplementedException();
+        _isAbleToMove = true;
     }
 
     public void TakeCardsFromDeck(IDeck deck, int cardsAmount)
     {
-        throw new System.NotImplementedException();
+        hand.TakeCardsFromDeck(deck, cardsAmount);
     }
 }
