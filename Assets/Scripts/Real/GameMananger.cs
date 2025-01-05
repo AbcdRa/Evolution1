@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameMananger : MonoBehaviour, IGameMananger
 {
     public static GameMananger instance { get; private set; }
+    public UnityEvent onNextTurn;
 
     const int FIRST_TURN_CARDS_AMOUNT = 8;
 
     [SerializeField] private IPlayerMananger _playerMananger;
     [SerializeField] private IFoodMananger _foodMananger;
     [SerializeField] private IDeck _deck;
-    [SerializeField] private UIMananger uiMananger;
 
     public IPlayerMananger playerMananger => _playerMananger;
     public IDeck deck => _deck;
@@ -53,11 +54,13 @@ public class GameMananger : MonoBehaviour, IGameMananger
         if (sideTurn != -1)
         {
             _currentSideTurn = sideTurn;
+            onNextTurn.Invoke();
             return;
         }
         if (_currentSideTurn != -1)
         {
             _currentSideTurn = -1;
+            onNextTurn.Invoke();
             return;
         }
         int nextTurn = FindNextTurn();
@@ -67,6 +70,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
             if (currentPhase == 1 && nextTurn == currentPivot) playerMananger.UpdateTurnCooldown();
             _currentTurn = nextTurn;
         }
+        onNextTurn.Invoke();
     }
 
     private int FindNextTurn()
@@ -128,11 +132,6 @@ public class GameMananger : MonoBehaviour, IGameMananger
         NextPhase();
     }
 
-
-    private void Update()
-    {
-        uiMananger.UpdateLogInfo(this);
-    }
 
     public void AddPropToAnimal(int playerId, ICard card, in AnimalId target, bool isRotated)
     {

@@ -6,8 +6,5 @@ using UnityEngine.UI;
 
 public class UIMananger: MonoBehaviour
 {
-    internal void UpdateLogInfo(GameMananger gameMananger)
-    {
-        throw new NotImplementedException();
-    }
+    [SerializeField] private List<UIPlayerInfo> playerInfos;
 }

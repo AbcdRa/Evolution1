@@ -10,10 +10,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{F258A8CA-F9E2-9647-9D88-E5034891C137}</ProjectGuid>
+    <ProjectGuid>{92FC6896-FBB2-3039-0888-C8655BDA74A9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>SharpUIScriptsAssembly</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,88 +56,205 @@
   </PropertyGroup>
   <ItemGroup>
     <Analyzer Include="D:\DEV\IDE\VS\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\abdra\Evolution1\Assets\Editor\SharpUI\Libs\NSubstitute\NSubstitute.dll" />
+    <Analyzer Include="C:\Users\abdra\Evolution1\Assets\Editor\SharpUI\Libs\CastleCore\Castle.Core.dll" />
+    <Analyzer Include="C:\Users\abdra\Evolution1\Assets\Editor\SharpUI\Libs\System.Threading.Tasks.Extensions.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.50f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.50f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\DevExtension.cs" />
-    <Compile Include="Assets\Scripts\Real\DiceMananger.cs" />
-    <Compile Include="Assets\Scripts\Struct\GameInteractionStruct.cs" />
-    <Compile Include="Assets\Scripts\Real\TextInfoCard.cs" />
-    <Compile Include="Assets\Scripts\Real\InteractionMananger.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IFoodMananger.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\PlayerManangerStruct.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\DeckStruct.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\MoveStruct.cs" />
-    <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-    <Compile Include="Assets\Scripts\Real\CameraSpotsController.cs" />
-    <Compile Include="Assets\Scripts\Real\Deck.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\FoodManangerStruct.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\VGMStruct.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\AnimalStruct.cs" />
-    <Compile Include="Assets\Scripts\Real\Card.cs" />
-    <Compile Include="Assets\Scripts\UI\UIMananger.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IHand.cs" />
-    <Compile Include="Assets\Scripts\Real\PrefabDataSingleton.cs" />
-    <Compile Include="Assets\Scripts\CardSO.cs" />
-    <Compile Include="Assets\Scripts\Real\ArcWithArrows.cs" />
-    <Compile Include="Assets\Scripts\Virtual\VirtaulSimulation.cs" />
-    <Compile Include="Assets\Scripts\Struct\AnimalProp.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\ICard.cs" />
-    <Compile Include="Assets\Scripts\Real\SelectionableObject.cs" />
-    <Compile Include="Assets\Scripts\Real\GameMananger.cs" />
-    <Compile Include="Assets\Scripts\Real\DrawArc.cs" />
-    <Compile Include="Assets\Scripts\Real\Dice.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IAnimalSpot.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IGameMananger.cs" />
-    <Compile Include="Assets\Scripts\Real\SelectionController.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IDeck.cs" />
-    <Compile Include="Assets\Scripts\Real\CameraSpot.cs" />
-    <Compile Include="Assets\Scripts\Struct\AnimalId.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IPlayerMananger.cs" />
-    <Compile Include="Assets\Scripts\Real\AnimalSpot.cs" />
-    <Compile Include="Assets\Scripts\Real\FoodMananger.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IAnimalProp.cs" />
-    <Compile Include="Assets\Scripts\UI\UIPlayerInfo.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\AnimalSpotStruct.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\IAnimalArea.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\AnimalAreaStruct.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\PlayerStruct.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\CardStruct.cs" />
-    <Compile Include="Assets\Scripts\AnimalPropSO.cs" />
-    <Compile Include="Assets\Scripts\Real\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\HandStruct.cs" />
-    <Compile Include="Assets\Scripts\Real\PlayerMananger.cs" />
-    <Compile Include="Assets\Scripts\Real\AnimalArea.cs" />
-    <Compile Include="Assets\Scripts\Real\Player.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\DropDowns\Adapters\IDropDownAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\UiUtil.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\GameScreen\GameSceneContract.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\State\IElementState.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Event\CurrentGameObjectProvider.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\SkillTrees\ISkillProgressLine.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Base\Component\IBaseComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\Tooltip\TooltipPrototype.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ArrowLists\Animation\IArrowListAnimator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\TimeUtils\ITimeFormatter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\ColorDecorator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Events\IElementEventDispatcher.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ArrowLists\Adapter\IArrowListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Toggle\ToggleButton.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\SkillBars\SkillBar.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\SelectionChangeListener.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Extensions\ObservableExtensions.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\BaseElement.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\VisibilityDecorator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\Settings\SettingsPrototype.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Animation\CanvasGroupAnimator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Dialogs\IDialog.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ArrowLists\Animation\ArrowListAnimator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\ColorDecoratorForImage.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Encryption\PasswordUtil.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\GameScreen\GameSceneModel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\SelectionStrategy.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\ListItem\Item.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\SkillTrees\SkillArrowLine.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\Register\RegisterContract.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\ListItem\ItemDescription.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Keyboard\SimpleKeyListener.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Events\ElementEventPromoter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\Register\RegisterPresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\SelectionStrategyNone.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\SharpButton\DescriptionItemHolder.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Animation\AnimationState.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Layout\ILayoutHelper.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\DropDowns\DropDown.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\GameScreen\GameSceneComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Events\ElementEventDispatcher.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Layout\LayoutHelper.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\LoginHelp\LoginHelpPresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\TooltipInfo\TooltipPointer.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Data\Model\Character\CharacterFactory.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\SkillTrees\SkillTree.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\ListItem\ItemImage.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\LoadingScreen\LoadingScreenContract.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Encryption\PasswordEncryptException.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\TooltipInfo\PointerPosition.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterSelect\CharacterSelectComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\SkillTrees\SkillLevel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Base\Component\MonoBehaviourComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\OffsetDecorator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterCreate\ArrowListAdapters\DefaultStyleAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Data\Model\Character\ClassType.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\SkillTrees\SkillProgressLine.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Dialogs\Dialog.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Button\RectButton.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\VendorScreen\VendorScreenModel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\DecoratorMode.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\TooltipInfo\ITooltip.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Adapter\DefaultListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Progress\ProgressBar.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Base\Model\IBaseModel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterCreate\ArrowListAdapters\DefaultStyle.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterSelect\CharacterList\CharacterListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\SharpButton\SharpButtonPrototype.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Animation\IAnimationState.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\TimeUtils\TimeConsumer.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Encryption\IPasswordUtil.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\TimeUtils\TimeProvider.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ArrowLists\ArrowList.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\TooltipInfo\Tooltip.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Scenes\ISceneUtils.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\TimeUtils\TimeFormatter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\ItemSelectionType.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\SharpButton\DescriptionListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\Register\RegisterComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterCreate\CharacterCreatePresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\SkillTrees\ISkillAmountLimit.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Events\IElementEventPromoter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterCreate\ArrowListAdapters\BioColorListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Sliders\SimpleSlider.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\BaseDecorator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\SharpList\CustomListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterCreate\CharacterCreateComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Animation\ICanvasGroupAnimator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Holder\DefaultItemHolder.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\SkillTrees\ISkillLevel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Button\CircleButton.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\LoginHelp\LoginHelpContract.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Base\Component\BaseComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\SharpList\SharpListPrototype.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Factory\UISpriteFactory.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Reactive\IDelayObserver.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\ISelectionStrategy.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\LoadingScreen\LoadingScreenPresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Data\Model\Character\Character.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\SelectionStrategyFactory.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\VendorScreen\VendorScreenPresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\GameScreen\GameScenePresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\SelectionStrategySingle.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\TimeUtils\ManagedUiUpdate.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Events\ItemEventPromoter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Factory\ListItemFactory.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\DropDowns\Adapters\DropDownAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Event\ICurrentGameObjectProvider.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\SkillTree\SkillTreePrototype.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\UnknownSelectionStrategyException.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\Login\LoginModel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\TooltipInfo\ITooltipPointer.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterSelect\CharacterSelectContract.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ModalViews\ModalView.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Keyboard\IKeyListener.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\ColorDecoratorForText.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ArrowLists\Extensions\ArrowListExtensions.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterCreate\CharacterCreateContract.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Adapter\IListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\Login\LoginPresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterCreate\CharacterCreateModel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Holder\ItemHolder.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\Login\LoginComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Loading\LoadingBar.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Dialogs\DialogIconType.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\LoginHelp\LoginHelpModel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\SelectionStrategyLimited.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\State\ElementState.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Collision\Data\ColliderData.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterSelect\CharacterSelectPresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\IUiUtil.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Encryption\IConvertProxy.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\LoadingScreen\LoadingScreenComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\SharpList\CustomItem.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Base\Presenter\BasePresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Input\InputField.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Extensions\PointerEventDataExtensions.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Toggle\ToggleGroup.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Base\Presenter\IBasePresenter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\VendorScreen\VendorScreenContract.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\IDecorator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\Dialog\DialogPrototype.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\SelectionStrategyAll.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Button\IconButton.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\SkillTrees\SkillAmountLimit.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Holder\IItemHolderStateManager.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ActionBars\IActionBarCooldown.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Keyboard\IKeyInputState.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\SharpList\CustomItemHolder.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Drag\Draggable.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Layout\Margin.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Selection\ISelectionChangeListener.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ActionBars\ActionBarButton.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\Register\RegisterModel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\LoadingScreen\LoadingScreenModel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Adapter\ListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ArrowLists\Adapter\ArrowListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Button\TabButton.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ActionBars\ActionBarCooldown.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Notifications\Notification.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\ScaleDecorator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterSelect\CharacterSelectModel.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\Game\VendorScreen\VendorScreenComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Keyboard\KeyInputState.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\TimeUtils\ITimeConsumer.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\ElementVisibility.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\LoginHelp\LoginHelpComponent.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterSelect\CharacterList\CharacterItemHolder.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ArrowLists\Animation\AnimateDirection.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Factory\CharacterIconFactory.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Button\BaseButton.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\ListItem\ItemText.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\ListView.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Encryption\ConvertProxy.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Collision\ColliderUtils.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\ArrowLists\Adapter\EmptyArrowListAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Button\SkillTreeButton.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\TimeUtils\CooldownTimeFormatter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\DropDowns\Adapters\DefaultDropDownAdapter.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\Login\LoginContract.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Client\UI\User\CharacterCreate\ArrowListAdapters\BioColor.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Events\IElementEventListener.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Util\Scenes\SceneUtils.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Prototype\Tabs\TabsPrototype.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Button\ButtonSelectionGroup.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\SharpDecoratorExtensions.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\Decorators\SpriteDecorator.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\Util\Reactive\DelayObserver.cs" />
+    <Compile Include="Assets\Editor\SharpUI\Source\Common\UI\Elements\List\Holder\ItemHolderStateManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
-    <None Include="Assets\Scripts\ClassDiagram1.cd" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
-    <None Include="Assets\Shaders\ImageEnchantedShader.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets\Shaders\GlowShader.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
-    <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\Scripts\Нотация.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
-    <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\Editor\SharpUI\Source\SharpUIScriptsAssembly.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -472,6 +589,26 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.50f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.50f1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEditor.WebGL.Extensions">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.50f1\Editor\Data\PlaybackEngines\WebGLSupport\UnityEditor.WebGL.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.50f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>Assets\Editor\SharpUI\Libs\NSubstitute\NSubstitute.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.YamlDotNet">
+      <HintPath>Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
       <HintPath>Library\PackageCache\com.unity.collections@2.5.1\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
       <Private>False</Private>
@@ -492,12 +629,40 @@
       <HintPath>Library\PackageCache\com.unity.testtools.codecoverage@1.2.6\lib\ReportGenerator\ReportGeneratorMerged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="unityplastic">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.5.2\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Plastic.Antlr3.Runtime">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.5.2\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>Assets\Editor\SharpUI\Libs\CastleCore\Castle.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Plastic.Newtonsoft.Json">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.5.2\Lib\Editor\PlasticSCM\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="log4netPlastic">
+      <HintPath>Library\PackageCache\com.unity.collab-proxy@2.5.2\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.IonicZip">
+      <HintPath>Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.9.4\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Library\PackageCache\com.unity.nuget.newtonsoft-json@3.2.1\Runtime\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.TextureAssets">
+      <HintPath>Library\PackageCache\com.unity.visualscripting@1.9.4\Editor\VisualScripting.Core\EditorAssetResources\Unity.VisualScripting.TextureAssets.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Cecil">
@@ -996,260 +1161,16 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.50f1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.Recorder.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Recorder.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Services.Analytics.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Services.Analytics.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing.Stores">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.Stores.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.Runtime">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Burst.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Burst.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>Library\ScriptAssemblies\Unity.Analytics.DataPrivacy.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Services.Core">
-      <HintPath>Library\ScriptAssemblies\Unity.Services.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Rider.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Config.Runtime">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Config.Runtime.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Flow">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Mathematics.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
-      <HintPath>Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Environments">
-      <HintPath>Library\ScriptAssemblies\Unity.Services.Core.Environments.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing.SecurityCore">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.SecurityCore.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.TestTools.CodeCoverage.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Collections">
-      <HintPath>Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing.Codeless">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.Codeless.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Collections.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Collections.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="PPv2URPConverters">
-      <HintPath>Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Services.Core.Analytics">
-      <HintPath>Library\ScriptAssemblies\Unity.Services.Core.Analytics.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Recorder">
-      <HintPath>Library\ScriptAssemblies\Unity.Recorder.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.VSCode.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEditor.Purchasing">
-      <HintPath>Library\ScriptAssemblies\UnityEditor.Purchasing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Runtime">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.XR.LegacyInputHelpers">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Burst">
-      <HintPath>Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.PlasticSCM.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing.SecurityStub">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.SecurityStub.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Advertisements.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Timeline.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Shared.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Shared.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.ShaderGraph.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.ShaderGraph.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEditor.SpatialTracking">
-      <HintPath>Library\ScriptAssemblies\UnityEditor.SpatialTracking.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.VisualStudio.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Unity.VisualScripting.Core">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Core.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Analytics">
-      <HintPath>Library\ScriptAssemblies\Analytics.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Recorder.Base">
-      <HintPath>Library\ScriptAssemblies\Unity.Recorder.Base.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEditor.XR.LegacyInputHelpers">
-      <HintPath>Library\ScriptAssemblies\UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Advertisements.Editor">
-      <HintPath>Library\ScriptAssemblies\UnityEngine.Advertisements.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Purchasing.Common">
-      <HintPath>Library\ScriptAssemblies\Purchasing.Common.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.Flow.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Flow.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Timeline">
-      <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Services.Analytics">
-      <HintPath>Library\ScriptAssemblies\Unity.Services.Analytics.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
-      <HintPath>Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.State.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Shaders">
-      <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.Searcher.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.Searcher.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.VisualScripting.State">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Unity.2D.Tilemap.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.2D.Tilemap.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
