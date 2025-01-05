@@ -17,6 +17,8 @@ public class GameMananger : MonoBehaviour, IGameMananger
     [SerializeField] private IFoodMananger _foodMananger;
     [SerializeField] private IDeck _deck;
 
+    [SerializeField] private UIMananger _uiMananger;
+
     public IPlayerMananger playerMananger => _playerMananger;
     public IDeck deck => _deck;
     public IFoodMananger foodMananger => _foodMananger;
@@ -29,6 +31,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
     private int _currentTurn;
     private int _currentSideTurn;
     private PairAnimalId _sideTurnsInfo;
+
     public long turnInfo => _currentTurn << 32 | _currentSideTurn;
 
     private void Awake()
@@ -40,6 +43,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     public void SetupGame()
     {
+        _uiMananger.Setup();
         currentPivot = 0;
         _currentSideTurn = -1;
         _currentTurn = 0;
