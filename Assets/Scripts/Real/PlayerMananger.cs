@@ -33,12 +33,31 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
 
     public void KillById(AnimalId predatorId, AnimalId victimId)
     {
-        
+        if (players[victimId.ownerId].animalArea.spots[victimId.localId].animal.propFlags.HasFlagFast(AnimalPropName.Poison))
+            players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.AddFlag(AnimalPropName.RIsPoisoned);
+        players[victimId.ownerId].animalArea.Kill(victimId.localId);
+        players[victimId.ownerId].animalArea.OrganizateSpots();
+        AnimalId nearScavenger = FindNearScavenger(predatorId.ownerId);
+        if (!nearScavenger.isNull)
+        {
+            players[nearScavenger.ownerId].animalArea.spots[nearScavenger.localId].animal.PlayScavenger();
+            players[nearScavenger.ownerId].animalArea.Feed(nearScavenger.localId, null);
+        }
+        players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.Feed(2);
     }
 
-    public AnimalId FindNearScavenger()
+    private AnimalId FindNearScavenger(int ownerId)
     {
-
+        for (int i = 0; i < players.Length; i++)
+        {
+            int playerId = (ownerId + i) % players.Length;
+            for (int j = 0; j < players[playerId].animalArea.amount; j++)
+            {
+                if (players[playerId].animalArea.spots[j].animal.propFlags.HasFlagFast(AnimalPropName.Scavenger)
+                    && !players[playerId].animalArea.spots[j].animal.isFull()) return new(playerId, j);
+            }
+        }
+        return AnimalId.NULL;
     }
 
     public void Pass(int playerId)
@@ -93,5 +112,15 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
         {
             player.animalArea.UpdateTurnCooldown();
         }
+    }
+
+    public PlayerManangerStruct GetStruct()
+    {
+        List<PlayerStruct> list = new List<PlayerStruct>();
+        for (int i = 0; i < players.Length; i++)
+        {
+            list.Add(players[i].GetStruct());
+        }
+        return new PlayerManangerStruct(list);
     }
 }

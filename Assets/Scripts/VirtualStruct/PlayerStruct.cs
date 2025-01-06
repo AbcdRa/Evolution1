@@ -12,6 +12,14 @@ public struct PlayerStruct
     public HandStruct hand;
     public int id;
 
+    public PlayerStruct(int id, HandStruct hand, AnimalAreaStruct animalArea, bool isAbleToMove)
+    {
+        this.id = id;
+        this.hand = hand;
+        this.animalArea = animalArea;
+        this.isAbleToMove = isAbleToMove;
+    }
+
     internal bool AddPropToAnimal(in CardStruct card, in AnimalId target, bool isRotated)
     {
         return animalArea.spots[target.localId].AddPropToAnimal(card,isRotated);
@@ -24,7 +32,7 @@ public struct PlayerStruct
 
     internal void GetCardsFromDeck(in DeckStruct deck, int cardAmount)
     {
-        hand.GetCardsFromDeck(deck, cardAmount);
+        hand.TakeCardsFromDeck(deck, cardAmount);
     }
 
     public int Feed(in AnimalId target, in FoodManangerStruct foodMananger)

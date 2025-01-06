@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 
@@ -7,6 +8,14 @@ using Unity.Collections;
 public struct PlayerManangerStruct
 {
     public NativeArray<PlayerStruct> players;
+
+    public PlayerManangerStruct(List<PlayerStruct> players)
+    {
+        this.players = new(players.Count, Allocator.Persistent);
+        for (int i = 0; i < players.Count; i++) { 
+            this.players[i] = (players[i]);
+        }
+    }
 
     public bool AddPropToAnimal(int playerId, in CardStruct card, in AnimalId target, bool isRotated)
     {
@@ -74,7 +83,7 @@ public struct PlayerManangerStruct
             players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.AddFlag(AnimalPropName.RIsPoisoned);
         players[victimId.ownerId].animalArea.Kill(victimId.localId);
         players[victimId.ownerId].animalArea.OrganizateSpots();
-        AnimalId nearScavenger = GetNearScavenger(predatorId.ownerId);
+        AnimalId nearScavenger = FindNearScavenger(predatorId.ownerId);
         if (!nearScavenger.isNull)
         {
             players[nearScavenger.ownerId].animalArea.spots[nearScavenger.localId].animal.PlayScavenger();
@@ -83,7 +92,7 @@ public struct PlayerManangerStruct
         players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.Feed(2);
     }
 
-    private AnimalId GetNearScavenger(int ownerId)
+    private AnimalId FindNearScavenger(int ownerId)
     {
         for (int i = 0; i < players.Length; i++)
         {

@@ -9,6 +9,7 @@ public interface ICard
     public Transform transform { get; }
     Sprite sprite { get; }
 
+    CardStruct GetStruct();
     public bool IsSpecial();
     public bool SoftEqual(ICard card);
 }

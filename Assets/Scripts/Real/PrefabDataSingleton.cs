@@ -41,4 +41,8 @@ public class PrefabDataSingleton : MonoBehaviour
 
     public TextInfoCard GetTextInfoCardPrefab() { return textInfoCardPrefab; }
 
+    internal Sprite GetSpriteForCardSO(CardSO cardSO)
+    {
+        throw new NotImplementedException();
+    }
 }

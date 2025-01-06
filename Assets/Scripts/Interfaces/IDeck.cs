@@ -8,4 +8,5 @@ public interface IDeck
     void SetupGame();
 
     void Shuffle();
+    ICard TakeLast();
 }

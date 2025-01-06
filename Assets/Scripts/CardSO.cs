@@ -16,7 +16,7 @@ public class CardSO : ScriptableObject, ICard
 
     public Transform transform => GetTransform();
 
-    public Sprite sprite => throw new System.NotImplementedException();
+    public Sprite sprite => PrefabDataSingleton.instance.GetSpriteForCardSO(this);
 
     private Transform GetTransform(Transform parent=null)
     {
