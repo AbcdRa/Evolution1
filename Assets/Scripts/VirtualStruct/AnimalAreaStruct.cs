@@ -63,26 +63,25 @@ public struct AnimalAreaStruct
 
     public int Feed(int localId, in FoodManangerStruct foodMananger, int foodIncrease=1)
     {
-        if (foodIncrease == 1)
+        if(foodMananger.isNull)
         {
-            if (spots[localId].animal.propFlags.HasFlagFast(AnimalPropName.Interaction))
-            {
-                int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
-                return consumedAmount;
-            }
-
-            else if (spots[localId].animal.propFlags.HasFlagFast(AnimalPropName.Cooperation))
-            {
-                int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
-                return consumedAmount;
-            }
-            return spots[localId].Feed(foodMananger.food, foodIncrease);
-        } else
-        {
-            spots[localId].Feed(2);
+            spots[localId].Feed(foodIncrease);
             PairFeed(localId, localId, foodMananger.food, true, false);
             return 0;
         }
+
+        if (spots[localId].animal.propFlags.HasFlagFast(AnimalPropName.Interaction))
+        {
+            int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
+            return consumedAmount;
+        }
+
+        else if (spots[localId].animal.propFlags.HasFlagFast(AnimalPropName.Cooperation))
+        {
+            int consumedAmount = foodMananger.food - PairFeed(localId, localId, foodMananger.food, true);
+            return consumedAmount;
+        }
+        return spots[localId].Feed(foodMananger.food, foodIncrease);
     }
 
     private int PairFeed(int localId, int breakingId, int food, bool isFirstInit=false, bool isConsumedFood=true)

@@ -6,7 +6,7 @@ public interface IPlayer
     public IAnimalArea animalArea { get; }
     public IHand hand { get; }
     bool isAbleToMove { get; }
-    bool AddPropToAnimal(int playerId, ICard card, int localId, bool isRotated);
+    bool AddPropToAnimal(int playerId, ICard card, int localId);
     bool CreateAnimal(ICard card);
     int Feed(int localId, IFoodMananger foodMananger);
     void InitReset(int i);

@@ -5,6 +5,8 @@ using UnityEngine;
 [BurstCompile]
 public struct FoodManangerStruct
 {
+    public static readonly FoodManangerStruct NULL = new FoodManangerStruct() { food = -1 };
+    internal readonly bool isNull => food == -1;
     public int food;
 
     public void SpawnFood(int length)

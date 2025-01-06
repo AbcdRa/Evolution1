@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IPlayer
 {
-    [SerializeField] private IAnimalArea _animalArea;
-    [SerializeField] private IHand _hand;
+    [SerializeField] private AnimalArea _animalArea;
+    [SerializeField] private Hand _hand;
     [SerializeField] private bool _isBot;
     [SerializeField] private int _id;
 
@@ -15,13 +15,13 @@ public class Player : MonoBehaviour, IPlayer
     public int id => _id;
     public IHand hand => _hand;
 
-    public bool AddPropToAnimal(int playerId, ICard card, int localId, bool isRotated)
+    public bool AddPropToAnimal(int playerId, ICard card, int localId)
     {
-        bool isHostileProp = isRotated ? card.second.isHostile() : card.main.isHostile();
+        bool isHostileProp = card.current.isHostile();
         //Круто вычислил да ?
         bool isPossibleToAdd = (isHostileProp ^ playerId == _id); 
         if(!isPossibleToAdd) return false;
-        return animalArea.AddPropToAnimal(card, localId, isRotated);
+        return animalArea.AddPropToAnimal(card, localId);
     }
 
     public bool CreateAnimal(ICard card)

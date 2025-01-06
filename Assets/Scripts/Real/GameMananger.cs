@@ -9,13 +9,13 @@ using UnityEngine.Events;
 public class GameMananger : MonoBehaviour, IGameMananger
 {
     public static GameMananger instance { get; private set; }
-    public UnityEvent onNextTurn;
+    [HideInInspector] public UnityEvent onNextTurn;
 
     const int FIRST_TURN_CARDS_AMOUNT = 8;
 
-    [SerializeField] private IPlayerMananger _playerMananger;
-    [SerializeField] private IFoodMananger _foodMananger;
-    [SerializeField] private IDeck _deck;
+    [SerializeField] private PlayerMananger _playerMananger;
+    [SerializeField] private FoodMananger _foodMananger;
+    [SerializeField] private Deck _deck;
 
     [SerializeField] private UIMananger _uiMananger;
 
@@ -141,7 +141,8 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     public void AddPropToAnimal(int playerId, ICard card, in AnimalId target, bool isRotated)
     {
-        bool isAddedSuccesful = playerMananger.AddPropToAnimal(playerId, card, target, isRotated);
+        card.isRotated = isRotated;
+        bool isAddedSuccesful = playerMananger.AddPropToAnimal(playerId, card, target);
         if (isAddedSuccesful) NextTurn();
     }
 
@@ -244,6 +245,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     internal VGMstruct GetStruct(Player player)
     {
-        throw new NotImplementedException();
+        return new VGMstruct(playerMananger.GetStruct(), deck.GetStruct(), foodMananger.GetStruct(),
+            currentPivot, currentPhase, _currentTurn, _currentSideTurn);
     }
 }

@@ -74,6 +74,26 @@ public struct PlayerManangerStruct
             players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.AddFlag(AnimalPropName.RIsPoisoned);
         players[victimId.ownerId].animalArea.Kill(victimId.localId);
         players[victimId.ownerId].animalArea.OrganizateSpots();
+        AnimalId nearScavenger = GetNearScavenger(predatorId.ownerId);
+        if (!nearScavenger.isNull)
+        {
+            players[nearScavenger.ownerId].animalArea.spots[nearScavenger.localId].animal.PlayScavenger();
+            players[nearScavenger.ownerId].animalArea.Feed(nearScavenger.localId, FoodManangerStruct.NULL);
+        }
         players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.Feed(2);
+    }
+
+    private AnimalId GetNearScavenger(int ownerId)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            int playerId = (ownerId + i) % players.Length;
+            for (int j = 0; j < players[playerId].animalArea.spots.Length; j++)
+            {
+                if (players[playerId].animalArea.spots[j].animal.propFlags.HasFlagFast(AnimalPropName.Scavenger)
+                    && !players[playerId].animalArea.spots[j].animal.isFull()) return new(playerId, j);
+            }
+        }
+        return AnimalId.NULL;
     }
 }

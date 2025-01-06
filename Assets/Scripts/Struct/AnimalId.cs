@@ -18,7 +18,7 @@ public struct AnimalId
         this.localId = localId;
     }
 
-    public bool isNull() => localId == -1 && ownerId == -1;
+    public bool isNull => localId == -1 && ownerId == -1;
 
 
     public fstring ToFString()

@@ -662,8 +662,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1208488399}
-        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
-        m_MethodName: OnStartGameButtonClicked
+        m_TargetAssemblyTypeName: UIMananger, Assembly-CSharp
+        m_MethodName: OnPassButtonPress
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -795,8 +795,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1208488399}
-        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
-        m_MethodName: OnStartGameButtonClicked
+        m_TargetAssemblyTypeName: UIMananger, Assembly-CSharp
+        m_MethodName: OnStartButtonPress
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1603,7 +1603,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 539029928}
-  handCardView: {fileID: 1715917401}
   moveSpeed: 20
   rotationSpeed: 5
   zoomSpeed: 0.005
@@ -1611,7 +1610,9 @@ MonoBehaviour:
   selectableLayer:
     serializedVersion: 2
     m_Bits: 64
+  playerInteraction: {fileID: 0}
   explorationStartPoint: {fileID: 1626546128}
+  handCardView: {fileID: 1715917401}
   minVerticalAngle: 40
   maxVerticalAngle: 120
 --- !u!1 &410087039
@@ -1785,7 +1786,6 @@ MonoBehaviour:
   - {fileID: 2044015658}
   - {fileID: 1650064280}
   - {fileID: 1186097942}
-  _interactablePlayerId: 0
 --- !u!1001 &440165339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2225,8 +2225,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1208488399}
-        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
-        m_MethodName: OnStartGameButtonClicked
+        m_TargetAssemblyTypeName: UIMananger, Assembly-CSharp
+        m_MethodName: OnDebugButtonPress
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2739,7 +2739,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 549381755}
-  - component: {fileID: 549381756}
   m_Layer: 0
   m_Name: HandSpot
   m_TagString: Untagged
@@ -2762,18 +2761,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1882862632}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &549381756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549381754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e31e2f8ae53e2d438b89c1106cb38b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &571433998
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,7 +2837,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 622970913}
-  - component: {fileID: 622970914}
   m_Layer: 0
   m_Name: AnimalSpot
   m_TagString: Untagged
@@ -2873,18 +2859,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1320108118}
   m_LocalEulerAnglesHint: {x: 68, y: 0, z: 0}
---- !u!114 &622970914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622970912}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e31e2f8ae53e2d438b89c1106cb38b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &643516589
 GameObject:
   m_ObjectHideFlags: 0
@@ -4205,6 +4179,7 @@ Transform:
   - {fileID: 535048078}
   - {fileID: 501927591}
   - {fileID: 1889273092}
+  - {fileID: 1816427262}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &927402947
@@ -4249,7 +4224,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 927402947}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 044c2763ce8a6484fb2aaa691a9617c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 948843e8acda3c94ca24d3fbb625da49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &934172518
@@ -4914,6 +4889,8 @@ MonoBehaviour:
   playerInfoMananger: {fileID: 1633854858}
   currentPhaseText: {fileID: 976220507}
   currentFoodText: {fileID: 62585559}
+  selectedCard: {fileID: 0}
+  playerInteraction: {fileID: 0}
 --- !u!1 &1215288177
 GameObject:
   m_ObjectHideFlags: 0
@@ -5459,7 +5436,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1396829885}
-  - component: {fileID: 1396829886}
   m_Layer: 0
   m_Name: HandSpot
   m_TagString: Untagged
@@ -5482,18 +5458,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 77291417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1396829886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1396829884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e31e2f8ae53e2d438b89c1106cb38b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1467430043
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5646,7 +5610,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1471172175}
-  - component: {fileID: 1471172176}
   m_Layer: 0
   m_Name: AnimalSpot
   m_TagString: Untagged
@@ -5669,18 +5632,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 77291417}
   m_LocalEulerAnglesHint: {x: 68, y: 0, z: 0}
---- !u!114 &1471172176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1471172174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e31e2f8ae53e2d438b89c1106cb38b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1478771321
 GameObject:
   m_ObjectHideFlags: 0
@@ -5743,7 +5694,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1489737676}
-  - component: {fileID: 1489737677}
   m_Layer: 0
   m_Name: AnimalSpot
   m_TagString: Untagged
@@ -5766,18 +5716,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1882862632}
   m_LocalEulerAnglesHint: {x: 68, y: 0, z: 0}
---- !u!114 &1489737677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1489737675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e31e2f8ae53e2d438b89c1106cb38b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1560183981
 GameObject:
   m_ObjectHideFlags: 0
@@ -6087,7 +6025,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1626546128}
-  - component: {fileID: 1626546129}
   m_Layer: 0
   m_Name: AnimalSpot
   m_TagString: Untagged
@@ -6110,18 +6047,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 609462396}
   m_LocalEulerAnglesHint: {x: 68, y: 0, z: 0}
---- !u!114 &1626546129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1626546127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e31e2f8ae53e2d438b89c1106cb38b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1633854855
 GameObject:
   m_ObjectHideFlags: 0
@@ -6338,7 +6263,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1715917401}
-  - component: {fileID: 1715917402}
   m_Layer: 0
   m_Name: HandSpot
   m_TagString: Untagged
@@ -6361,18 +6285,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 609462396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1715917402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1715917400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e31e2f8ae53e2d438b89c1106cb38b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1785176755
 GameObject:
   m_ObjectHideFlags: 0
@@ -6382,7 +6294,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1785176757}
-  - component: {fileID: 1785176756}
   m_Layer: 0
   m_Name: CameraSpots
   m_TagString: Untagged
@@ -6390,18 +6301,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1785176756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785176755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ead07ce8ae609a4ca468dbef2890d21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1785176757
 Transform:
   m_ObjectHideFlags: 0
@@ -6422,6 +6321,59 @@ Transform:
   - {fileID: 1937171577}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1816427261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1816427262}
+  - component: {fileID: 1816427263}
+  m_Layer: 7
+  m_Name: Barier (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1816427262
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816427261}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 916207100}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!65 &1816427263
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816427261}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.1, y: 10, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1844050720 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4935421703941788941, guid: 4e70f67da2c43214ba42812107bd9148,
@@ -6650,7 +6602,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 193200e92fe7cca4985bb46e696cf785,
         type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7051667544260724616, guid: 5f44658c0e7012941b56952383dd135e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -6780,7 +6733,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1890988277}
-  - component: {fileID: 1890988278}
   m_Layer: 0
   m_Name: HandSpot
   m_TagString: Untagged
@@ -6803,18 +6755,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1320108118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1890988278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1890988276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e31e2f8ae53e2d438b89c1106cb38b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1928797871
 GameObject:
   m_ObjectHideFlags: 0
@@ -6899,7 +6839,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1937171577}
-  - component: {fileID: 1937171578}
   m_Layer: 0
   m_Name: CameraSpotMain
   m_TagString: Untagged
@@ -6922,18 +6861,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1785176757}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &1937171578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937171576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e31e2f8ae53e2d438b89c1106cb38b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1948904826
 GameObject:
   m_ObjectHideFlags: 0
@@ -7357,7 +7284,10 @@ MonoBehaviour:
   onNextTurn:
     m_PersistentCalls:
       m_Calls: []
-  _uiMananger: {fileID: 0}
+  _playerMananger: {fileID: 421067512}
+  _foodMananger: {fileID: 150066480}
+  _deck: {fileID: 927402949}
+  _uiMananger: {fileID: 1208488399}
 --- !u!1001 &1443402714800450642
 PrefabInstance:
   m_ObjectHideFlags: 0

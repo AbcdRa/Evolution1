@@ -6,7 +6,7 @@ public interface IAnimalArea
     int amount { get; }
     List<IAnimalSpot> spots { get; }
 
-    bool AddPropToAnimal(ICard card, int localId, bool isRotated);
+    bool AddPropToAnimal(ICard card, int localId);
     bool CreateAnimal(ICard card);
     int Feed(int localId, IFoodMananger foodMananger);
     void InitReset();

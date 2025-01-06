@@ -12,9 +12,9 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
     
 
 
-    public bool AddPropToAnimal(int playerId, ICard card, AnimalId target, bool isRotated)
+    public bool AddPropToAnimal(int playerId, ICard card, AnimalId target)
     {
-        bool isAdded = players[target.ownerId].AddPropToAnimal(playerId, card, target.localId, isRotated);
+        bool isAdded = players[target.ownerId].AddPropToAnimal(playerId, card, target.localId);
         return isAdded;
     }
 
@@ -33,7 +33,12 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
 
     public void KillById(AnimalId predatorId, AnimalId victimId)
     {
-        throw new NotImplementedException();
+        
+    }
+
+    public AnimalId FindNearScavenger()
+    {
+
     }
 
     public void Pass(int playerId)

@@ -34,6 +34,11 @@ public struct AnimalStruct
         propFlags = new AnimalPropName();
     }
 
+    public void SetLocalId(int i)
+    {
+        localId = i;
+    }
+
     public bool CanSurvive()
     {
         if (food >= maxFood) return true;
@@ -236,5 +241,10 @@ public struct AnimalStruct
     internal void AddFlag(AnimalPropName flag)
     {
         propFlags |= flag;
+    }
+
+    internal void PlayScavenger()
+    {
+        throw new NotImplementedException();
     }
 }

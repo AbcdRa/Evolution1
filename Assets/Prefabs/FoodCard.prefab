@@ -49,8 +49,8 @@ GameObject:
   - component: {fileID: 37861257518059562}
   - component: {fileID: 2365046111146946776}
   - component: {fileID: 6950121494306491080}
-  - component: {fileID: 7051667544260724616}
   - component: {fileID: 112100052278166853}
+  - component: {fileID: 7228437138964907296}
   m_Layer: 6
   m_Name: FoodCard
   m_TagString: Untagged
@@ -145,21 +145,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7051667544260724616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3771288699045166282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b987eb95fbc35854e87917a3090577e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frontImage: {fileID: 8893631877542621804}
-  backImage: {fileID: 5470005989146900931}
-  specification: 0
 --- !u!114 &112100052278166853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +160,19 @@ MonoBehaviour:
   selectionObject: {fileID: 2830413433539814564}
   parent: {fileID: 3771288699045166282}
   specification: 0
+  idOwner: -1
+--- !u!114 &7228437138964907296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3771288699045166282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260f4fc23eb6d5c4186acc6c69f10311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5290775588888452637
 GameObject:
   m_ObjectHideFlags: 0
