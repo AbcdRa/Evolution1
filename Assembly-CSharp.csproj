@@ -64,7 +64,6 @@
     <Compile Include="Assets\Scripts\Real\DiceMananger.cs" />
     <Compile Include="Assets\Scripts\Struct\GameInteractionStruct.cs" />
     <Compile Include="Assets\Scripts\Real\TextInfoCard.cs" />
-    <Compile Include="Assets\Scripts\Real\InteractionMananger.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IFoodMananger.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\PlayerManangerStruct.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
@@ -92,6 +91,7 @@
     <Compile Include="Assets\Scripts\Real\DrawArc.cs" />
     <Compile Include="Assets\Scripts\Real\Dice.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IAnimalSpot.cs" />
+    <Compile Include="Assets\Scripts\Controllers\PlayerInteraction.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IGameMananger.cs" />
     <Compile Include="Assets\Scripts\Real\SelectionController.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDeck.cs" />

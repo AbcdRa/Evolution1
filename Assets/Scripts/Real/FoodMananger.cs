@@ -1,5 +1,7 @@
 ﻿
-public class FoodMananger
+using UnityEngine;
+
+public class FoodMananger : MonoBehaviour
 {
 
 }

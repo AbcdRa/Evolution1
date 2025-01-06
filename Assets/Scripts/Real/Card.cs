@@ -8,6 +8,8 @@ public class Card : MonoBehaviour, ICard
     public AnimalProp second { get; set; }
     public AnimalProp current => isRotated ? second : main;
 
+    public Sprite sprite => throw new NotImplementedException();
+
     public void CreateCard(CardSO cardSO)
     {
         this.main = cardSO.main;

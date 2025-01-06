@@ -8,7 +8,6 @@ public class PrefabDataSingleton : MonoBehaviour
     [SerializeField] private DrawArc drawArcPrefab;
     [SerializeField] private TextInfoCard textInfoCardPrefab;
     [SerializeField] private AnimalPropSO errorPropSO;
-    [SerializeField] private AnimalPropSO virtualPropSO;
     [SerializeField] private AnimalSpot animalSpotPrefab;
     [SerializeField] private CardSO[] cardsVariants;
     private AnimalProp errorProp;

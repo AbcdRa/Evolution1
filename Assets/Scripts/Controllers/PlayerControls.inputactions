@@ -820,6 +820,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EnableRotateMode",
+                    "type": "Button",
+                    "id": "162b731c-927c-4976-9dbf-fa9255bd23e7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -963,6 +972,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SwitchToExploration",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd26e37b-0570-445f-b1c8-901dfc134900",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnableRotateMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

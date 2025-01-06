@@ -842,6 +842,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnableRotateMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""162b731c-927c-4976-9dbf-fa9255bd23e7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -987,6 +996,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""SwitchToExploration"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cd26e37b-0570-445f-b1c8-901dfc134900"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnableRotateMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1078,6 +1098,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Camera_Zoom = m_Camera.FindAction("Zoom", throwIfNotFound: true);
         m_Camera_SwitchToHandCardView = m_Camera.FindAction("SwitchToHandCardView", throwIfNotFound: true);
         m_Camera_SwitchToExploration = m_Camera.FindAction("SwitchToExploration", throwIfNotFound: true);
+        m_Camera_EnableRotateMode = m_Camera.FindAction("EnableRotateMode", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -1331,6 +1352,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Camera_Zoom;
     private readonly InputAction m_Camera_SwitchToHandCardView;
     private readonly InputAction m_Camera_SwitchToExploration;
+    private readonly InputAction m_Camera_EnableRotateMode;
     public struct CameraActions
     {
         private @PlayerControls m_Wrapper;
@@ -1340,6 +1362,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Zoom => m_Wrapper.m_Camera_Zoom;
         public InputAction @SwitchToHandCardView => m_Wrapper.m_Camera_SwitchToHandCardView;
         public InputAction @SwitchToExploration => m_Wrapper.m_Camera_SwitchToExploration;
+        public InputAction @EnableRotateMode => m_Wrapper.m_Camera_EnableRotateMode;
         public InputActionMap Get() { return m_Wrapper.m_Camera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1364,6 +1387,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchToExploration.started += instance.OnSwitchToExploration;
             @SwitchToExploration.performed += instance.OnSwitchToExploration;
             @SwitchToExploration.canceled += instance.OnSwitchToExploration;
+            @EnableRotateMode.started += instance.OnEnableRotateMode;
+            @EnableRotateMode.performed += instance.OnEnableRotateMode;
+            @EnableRotateMode.canceled += instance.OnEnableRotateMode;
         }
 
         private void UnregisterCallbacks(ICameraActions instance)
@@ -1383,6 +1409,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SwitchToExploration.started -= instance.OnSwitchToExploration;
             @SwitchToExploration.performed -= instance.OnSwitchToExploration;
             @SwitchToExploration.canceled -= instance.OnSwitchToExploration;
+            @EnableRotateMode.started -= instance.OnEnableRotateMode;
+            @EnableRotateMode.performed -= instance.OnEnableRotateMode;
+            @EnableRotateMode.canceled -= instance.OnEnableRotateMode;
         }
 
         public void RemoveCallbacks(ICameraActions instance)
@@ -1471,5 +1500,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnZoom(InputAction.CallbackContext context);
         void OnSwitchToHandCardView(InputAction.CallbackContext context);
         void OnSwitchToExploration(InputAction.CallbackContext context);
+        void OnEnableRotateMode(InputAction.CallbackContext context);
     }
 }

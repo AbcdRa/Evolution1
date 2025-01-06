@@ -1,5 +1,7 @@
 ﻿
-public class AnimalArea
+using UnityEngine;
+
+public class AnimalArea : MonoBehaviour
 {
 
 }

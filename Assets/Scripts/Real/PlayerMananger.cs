@@ -5,11 +5,10 @@ using UnityEngine;
 public class PlayerMananger : MonoBehaviour, IPlayerMananger
 {
     [SerializeField] private Player[] _players;
-    [SerializeField] private int _interactablePlayerId;
+
 
     public IPlayer[] players => _players;
     public int playerAmount => _players.Length;
-    public IPlayer interactablePlayer => players[_interactablePlayerId];
     
 
 

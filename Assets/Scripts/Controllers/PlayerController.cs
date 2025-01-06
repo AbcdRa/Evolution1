@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Camera Settings")]
     public Transform cameraTransform; // Ссылка на камеру
-    public Transform handCardView; // Фиксированная точка для просмотра карт
     public float moveSpeed = 1f; // Скорость перемещения камеры
     public float rotationSpeed = 5f; // Скорость вращения камеры
     public float zoomSpeed = 5f; // Скорость масштабирования
@@ -14,13 +13,15 @@ public class PlayerController : MonoBehaviour
 
     [Header("Selection")]
     public LayerMask selectableLayer; // Слой интерактивных объектов
+    [SerializeField] private PlayerInteraction playerInteraction;
 
 
     [Header("Exploration Settings")]
     public Transform explorationStartPoint;
+    public Transform handCardView; // Фиксированная точка для просмотра карт
 
     [Header("Camera Rotation Limits")]
-    public float minVerticalAngle = -30f; // Минимальный угол наклона
+    public float minVerticalAngle = -90f; // Минимальный угол наклона
     public float maxVerticalAngle = 60f;  // Максимальный угол наклона
 
     private bool isTransitioning = false;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private SelectionableObject highlightedObject; // Текущий выделенный объект
 
     private bool isInHandCardView = false; // Находимся ли в режиме просмотра карт
+    private bool isRotateMode = false; 
     private Vector3 targetPosition; // Целевая позиция камеры
     private Quaternion targetRotation; // Целевое вращение камеры
 
@@ -42,6 +44,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 currentVelocity; // Для плавного движения камеры
     private Vector3 rotationVelocity; // Для плавного вращения
 
+
+
     private void Awake()
     {
         controls = new PlayerControls();
@@ -49,12 +53,16 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
+        if(controls == null) controls = new PlayerControls();
         controls.Enable();
 
         controls.Camera.Move.started += ctx => OnMove(ctx.ReadValue<Vector2>());
         controls.Camera.Move.canceled += ctx => OnMove(Vector2.zero);
         controls.Camera.Rotate.performed += ctx => OnRotate(ctx.ReadValue<Vector2>());
+        controls.Camera.EnableRotateMode.performed += ctx => OnRotateMode(true);
+        controls.Camera.EnableRotateMode.canceled += ctx => OnRotateMode(false);
         controls.Camera.Zoom.performed += ctx => OnZoom(ctx.ReadValue<float>());
+        controls.Camera.Zoom.canceled += ctx => OnZoom(0f);
 
         controls.Camera.SwitchToHandCardView.performed += _ => OnSwitchToHandCardView();
         controls.Camera.SwitchToExploration.performed += _ => OnSwitchToExploration();
@@ -115,7 +123,8 @@ public class PlayerController : MonoBehaviour
         ClampCameraToBoundaries();
 
         // Остальные действия: вращение, масштабирование, подсветка объектов
-        HandleRotationAndZoom();
+        if(isRotateMode) HandleRotation();
+        HandleZoom();
         HandleSelection();
     }
 
@@ -177,7 +186,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnSelected(SelectionableObject so)
     {
-        Debug.Log($"Selected: {so.name}");
+        playerInteraction.HandleSelection(so);
     }
 
     private void OnMove(Vector2 input)
@@ -199,23 +208,37 @@ public class PlayerController : MonoBehaviour
     private void OnSwitchToHandCardView()
     {
         isInHandCardView = true;
-    }
-
-
-
-    private void OnSwitchToExploration()
-    {
         if (!isTransitioning)
         {
             isTransitioning = true;
-            StartCoroutine(SmoothMoveToPoint(explorationStartPoint.position, explorationStartPoint.rotation, () =>
+            StartCoroutine(SmoothMoveToPoint(handCardView.position, handCardView.rotation, () =>
             {
                 isTransitioning = false;
             }));
         }
     }
 
-    private void HandleRotationAndZoom()
+    private void OnRotateMode(bool isRotateMode)
+    {
+        this.isRotateMode = isRotateMode;
+    }
+
+
+    private void OnSwitchToExploration()
+    {
+        
+        if (!isTransitioning)
+        {
+            isTransitioning = true;
+            StartCoroutine(SmoothMoveToPoint(explorationStartPoint.position, explorationStartPoint.rotation, () =>
+            {
+                isTransitioning = false;
+                isInHandCardView = false;
+            }));
+        }
+    }
+
+    private void HandleRotation()
     {
         float horizontalRotation = rotateInput.x * rotationSpeed * Time.deltaTime;
         float verticalRotation = -rotateInput.y * rotationSpeed * Time.deltaTime;
@@ -226,6 +249,10 @@ public class PlayerController : MonoBehaviour
         cameraTransform.eulerAngles = currentEulerAngles;
         cameraTransform.Rotate(Vector3.up, horizontalRotation, Space.World);
 
+    }
+
+    private void HandleZoom()
+    {
         cameraTransform.Translate(Vector3.forward * zoomInput * zoomSpeed * Time.deltaTime, Space.Self);
     }
 

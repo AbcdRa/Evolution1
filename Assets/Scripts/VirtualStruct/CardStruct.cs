@@ -42,6 +42,7 @@ public struct CardStruct : ICard
     AnimalProp ICard.second { get => this.second; set => this.second = value; }
     public AnimalProp current => isRotated ? second : main;
     public Transform transform => null;
+    public Sprite sprite => throw new NotImplementedException();
     public bool IsSpecial() => false;
     public ICard Copy() => this;
 }

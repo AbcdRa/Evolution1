@@ -9,6 +9,13 @@ public class UIMananger: MonoBehaviour
     [SerializeField] private UIPlayerInfoMananger playerInfoMananger;
     [SerializeField] private TextMeshProUGUI currentPhaseText;
     [SerializeField] private TextMeshProUGUI currentFoodText;
+    [SerializeField] private Image selectedCard;
+    [SerializeField] private PlayerInteraction playerInteraction;
+
+    public void UpdateSelectedCardUI(ICard card)
+    {
+        selectedCard.sprite = card.sprite;
+    }
 
     public void Setup()
     {
@@ -29,7 +36,7 @@ public class UIMananger: MonoBehaviour
     }
     public void OnPassButtonPress()
     {
-
+        playerInteraction.Pass();
     }
     public void OnDebugButtonPress()
     {

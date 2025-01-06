@@ -7,6 +7,8 @@ public interface ICard
     public AnimalProp second { get; set; }
     public AnimalProp current { get; }
     public Transform transform { get; }
+    Sprite sprite { get; }
+
     public bool IsSpecial();
     public bool SoftEqual(ICard card);
 }
