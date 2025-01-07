@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Card : MonoBehaviour, ICard
 {
@@ -8,13 +9,19 @@ public class Card : MonoBehaviour, ICard
     public AnimalProp second { get; set; }
     public AnimalProp current => isRotated ? second : main;
 
-    public Sprite sprite => throw new NotImplementedException();
+    [SerializeField] private Image image;
+    public Sprite sprite => image.sprite;
 
     public void CreateCard(CardSO cardSO)
     {
         this.main = cardSO.main;
         this.second = cardSO.second;
         this.isRotated = false;
+    }
+
+    public CardStruct GetStruct()
+    {
+        return new CardStruct(main, second, isRotated);
     }
 
     public bool IsSpecial() => false;

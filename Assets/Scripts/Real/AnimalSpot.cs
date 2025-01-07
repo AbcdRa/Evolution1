@@ -2,15 +2,18 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class AnimalSpot : MonoBehaviour, IAnimalSpot
 {
     public AnimalStruct animal { get; private set; }
     private int _localId;
     private List<ICard> _cards;
+    public int localId => _localId;
+    public List<ICard> cards => _cards;
     public bool isFreeSpot => animal.isNull;
 
-    public bool isFree => throw new NotImplementedException();
+    public bool isFree => animal.isNull;
 
     public void Destroy()
     {
@@ -21,7 +24,7 @@ public class AnimalSpot : MonoBehaviour, IAnimalSpot
 
     public void MakeFree()
     {
-        throw new System.NotImplementedException();
+        animal = AnimalStruct.NULL;
     }
 
     public void SetLocalId(int i)
@@ -32,37 +35,50 @@ public class AnimalSpot : MonoBehaviour, IAnimalSpot
 
     public bool CreateAnimal(ICard card)
     {
-        throw new NotImplementedException();
+        animal = new AnimalStruct(localId);
+        cards.Add(card);
+        return true;
     }
 
     public bool AddPropToAnimal(ICard card)
     {
-        throw new NotImplementedException();
+        bool isAdded = animal.AddProp(card.GetStruct(), card.isRotated);
+        if (isAdded) { cards.Add(card); }
+        return isAdded;
     }
 
     public int Feed(int food, int foodIncrease = 1)
     {
-        throw new NotImplementedException();
+        if (food <= 0) return 0;
+        return animal.Feed(foodIncrease);
     }
 
     public void Kill()
     {
-        throw new NotImplementedException();
+        animal = AnimalStruct.NULL;
     }
 
     public void RemoveProp(AnimalProp animalProp)
     {
-        throw new NotImplementedException();
+        animal.RemoveProp(animalProp);
     }
 
     public void UpdatePhaseCooldown()
     {
-        throw new NotImplementedException();
+        animal.UpdatePhaseCooldown();
     }
 
     public void UpdateTurnCooldown()
     {
-        throw new NotImplementedException();
+        animal.UpdateTurnCooldown();
     }
+
+    public AnimalSpotStruct GetStruct()
+    {
+        List<CardStruct> cardstructs = new List<CardStruct>();
+        for (int i = 0; i < cards.Count; i++) cardstructs.Add(cards[i].GetStruct());
+        return new AnimalSpotStruct(localId, animal, cardstructs);
+    }
+
 }
 

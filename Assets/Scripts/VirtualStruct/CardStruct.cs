@@ -14,6 +14,12 @@ public struct CardStruct : ICard
     public AnimalProp second;
     public bool isRotated;
 
+    public CardStruct(in AnimalProp main, in AnimalProp second, bool isRotated)
+    {
+        this.main = main;
+        this.second = second;
+        this.isRotated = isRotated;
+    }
 
     internal fstring ToFString()
     {
@@ -42,8 +48,9 @@ public struct CardStruct : ICard
     AnimalProp ICard.second { get => this.second; set => this.second = value; }
     public AnimalProp current => isRotated ? second : main;
     public Transform transform => null;
-    public Sprite sprite => throw new NotImplementedException();
+    public Sprite sprite => null;
     public bool IsSpecial() => false;
-    public ICard Copy() => this;
+
+    public CardStruct GetStruct() => this;
 }
 

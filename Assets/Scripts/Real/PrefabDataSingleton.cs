@@ -43,6 +43,6 @@ public class PrefabDataSingleton : MonoBehaviour
 
     internal Sprite GetSpriteForCardSO(CardSO cardSO)
     {
-        throw new NotImplementedException();
+        return cardsVariants[cardSO.ID].sprite;
     }
 }

@@ -9,6 +9,11 @@ public struct FoodManangerStruct
     internal readonly bool isNull => food == -1;
     public int food;
 
+    public FoodManangerStruct(int food)
+    {
+        this.food = food;
+    }
+
     public void SpawnFood(int length)
     {
         food = UnityEngine.Random.Range(1, 7) + UnityEngine.Random.Range(1, 7) + length/2;

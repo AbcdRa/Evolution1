@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.VisualScripting;
@@ -11,6 +12,17 @@ public struct AnimalSpotStruct
     public AnimalStruct animal;
     public bool isFree => animal.isNull;
     public NativeList<CardStruct> cards;
+
+    public AnimalSpotStruct(int localId, in AnimalStruct animal, List<CardStruct> cards)
+    {
+        this.localId = localId;
+        this.animal = animal;
+        this.cards = new(cards.Count, Allocator.TempJob);
+        foreach(CardStruct card in cards)
+        {
+            this.cards.Add(card);
+        }
+    }
 
     internal bool AddPropToAnimal(in CardStruct card, bool isRotated)
     {

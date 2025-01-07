@@ -86,7 +86,7 @@ public struct PlayerManangerStruct
         AnimalId nearScavenger = FindNearScavenger(predatorId.ownerId);
         if (!nearScavenger.isNull)
         {
-            players[nearScavenger.ownerId].animalArea.spots[nearScavenger.localId].animal.PlayScavenger();
+            players[nearScavenger.ownerId].animalArea.spots[nearScavenger.localId].animal.ActivateScavenger();
             players[nearScavenger.ownerId].animalArea.Feed(nearScavenger.localId, FoodManangerStruct.NULL);
         }
         players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal.Feed(2);

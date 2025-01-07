@@ -225,17 +225,38 @@ public struct AnimalStruct
 
     internal void ActivateFastProp()
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < singleProps.Length; i++)
+        {
+            if (singleProps[i].name == AnimalPropName.Fast)
+            {
+                singleProps[i].Activate();
+                return;
+            }
+        }
     }
 
     internal void ActivateMimicProp()
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < singleProps.Length; i++)
+        {
+            if (singleProps[i].name == AnimalPropName.Mimic)
+            {
+                singleProps[i].Activate();
+                return;
+            }
+        }
     }
 
     internal void ActivateDropTailProp()
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < singleProps.Length; i++)
+        {
+            if (singleProps[i].name == AnimalPropName.DropTail)
+            {
+                singleProps[i].Activate();
+                return;
+            }
+        }
     }
 
     internal void AddFlag(AnimalPropName flag)
@@ -243,8 +264,16 @@ public struct AnimalStruct
         propFlags |= flag;
     }
 
-    internal void PlayScavenger()
+    internal void ActivateScavenger()
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < singleProps.Length; i++)
+        {
+            if (singleProps[i].name == AnimalPropName.Scavenger)
+            {
+                singleProps[i].Activate();
+                food++;
+                return;
+            }
+        }
     }
 }

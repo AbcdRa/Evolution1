@@ -42,4 +42,9 @@ public class CardSO : ScriptableObject, ICard
     {
         return $"soc{(isRotated ? 'R' : "")}[{main}{(second.isNull() ? null : "/" + second)}]";
     }
+
+    public CardStruct GetStruct()
+    {
+        return new CardStruct(main, second, isRotated);
+    }
 }

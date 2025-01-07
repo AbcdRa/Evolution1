@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 using UnityEngine.SocialPlatforms.Impl;
@@ -11,6 +12,16 @@ public struct AnimalAreaStruct
     public int amount => spots.Length;
     public NativeList<AnimalSpotStruct> spots;
     public AnimalSpotStruct freeSpot;
+
+    public AnimalAreaStruct(int ownerId, List<AnimalSpotStruct> spots, AnimalSpotStruct freeSpot) { 
+        this.ownerId = ownerId;
+        this.spots = new(spots.Count, Allocator.Temp);
+        this.freeSpot = freeSpot;
+        for (int i = 0; i < spots.Count; i++) { 
+            this.spots.Add(spots[i]);
+        }
+    }
+
 
     public void StartSurvivingPhase()
     {

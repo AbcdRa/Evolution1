@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 
@@ -7,6 +8,15 @@ public struct DeckStruct
 {
     public NativeList<CardStruct> cards;
     internal int amount => cards.Length;
+
+    public DeckStruct(List<CardStruct> cards)
+    {
+        this.cards = new(cards.Count, Allocator.TempJob);
+        foreach (CardStruct card in cards)
+        {
+            this.cards.Add(card);
+        }
+    }
 
     internal CardStruct TakeLast()
     {

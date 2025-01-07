@@ -12,6 +12,11 @@ public class FoodMananger : MonoBehaviour, IFoodMananger
         _food -= foodDecrease;
     }
 
+    public FoodManangerStruct GetStruct()
+    {
+        return new FoodManangerStruct(food);
+    }
+
     public void SetupGame()
     {
         _food = 0;
@@ -24,7 +29,7 @@ public class FoodMananger : MonoBehaviour, IFoodMananger
             _food = Random.Range(1, 7) + Random.Range(1, 7) + 2;
             return;
         }
-        throw new System.NotImplementedException();
+        throw new System.Exception("TODO Exception");
     }
 }
 
