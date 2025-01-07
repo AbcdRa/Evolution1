@@ -11,16 +11,11 @@ public class UIMananger: MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentFoodText;
     [SerializeField] private Image selectedCard;
     [SerializeField] private PlayerInteraction playerInteraction;
+    [SerializeField] private PlayerController playerController;
 
     public void UpdateSelectedCardUI(ICard card)
     {
         selectedCard.sprite = card.sprite;
-    }
-
-    public void Setup()
-    {
-        //TODO придумать механизм получше
-        GameMananger.instance.onNextTurn.AddListener(UpdateUI);
     }
 
     public void UpdateUI()
@@ -28,11 +23,14 @@ public class UIMananger: MonoBehaviour
         playerInfoMananger.UpdateUI(GameMananger.instance);
         currentFoodText.text = GameMananger.instance.foodMananger.food.ToString();
         currentFoodText.text = GameMananger.instance.currentPhase.ToString();
+        Canvas.ForceUpdateCanvases();
     }
 
     public void OnStartButtonPress()
     {
+        GameMananger.instance.onNextTurn.AddListener(UpdateUI);
         GameMananger.instance.SetupGame();
+        playerController.OnSwitchToHandCardView();
     }
     public void OnPassButtonPress()
     {
@@ -40,7 +38,6 @@ public class UIMananger: MonoBehaviour
     }
     public void OnDebugButtonPress()
     {
-
     }
 
 }

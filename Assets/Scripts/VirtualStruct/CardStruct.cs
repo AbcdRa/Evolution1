@@ -44,8 +44,8 @@ public struct CardStruct : ICard
 
 
     bool ICard.isRotated { get => this.isRotated; set => this.isRotated = value; }
-    AnimalProp ICard.main { get => this.main; set => this.main = value; }
-    AnimalProp ICard.second { get => this.second; set => this.second = value; }
+    AnimalProp ICard.main { get => this.main;  }
+    AnimalProp ICard.second { get => this.second; }
     public AnimalProp current => isRotated ? second : main;
     public Transform transform => null;
     public Sprite sprite => null;

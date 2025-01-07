@@ -13,5 +13,6 @@ public class UIPlayerInfoMananger: MonoBehaviour
         for (int i = 0; i < gm.playerMananger.playerAmount; i++) {
             playerInfos[i].UpdateUI(GameMananger.instance, gm.playerMananger.players[i]);
         }
+        Canvas.ForceUpdateCanvases();
     }
 }

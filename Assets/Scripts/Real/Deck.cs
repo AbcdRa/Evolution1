@@ -7,7 +7,7 @@ using UnityEngine.SocialPlatforms;
 
 public class Deck : MonoBehaviour, IDeck
 {
-    private List<ICard> _cards;
+    private List<CardSO> _cards;
     public int amount => _cards.Count;
 
     public DeckStruct GetStruct()
@@ -20,7 +20,7 @@ public class Deck : MonoBehaviour, IDeck
     public void SetupGame()
     {
         CardSO[] cardVariants = PrefabDataSingleton.instance.GetAllCardVariants();
-        _cards = new List<ICard>();
+        _cards = new List<CardSO>(80);
         foreach (var cardVariant in cardVariants) { 
             for(int i = 0; i < 4; i++)
             {
@@ -39,7 +39,7 @@ public class Deck : MonoBehaviour, IDeck
 
     public ICard TakeLast()
     {
-        ICard card = _cards[_cards.Count - 1];
+        ICard card = _cards[_cards.Count - 1].CreateCard();
         _cards.RemoveAt(_cards.Count - 1);
         return card;
     }

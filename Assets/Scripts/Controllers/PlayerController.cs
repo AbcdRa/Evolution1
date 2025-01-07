@@ -205,7 +205,7 @@ public class PlayerController : MonoBehaviour
         zoomInput = input;
     }
 
-    private void OnSwitchToHandCardView()
+    public void OnSwitchToHandCardView()
     {
         isInHandCardView = true;
         if (!isTransitioning)

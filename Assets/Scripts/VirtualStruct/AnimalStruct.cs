@@ -9,8 +9,8 @@ using UnityEngine.SocialPlatforms.Impl;
 [BurstCompile]
 public struct AnimalStruct
 {
-    public static readonly AnimalStruct NULL = new AnimalStruct() { localId = -1, food = -1, fat = -1, maxFat = -2, maxFood = -2 };
-    public bool isNull => localId == -1 && food == -1;
+    public static readonly AnimalStruct NULL = new AnimalStruct() { localId = -1, food = -1, fat = -1, maxFat = -2, maxFood = 0 };
+    public bool isNull => maxFood == 0;
 
     public int localId;
     public int food;

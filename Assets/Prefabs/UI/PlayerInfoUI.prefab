@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.015686275, g: 0.16470589, b: 0.16862746, a: 0.54509807}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -894,7 +894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d157bbc1918f6ab4da731ed4add838b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundColor: {fileID: 4466749675529695158}
+  background: {fileID: 635829028496948317}
   playerNameText: {fileID: 2586268587293556971}
   animalAmountText: {fileID: 3320624051963568504}
   handCardsAmountText: {fileID: 6319457221408767955}
@@ -920,7 +920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.015686275, g: 0.16470589, b: 0.16862746, a: 0.6156863}
+  m_Color: {r: 0.10669278, g: 0.4991073, b: 0.509434, a: 0.6156863}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

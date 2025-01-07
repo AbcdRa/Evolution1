@@ -44,6 +44,7 @@ public class Player : MonoBehaviour, IPlayer
         this._id = id;
         _isAbleToMove = true;
         _animalArea.InitReset(id);
+        hand.InitReset();
     }
 
     public void Pass()
