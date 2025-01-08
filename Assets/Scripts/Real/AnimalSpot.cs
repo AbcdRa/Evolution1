@@ -8,12 +8,19 @@ public class AnimalSpot : MonoBehaviour, IAnimalSpot
 {
     public AnimalStruct animal { get; private set; }
     private int _localId;
-    private List<ICard> _cards;
+    private List<ICard> _cards = new();
+    private AnimalInfoDisplay animalInfo;
+
+
     public int localId => _localId;
     public List<ICard> cards => _cards;
     public bool isFreeSpot => animal.isNull;
-
     public bool isFree => animal.isNull;
+
+    ~AnimalSpot()
+    {
+        animal.Dispose();
+    }
 
     public void Destroy()
     {
@@ -33,9 +40,16 @@ public class AnimalSpot : MonoBehaviour, IAnimalSpot
         if(!isFreeSpot) animal.SetLocalId(i);
     }
 
-    public bool CreateAnimal(ICard card)
+    public bool CreateAnimal(ICard card, int ownerId)
     {
         animal = new AnimalStruct(localId);
+        card.transform.parent = transform;
+        card.transform.gameObject.SetActive(true);
+        card.transform.GetComponent<SelectionableObject>().SetSpecificationAndId(SOSpecification.AnimalCard, ownerId);
+        card.transform.localPosition = Vector3.zero;
+        card.transform.localRotation = Quaternion.Euler(180f, 0f, 0f);
+        animalInfo = AnimalInfoDisplay.CreateInfoDisplay(card);
+        animalInfo.UpdateUI(animal);
         cards.Add(card);
         return true;
     }

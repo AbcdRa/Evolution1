@@ -1,4 +1,5 @@
 ﻿
+using UnityEditor.Media;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IPlayer
@@ -14,6 +15,8 @@ public class Player : MonoBehaviour, IPlayer
     public IAnimalArea animalArea => _animalArea;
     public int id => _id;
     public IHand hand => _hand;
+
+    public bool isBot => _isBot;
 
     public bool AddPropToAnimal(int playerId, ICard card, int localId)
     {
@@ -45,6 +48,13 @@ public class Player : MonoBehaviour, IPlayer
         _isAbleToMove = true;
         _animalArea.InitReset(id);
         hand.InitReset(id);
+    }
+
+    public void MakeVirtualTurn()
+    {
+        VirtualSimulation vr = new VirtualSimulation();
+        MoveStruct bestMove = vr.GetBestMove(this);
+        MoveStruct.ExecuteMove(GameMananger.instance, bestMove);
     }
 
     public void Pass()

@@ -7,6 +7,7 @@ public interface IAnimalSpot
     bool isFreeSpot { get; }
     GameObject gameObject { get; }
     bool isFree { get; }
+    public Transform transform { get; }
 
     public bool AddPropToAnimal(ICard card);
     void Destroy();

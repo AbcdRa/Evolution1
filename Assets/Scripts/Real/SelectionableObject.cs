@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum SOSpecification
 {
-    None,HandCard, AnimalCard, PropCard, Deck, Food
+    None,HandCard, Spot, AnimalCard, PropCard, Deck, Food
 }
 
 public class SelectionableObject : MonoBehaviour

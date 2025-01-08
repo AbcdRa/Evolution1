@@ -7,7 +7,7 @@ using Unity.Collections;
 using UnityEngine.SocialPlatforms.Impl;
 
 [BurstCompile]
-public struct AnimalStruct
+public struct AnimalStruct : IDisposable
 {
     public static readonly AnimalStruct NULL = new AnimalStruct() { localId = -1, food = -1, fat = -1, maxFat = -2, maxFood = 0 };
     public bool isNull => maxFood == 0;
@@ -29,8 +29,8 @@ public struct AnimalStruct
         fat = 0;
         maxFat = 0;
         maxFood = 1;
-        singleProps = new NativeList<AnimalProp>(4, Allocator.TempJob);
-        pairProps = new NativeList<AnimalProp>(4, Allocator.TempJob);
+        singleProps = new NativeList<AnimalProp>(4, Allocator.Persistent);
+        pairProps = new NativeList<AnimalProp>(4, Allocator.Persistent);
         propFlags = new AnimalPropName();
     }
 
@@ -275,5 +275,11 @@ public struct AnimalStruct
                 return;
             }
         }
+    }
+
+    public void Dispose()
+    {
+        if (singleProps.IsCreated) singleProps.Dispose();
+        if (pairProps.IsCreated) pairProps.Dispose();
     }
 }

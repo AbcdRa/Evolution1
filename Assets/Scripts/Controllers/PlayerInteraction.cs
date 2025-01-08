@@ -11,7 +11,7 @@ public class PlayerInteraction : MonoBehaviour
     private SelectionableObject selection;
 
     [SerializeField] private UIMananger uiMananger;
-    private IPlayer player => GameMananger.instance.playerMananger.players[playerId];
+    public IPlayer player => GameMananger.instance.playerMananger.players[playerId];
 
     private void OnEnable()
     {
@@ -38,7 +38,42 @@ public class PlayerInteraction : MonoBehaviour
             InteractWithHandCard(card);
             return;
         }
+        if(selection.specification == SOSpecification.Spot)
+        {
+            if (selection.ownerId == playerId)
+                InteractWithFriendSpot(selection.parent.GetComponent<AnimalSpot>());
+            else InteractWithEnemySpot(selection.parent.GetComponent<AnimalSpot>());
+        }
             
+    }
+
+    private void InteractWithFriendSpot(AnimalSpot animalSpot)
+    {
+        if (GameMananger.instance.currentPhase == 0) InteractWithFriendSpotDevPhase(animalSpot);
+        if (GameMananger.instance.currentPhase == 1) InteractWithFriendSpotFeedPhase(animalSpot);
+    }
+
+    private void InteractWithFriendSpotDevPhase(AnimalSpot animalSpot)
+    {
+        if (player.hand.selected == null) return;
+        if(animalSpot.isFree)
+        {
+            GameMananger.instance.CreateAnimal(playerId, player.hand.selected);
+        } else
+        {
+            GameMananger.instance.AddPropToAnimal(playerId, player.hand.selected, new(playerId, animalSpot.localId), player.hand.selected.isRotated);
+        }
+
+    }
+
+    private void InteractWithFriendSpotFeedPhase(AnimalSpot animalSpot)
+    {
+
+    }
+
+    private void InteractWithEnemySpot(AnimalSpot animalSpot)
+    {
+        
     }
 
     private void InteractWithHandCard(Card card)

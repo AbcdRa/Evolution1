@@ -6,7 +6,7 @@ public class PrefabDataSingleton : MonoBehaviour
     [SerializeField] private Sprite[] faces;
     [SerializeField] private Transform cardTemplate;
     [SerializeField] private DrawArc drawArcPrefab;
-    [SerializeField] private TextInfoCard textInfoCardPrefab;
+    [SerializeField] private AnimalInfoDisplay animalInfoCardPrefab;
     [SerializeField] private AnimalPropSO errorPropSO;
     [SerializeField] private AnimalSpot animalSpotPrefab;
     [SerializeField] private CardSO[] cardsVariants;
@@ -39,7 +39,7 @@ public class PrefabDataSingleton : MonoBehaviour
 
     public DrawArc GetArcWithArrowsPrefab() { return drawArcPrefab; }
 
-    public TextInfoCard GetTextInfoCardPrefab() { return textInfoCardPrefab; }
+    public AnimalInfoDisplay GetAnimalInfoCardPrefab() { return animalInfoCardPrefab; }
 
     internal Sprite GetSpriteForCardSO(CardSO cardSO)
     {

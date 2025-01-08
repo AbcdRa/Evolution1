@@ -75,7 +75,9 @@ public class GameMananger : MonoBehaviour, IGameMananger
             if (currentPhase == 1 && nextTurn == currentPivot) playerMananger.UpdateTurnCooldown();
             _currentTurn = nextTurn;
         }
+        
         onNextTurn.Invoke();
+        if (playerMananger.players[currentTurn].isBot) playerMananger.players[currentTurn].MakeVirtualTurn();
     }
 
     private int FindNextTurn()
@@ -142,14 +144,22 @@ public class GameMananger : MonoBehaviour, IGameMananger
     {
         if(card.isRotated != isRotated) card.Rotate();
         bool isAddedSuccesful = playerMananger.AddPropToAnimal(playerId, card, target);
-        if (isAddedSuccesful) NextTurn();
+        if (isAddedSuccesful)
+        {
+            playerMananger.players[playerId].hand.RemoveCard(card);
+            NextTurn();
+        }
     }
 
 
     public void CreateAnimal(int playerId, ICard card)
     {
         bool isCreatedSuccesful = playerMananger.CreateAnimal(playerId, card);
-        if (isCreatedSuccesful) NextTurn();
+        if (isCreatedSuccesful)
+        {
+            playerMananger.players[playerId].hand.RemoveCard(card);
+            NextTurn();
+        }
     }
 
     public void Feed(int playerId, in AnimalId target)

@@ -63,7 +63,6 @@
     <Compile Include="Assets\Scripts\DevExtension.cs" />
     <Compile Include="Assets\Scripts\Real\DiceMananger.cs" />
     <Compile Include="Assets\Scripts\Struct\GameInteractionStruct.cs" />
-    <Compile Include="Assets\Scripts\Real\TextInfoCard.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IFoodMananger.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\PlayerManangerStruct.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Real\Deck.cs" />
     <Compile Include="Assets\Scripts\UI\ColorPallette.cs" />
+    <Compile Include="Assets\Scripts\Real\AnimalInfoDisplay.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\FoodManangerStruct.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\VGMStruct.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\AnimalStruct.cs" />

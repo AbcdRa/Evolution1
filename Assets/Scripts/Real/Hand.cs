@@ -90,5 +90,24 @@ public class Hand : MonoBehaviour, IHand
 
 
     }
+
+    public void RemoveCard(ICard card)
+    {
+        if(selected != null && selected.id == card.id)
+        {
+            selected = null;
+            return;
+        }
+        for(int i = 0; i < cards.Count; i++)
+        {
+            if (cards[i].id == card.id)
+            {
+                cards.Remove(cards[i]);
+                break;
+            }
+        }
+        //TODO НЕТ ПРОВЕРКИ ЧТО УДАЛЕНИЕ ПРОИЗОШЛО УСПЕШНО, МОЖНО ИСПОЛЬЗОВАТЬ ХАК
+        OrganizateCards();
+    }
 }
 

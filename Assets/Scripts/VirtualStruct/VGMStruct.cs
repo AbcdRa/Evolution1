@@ -304,10 +304,10 @@ public struct VGMstruct
 
     public NativeList<MoveStruct> GetAllPossibleMoves()
     {
-        NativeList<AnimalId> enemySpots = new NativeList<AnimalId>();
-        NativeList<AnimalId> friendSpots = new NativeList<AnimalId>();
-        NativeList<PairAnimalId> pairEnemySpots = new NativeList<PairAnimalId>();
-        NativeList<PairAnimalId> pairFriendSpots = new NativeList<PairAnimalId>();
+        NativeList<AnimalId> enemySpots = new NativeList<AnimalId>(5, Allocator.Temp);
+        NativeList<AnimalId> friendSpots = new NativeList<AnimalId>(5, Allocator.Temp);
+        NativeList<PairAnimalId> pairEnemySpots = new NativeList<PairAnimalId>(5, Allocator.Temp);
+        NativeList<PairAnimalId> pairFriendSpots = new NativeList<PairAnimalId>(5, Allocator.Temp);
 
         for(int i = 0; i <  playerMananger.players.Length; i++)
         {

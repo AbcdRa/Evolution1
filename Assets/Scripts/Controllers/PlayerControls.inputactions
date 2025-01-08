@@ -799,6 +799,17 @@
                 },
                 {
                     "name": "",
+                    "id": "19c48644-ca9c-4281-b158-b175da7270f0",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchToExploration",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "cd26e37b-0570-445f-b1c8-901dfc134900",
                     "path": "<Mouse>/middleButton",
                     "interactions": "",

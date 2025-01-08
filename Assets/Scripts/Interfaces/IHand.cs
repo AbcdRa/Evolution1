@@ -6,6 +6,7 @@ public interface IHand
 
     HandStruct GetStruct();
     void InitReset(int ownerId);
+    void RemoveCard(ICard card);
     void Select(Card card);
     void TakeCardsFromDeck(IDeck deck, int cardsAmount);
     void Unselect();

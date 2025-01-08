@@ -229,7 +229,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnSwitchToExploration()
     {
-        
+        if (!isInHandCardView) return;
         if (!isTransitioning)
         {
             isTransitioning = true;

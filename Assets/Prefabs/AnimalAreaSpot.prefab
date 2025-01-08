@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 4928612720020888283}
   - component: {fileID: 5710541983786468227}
   - component: {fileID: 6420763346617269252}
-  - component: {fileID: 984751842697679032}
+  - component: {fileID: 3684707598808329364}
   m_Layer: 6
   m_Name: Add Animal
   m_TagString: Untagged
@@ -227,7 +227,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &984751842697679032
+--- !u!114 &3684707598808329364
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -240,9 +240,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionObject: {fileID: 1977697387633944993}
-  parent: {fileID: 2449975447980451858}
-  specification: 0
-  idOwner: -1
+  _parent: {fileID: 2449975447980451858}
+  _specification: 2
+  ownerId: -1
 --- !u!1 &6909299909518986253
 GameObject:
   m_ObjectHideFlags: 0

@@ -35,6 +35,7 @@ public class UIMananger: MonoBehaviour
         currentFoodText.text = GameMananger.instance.foodMananger.food.ToString();
         currentFoodText.text = GameMananger.instance.currentPhase.ToString();
         currentDeckText.text = GameMananger.instance.deck.amount.ToString();
+        UpdateSelectedCardUI(playerInteraction.player.hand.selected);
         Canvas.ForceUpdateCanvases();
     }
 

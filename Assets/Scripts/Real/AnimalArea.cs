@@ -3,12 +3,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class AnimalArea : MonoBehaviour, IAnimalArea
 {
     [SerializeField] private AnimalSpot _freeSpot;
-    public int ownerId { get; private set; } 
-
+    public int ownerId { get; private set; }
+    private static float CARD_SPACING = 0.38f;
     private List<IAnimalSpot> _spots = new();
 
     public int amount => _spots.Count;
@@ -34,14 +35,20 @@ public class AnimalArea : MonoBehaviour, IAnimalArea
         for (int i = 0; i < newSpots.Count; i++)
         {
             newSpots[i].SetLocalId(i);
+            Vector3 pos = new(CARD_SPACING * (i - (newSpots.Count + 1) / 2), 0f, -0.05f);
+            newSpots[i].transform.parent = transform;
+            newSpots[i].transform.localPosition = pos;
+            newSpots[i].transform.localRotation = Quaternion.identity;
         }
+        _freeSpot.transform.parent = transform;
+        _freeSpot.transform.localPosition = new(CARD_SPACING * ((newSpots.Count + 1) / 2), 0f, -0.05f);
+        _freeSpot.transform.localRotation = Quaternion.identity;
         _spots = newSpots;
     }
 
     private AnimalSpot CreateNewFreeSpot(int i)
     {
-        AnimalSpot freeSpot = PrefabDataSingleton.instance.GetAnimalSpotPrefab();
-        freeSpot.transform.SetParent(transform);
+        AnimalSpot freeSpot = Instantiate(PrefabDataSingleton.instance.GetAnimalSpotPrefab(), transform);
         freeSpot.SetLocalId(i);
         return freeSpot;
     }
@@ -54,11 +61,26 @@ public class AnimalArea : MonoBehaviour, IAnimalArea
 
     public bool CreateAnimal(ICard card)
     {
-        bool isCreated = _freeSpot.CreateAnimal(card);
+        bool isCreated = _freeSpot.CreateAnimal(card, ownerId);
         spots.Add(_freeSpot);
+        HideAddCardObject(_freeSpot);
         _freeSpot = CreateNewFreeSpot(spots.Count);
+        OrganizateSpots();
         return isCreated;
 
+    }
+
+    private void HideAddCardObject(AnimalSpot spot)
+    {
+        SelectionableObject addCard;
+        for(int i = 0; i < spot.transform.childCount; i++)
+        {
+            if(spot.transform.GetChild(i).TryGetComponent<SelectionableObject>(out addCard))
+            {
+                addCard.transform.gameObject.SetActive(false);
+                return;
+            }
+        }
     }
 
     public int Feed(int localId, IFoodMananger foodMananger, int foodIncrease=1)
