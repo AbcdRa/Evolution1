@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a0f9aadaa304a4bae12e89a1747847, type: 3}
   m_Name: Card3Symbiosis
   m_EditorClassIdentifier: 
-  ID: 3
+  _id: 3
   cardName: 
   mainPropSO: {fileID: 11400000, guid: 0b5f74ad8e08fae449ea0f7bca60f948, type: 2}
   secondPropSO: {fileID: 0}

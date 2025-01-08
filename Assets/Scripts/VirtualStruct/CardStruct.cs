@@ -10,12 +10,15 @@ public struct CardStruct : ICard
 {
     public static readonly CardStruct NULL = new CardStruct() { main = AnimalProp.NULL };
     public bool IsNull() => main.isNull();
+
+    public int id;
     public AnimalProp main;
     public AnimalProp second;
     public bool isRotated;
 
-    public CardStruct(in AnimalProp main, in AnimalProp second, bool isRotated)
+    public CardStruct(in AnimalProp main, in AnimalProp second, bool isRotated, int id)
     {
+        this.id = id;
         this.main = main;
         this.second = second;
         this.isRotated = isRotated;
@@ -43,14 +46,22 @@ public struct CardStruct : ICard
     }
 
 
-    bool ICard.isRotated { get => this.isRotated; set => this.isRotated = value; }
+    bool ICard.isRotated { get => this.isRotated;}
     AnimalProp ICard.main { get => this.main;  }
     AnimalProp ICard.second { get => this.second; }
     public AnimalProp current => isRotated ? second : main;
     public Transform transform => null;
     public Sprite sprite => null;
+
+    int ICard.id => id;
+
     public bool IsSpecial() => false;
 
     public CardStruct GetStruct() => this;
+
+    public void Rotate()
+    {
+        isRotated = !isRotated;
+    }
 }
 

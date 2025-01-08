@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 
 
-public enum SelectionableObjectSpecification
+public enum SOSpecification
 {
     None,HandCard, AnimalCard, PropCard, Deck, Food
 }
@@ -9,13 +10,14 @@ public enum SelectionableObjectSpecification
 public class SelectionableObject : MonoBehaviour
 {
     [SerializeField] private GameObject selectionObject;
-    [SerializeField] private GameObject parent;
-    [SerializeField] private SelectionableObjectSpecification specification = SelectionableObjectSpecification.None;
-    private bool isActive = false;
-    public int idOwner = -1;
+    [SerializeField] private GameObject _parent;
+    [SerializeField] private SOSpecification _specification = SOSpecification.None;
 
-    public void SetSpecification(SelectionableObjectSpecification specification) { this.specification = specification; }
-    public SelectionableObjectSpecification GetSpecification() { return specification; }
+    public SOSpecification specification { get => _specification; set => _specification = value; }
+    public GameObject parent => _parent;
+    private bool isActive = false;
+    public int ownerId = -1;
+
 
     public void Selection()
     {
@@ -24,7 +26,7 @@ public class SelectionableObject : MonoBehaviour
             isActive = true;
             
             
-            if (specification == SelectionableObjectSpecification.HandCard)
+            if (specification == SOSpecification.HandCard)
             {
                 parent.transform.localPosition -= new Vector3(0, 0, 0.02f);
                 
@@ -40,20 +42,16 @@ public class SelectionableObject : MonoBehaviour
         {
             isActive = false;
             selectionObject.SetActive(isActive);
-            if (specification == SelectionableObjectSpecification.HandCard)
+            if (specification == SOSpecification.HandCard)
             {
                 parent.transform.localPosition += new Vector3(0, 0, 0.02f);
             }
         }
     }
 
-    public GameObject GetLogicParent()
+    public void SetSpecificationAndId(SOSpecification specification, int ownerId)
     {
-        return parent;
-    }
-
-    public void SetLogicParent(GameObject parent)
-    {
-        this.parent = parent;
+        this.specification = specification;
+        this.ownerId = ownerId;
     }
 }

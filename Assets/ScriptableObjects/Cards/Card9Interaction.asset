@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a0f9aadaa304a4bae12e89a1747847, type: 3}
   m_Name: Card9Interaction
   m_EditorClassIdentifier: 
-  ID: 9
+  _id: 9
   cardName: 
   mainPropSO: {fileID: 11400000, guid: e43bee570f725184bb404e07cfaa5a6b, type: 2}
   secondPropSO: {fileID: 11400000, guid: 0f36523f1dcc3c44dad6a847ca69f541, type: 2}

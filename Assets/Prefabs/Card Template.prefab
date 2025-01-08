@@ -171,9 +171,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionObject: {fileID: 2830413433539814564}
-  parent: {fileID: 3771288699045166282}
-  specification: 0
-  idOwner: -1
+  _parent: {fileID: 3771288699045166282}
+  _specification: 0
+  ownerId: -1
 --- !u!1 &5290775588888452637
 GameObject:
   m_ObjectHideFlags: 0

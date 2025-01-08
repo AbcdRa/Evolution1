@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -63,7 +64,8 @@ public class PlayerController : MonoBehaviour
         controls.Camera.EnableRotateMode.canceled += ctx => OnRotateMode(false);
         controls.Camera.Zoom.performed += ctx => OnZoom(ctx.ReadValue<float>());
         controls.Camera.Zoom.canceled += ctx => OnZoom(0f);
-
+        controls.Camera.CloseLook.performed += ctx => OnZoomCard();
+        controls.Camera.CloseLook.canceled += ctx => OnUnZoomCard();
         controls.Camera.SwitchToHandCardView.performed += _ => OnSwitchToHandCardView();
         controls.Camera.SwitchToExploration.performed += _ => OnSwitchToExploration();
     }
@@ -108,6 +110,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+
+        HandleSelection();
         if (isInHandCardView || isTransitioning)
         {
             return; // Блокируем управление камерой
@@ -125,7 +129,6 @@ public class PlayerController : MonoBehaviour
         // Остальные действия: вращение, масштабирование, подсветка объектов
         if(isRotateMode) HandleRotation();
         HandleZoom();
-        HandleSelection();
     }
 
     private void ClampCameraToBoundaries()
@@ -177,10 +180,10 @@ public class PlayerController : MonoBehaviour
             }
 
             // Обработка нажатия
-            if (Mouse.current.leftButton.wasPressedThisFrame)
-            {
-                OnSelected(selectedObject);
-            }
+            //if (Mouse.current.leftButton.wasPressedThisFrame)
+            //{
+            OnSelected(selectedObject);
+            //}
         }
     }
 
@@ -254,6 +257,36 @@ public class PlayerController : MonoBehaviour
     private void HandleZoom()
     {
         cameraTransform.Translate(Vector3.forward * zoomInput * zoomSpeed * Time.deltaTime, Space.Self);
+    }
+
+    private Vector3 pvPosition;
+
+    public void OnZoomCard()
+    {
+        if (highlightedObject.specification != SOSpecification.HandCard) return;
+        pvPosition = cameraTransform.position;
+        Vector3 size = highlightedObject.GetComponent<BoxCollider>().bounds.size;
+        float foh = 1.5972f;
+        float z = size.z/2;
+        float cos2a = Mathf.Cos(foh/2);
+        cos2a *= cos2a;
+        float r = 2*Mathf.Sqrt(cos2a * z * z / (1 - cos2a));
+        Vector3 pos = highlightedObject.transform.position - highlightedObject.transform.forward * (r+size.y);
+        isTransitioning = true;
+        StartCoroutine(SmoothMoveToPoint(pos, cameraTransform.rotation, () =>
+        {
+            isTransitioning = false;
+        }));
+    }
+
+
+    public void OnUnZoomCard()
+    {
+        isTransitioning = true;
+        StartCoroutine(SmoothMoveToPoint(pvPosition, cameraTransform.rotation, () =>
+        {
+            isTransitioning = false;
+        }));
     }
 
     private IEnumerator SmoothMoveToPoint(Vector3 targetPosition, Quaternion targetRotation, System.Action onComplete = null)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a0f9aadaa304a4bae12e89a1747847, type: 3}
   m_Name: Card1Borrow
   m_EditorClassIdentifier: 
-  ID: 1
+  _id: 1
   cardName: 
   mainPropSO: {fileID: 11400000, guid: 7243695153679824a9731bea0a239cbf, type: 2}
   secondPropSO: {fileID: 11400000, guid: 48b5b3b673b03334fbb70bd6c6b61e19, type: 2}

@@ -43,6 +43,6 @@ public class PrefabDataSingleton : MonoBehaviour
 
     internal Sprite GetSpriteForCardSO(CardSO cardSO)
     {
-        return cardsVariants[cardSO.ID].sprite;
+        return cardsVariants[cardSO.id].sprite;
     }
 }

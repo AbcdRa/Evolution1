@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a0f9aadaa304a4bae12e89a1747847, type: 3}
   m_Name: Card10Scavenger
   m_EditorClassIdentifier: 
-  ID: 10
+  _id: 10
   cardName: 
   mainPropSO: {fileID: 11400000, guid: 3b73206c380299c419ccd3078b086d2d, type: 2}
   secondPropSO: {fileID: 0}

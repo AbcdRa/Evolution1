@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a0f9aadaa304a4bae12e89a1747847, type: 3}
   m_Name: Card6DropTail
   m_EditorClassIdentifier: 
-  ID: 6
+  _id: 6
   cardName: 
   mainPropSO: {fileID: 11400000, guid: 43ff0bd473ff6fa459981abcab8615c3, type: 2}
   secondPropSO: {fileID: 0}

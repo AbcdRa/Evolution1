@@ -4,12 +4,12 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class CardSO : ScriptableObject, ICard
 {
-    public int ID;
+    public int _id;
     public string cardName;
     public AnimalPropSO mainPropSO;
     public AnimalPropSO secondPropSO;
 
-    
+    public int id => _id;
     public bool isRotated { get; set; }
     public AnimalProp main { get => mainPropSO.BuildProp(); }
     public AnimalProp second { get => secondPropSO==null ? AnimalProp.NULL : secondPropSO.BuildProp(); }
@@ -17,7 +17,7 @@ public class CardSO : ScriptableObject, ICard
 
     public Transform transform => GetTransform();
 
-    public Sprite sprite => PrefabDataSingleton.instance.GetSpriteForCardSO(this);
+    public Sprite sprite => PrefabDataSingleton.instance.GetFaces()[id];
 
 
     private Transform GetTransform()
@@ -51,6 +51,11 @@ public class CardSO : ScriptableObject, ICard
 
     public CardStruct GetStruct()
     {
-        return new CardStruct(main, second, isRotated);
+        return new CardStruct(main, second, isRotated, id);
+    }
+
+    public void Rotate()
+    {
+        isRotated = !isRotated;
     }
 }

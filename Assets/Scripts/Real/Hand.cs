@@ -8,10 +8,11 @@ using UnityEngine;
 public class Hand : MonoBehaviour, IHand
 {
     public List<ICard> cards = new();
-    public int amount => cards.Count;
-    private float CARDS_WIDTH = 20f;
+    public int amount => cards.Count + (selected!=null?1:0);
+    private float CARDS_WIDTH = 0.55f;
+    [SerializeField] private int ownerId = -1;
 
-    public ICard selected { get; set; }
+    public ICard selected { get; private set; }
 
     public HandStruct GetStruct()
     {
@@ -23,8 +24,9 @@ public class Hand : MonoBehaviour, IHand
         return new HandStruct(cards);
     }
 
-    public void InitReset()
+    public void InitReset(int ownerId)
     {
+        this.ownerId = ownerId;
         cards = new(6);
     }
 
@@ -42,9 +44,51 @@ public class Hand : MonoBehaviour, IHand
     {
         for (int i = 0; i < cards.Count; i++) {
             cards[i].transform.parent = transform;
-            Vector3 pos = new(i * CARDS_WIDTH, 0, 0);
+
+            cards[i].transform.GetComponent<SelectionableObject>().SetSpecificationAndId(SOSpecification.HandCard, ownerId);
+
+            Vector3 pos = new(i * CARDS_WIDTH-(cards.Count*CARDS_WIDTH/2), 0, 0.001f*i);
             cards[i].transform.localPosition = pos;
+            cards[i].transform.localRotation = Quaternion.Euler(0f,0f,cards[i].isRotated?180f:0f);
         }
+    }
+
+    public void Select(Card selected)
+    {
+        ICard selectedCard = null;
+        foreach(var card in cards)
+        {
+            if(card.id == selected.id)
+            {
+                selectedCard = card;
+                break;
+            }
+        }
+        if (selectedCard == null) return;
+        cards.Remove(selectedCard);
+        selectedCard.transform.gameObject.SetActive(false);
+        //По сути копия кода из UnSelect сдеалано это, чтобы не вызывать два раза Organizate
+        if(this.selected != null)
+        {
+            this.selected.transform.gameObject.SetActive(true);
+            cards.Add(this.selected);
+        }
+        this.selected = selectedCard;
+        OrganizateCards();
+        
+    }
+
+    public void Unselect()
+    {
+        if (this.selected != null)
+        {
+            this.selected.transform.gameObject.SetActive(true);
+            cards.Add(this.selected);
+            this.selected = null;
+            OrganizateCards();
+        }
+
+
     }
 }
 

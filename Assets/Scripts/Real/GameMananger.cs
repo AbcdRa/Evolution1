@@ -140,7 +140,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     public void AddPropToAnimal(int playerId, ICard card, in AnimalId target, bool isRotated)
     {
-        card.isRotated = isRotated;
+        if(card.isRotated != isRotated) card.Rotate();
         bool isAddedSuccesful = playerMananger.AddPropToAnimal(playerId, card, target);
         if (isAddedSuccesful) NextTurn();
     }

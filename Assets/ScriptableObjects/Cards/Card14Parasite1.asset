@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a0f9aadaa304a4bae12e89a1747847, type: 3}
   m_Name: Card14Parasite1
   m_EditorClassIdentifier: 
-  ID: 14
+  _id: 14
   cardName: 
   mainPropSO: {fileID: 11400000, guid: 18159870b7817f948acc592db8b24fc4, type: 2}
   secondPropSO: {fileID: 11400000, guid: 0f36523f1dcc3c44dad6a847ca69f541, type: 2}

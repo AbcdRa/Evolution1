@@ -5,6 +5,8 @@ public interface IHand
     public ICard selected {  get; }
 
     HandStruct GetStruct();
-    void InitReset();
+    void InitReset(int ownerId);
+    void Select(Card card);
     void TakeCardsFromDeck(IDeck deck, int cardsAmount);
+    void Unselect();
 }
