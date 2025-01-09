@@ -45,7 +45,7 @@ public struct AnimalSpotStruct
 
     internal bool IsPossibleToAddProp(in AnimalProp prop)
     {
-        return animal.IsPossibleToAddProp(prop);
+        return animal.IsPossibleToAdd(prop);
     }
 
     internal bool CreateAnimal(in CardStruct card, int localId)

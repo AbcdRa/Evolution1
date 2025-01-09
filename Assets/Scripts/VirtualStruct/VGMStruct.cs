@@ -197,8 +197,8 @@ public struct VGMstruct
                 _sideTurnsInfo = PairAnimalId.NULL;
                 playerMananger.players[enemyId.ownerId].animalArea.spots[enemyId.localId].animal.Feed();
                 AnimalProp targetProp = prop.secondAnimalId.ownerId == 0 ?
-                    playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.singleProps[prop.secondAnimalId.localId] :
-                    playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.pairProps[prop.secondAnimalId.localId];
+                    playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.props.singles[prop.secondAnimalId.localId] :
+                    playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.props.pairs[prop.secondAnimalId.localId];
                 playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.RemoveProp(targetProp);
                 break;
         }
@@ -259,22 +259,22 @@ public struct VGMstruct
         AnimalId myAnimalId = sideTurnsInfo.second;
         AnimalId enemyId = sideTurnsInfo.first;
         NativeList<MoveStruct> moves = new NativeList<MoveStruct>(4, Allocator.TempJob);
-        for(int i = 0; i < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps.Length; i++)
+        for(int i = 0; i < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.singlesLength; i++)
         {
-            AnimalProp prop = playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps[i];
+            AnimalProp prop = playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.singles[i];
             if(!prop.IsActivable) continue;
             if(prop.name == AnimalPropName.Fast)
             {
                 moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
             } else if(prop.name == AnimalPropName.DropTail)
             {
-                for(int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.singleProps.Length;j++)
+                for(int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.singlesLength;j++)
                 {
                     prop.mainAnimalId = myAnimalId;
                     prop.secondAnimalId = new(0, j);
                     moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
                 }
-                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.pairProps.Length; j++)
+                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.pairsLength; j++)
                 {
                     prop.mainAnimalId = myAnimalId;
                     prop.secondAnimalId = new(1, j);
@@ -464,7 +464,7 @@ public struct VGMstruct
                 {
                     propId = playerMananger.players[currentTurn].GetNextInteractablPropId(propId);
                     if(propId.isNull()) break;
-                    AnimalProp prop = playerMananger.players[currentTurn].animalArea.spots[propId.spotlId].animal.singleProps[propId.proplId];
+                    AnimalProp prop = playerMananger.players[currentTurn].animalArea.spots[propId.spotlId].animal.props.singles[propId.proplId];
                     if (prop.name == AnimalPropName.Predator)
                     {
                         for (int i = 0; i < enemySpots.Length; i++)

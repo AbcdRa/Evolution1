@@ -357,6 +357,6 @@ public struct AnimalStruct : IDisposable
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+        
     }
 }

@@ -72,9 +72,9 @@ public struct PlayerStruct
     {
         for(int i = prv.spotlId; i < animalArea.amount; i++)
         {
-            for (int j = prv.proplId; j < animalArea.spots[i].animal.singleProps.Length; j++)
+            for (int j = prv.proplId; j < animalArea.spots[i].animal.props.singlesLength; j++)
             {
-                bool isInteractable = animalArea.spots[i].animal.singleProps[j].IsInteractable();
+                bool isInteractable = animalArea.spots[i].animal.props.singles[j].IsInteractable();
                 if(isInteractable) return new PropId(i, j);
             }
         }

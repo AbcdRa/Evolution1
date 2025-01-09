@@ -921,8 +921,7 @@ MonoBehaviour:
     type: 3}
   drawArcPrefab: {fileID: -8593188698024249866, guid: a1a497dbf0c10104fa5d876899002a74,
     type: 3}
-  textInfoCardPrefab: {fileID: 8123720891403757728, guid: 6c221fd335c641e44974448f72e9a00a,
-    type: 3}
+  animalInfoCardPrefab: {fileID: 0}
   errorPropSO: {fileID: 11400000, guid: 9c1baf33cd1f5bb48a6ef25c9d23048d, type: 2}
   animalSpotPrefab: {fileID: 7297019796686254001, guid: 4e70f67da2c43214ba42812107bd9148,
     type: 3}
@@ -3684,7 +3683,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 870}
+  m_SizeDelta: {x: 0, y: 1100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &853136570
 MonoBehaviour:
@@ -3693,13 +3692,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853136568}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3736,6 +3735,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AnimalAreaSpot
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684707598808329364, guid: 4e70f67da2c43214ba42812107bd9148,
+        type: 3}
+      propertyPath: ownerId
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5231836044986817296, guid: 4e70f67da2c43214ba42812107bd9148,
         type: 3}
@@ -5027,6 +5031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerId: 0
+  uiMananger: {fileID: 1208488399}
 --- !u!1 &1252317999
 GameObject:
   m_ObjectHideFlags: 0
@@ -5512,6 +5517,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 77291417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1407888601 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2449975447980451858, guid: 4e70f67da2c43214ba42812107bd9148,
+    type: 3}
+  m_PrefabInstance: {fileID: 755510507}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1467430043
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5979,8 +5990,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 0}
+  m_AnchoredPosition: {x: 50, y: -25}
+  m_SizeDelta: {x: 800, y: -50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1589592086
 MonoBehaviour:
@@ -6455,9 +6466,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionObject: {fileID: 1090924410}
-  _parent: {fileID: 0}
+  _parent: {fileID: 1407888601}
   _specification: 0
-  ownerId: -1
+  ownerId: 3
 --- !u!1001 &1868108298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6470,6 +6481,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AnimalAreaSpot
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684707598808329364, guid: 4e70f67da2c43214ba42812107bd9148,
+        type: 3}
+      propertyPath: ownerId
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5231836044986817296, guid: 4e70f67da2c43214ba42812107bd9148,
         type: 3}
@@ -7538,7 +7554,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 755510507}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1407888601}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96d290777c95e2c41840b8de9f07433e, type: 3}
@@ -7610,6 +7626,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AnimalAreaSpot
+      objectReference: {fileID: 0}
+    - target: {fileID: 3684707598808329364, guid: 4e70f67da2c43214ba42812107bd9148,
+        type: 3}
+      propertyPath: ownerId
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5231836044986817296, guid: 4e70f67da2c43214ba42812107bd9148,
         type: 3}

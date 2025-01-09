@@ -97,6 +97,7 @@
     <Compile Include="Assets\Scripts\Interfaces\IDeck.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Struct\AnimalId.cs" />
+    <Compile Include="Assets\Scripts\VirtualStruct\FixedArrStruct.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayerMananger.cs" />
     <Compile Include="Assets\Scripts\Real\AnimalSpot.cs" />
     <Compile Include="Assets\Scripts\Real\Hand.cs" />

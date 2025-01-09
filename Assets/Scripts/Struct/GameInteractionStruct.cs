@@ -60,9 +60,9 @@ public struct GameInteractionStruct
 
         AnimalPropName victimFlags = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.propFlags;
         NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Temp);
-        for(int i = 0; i < playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.singleProps.Length; i++)
+        for(int i = 0; i < playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.props.singlesLength; i++)
         {
-            AnimalProp prop = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.singleProps[i];
+            AnimalProp prop = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.props.singles[i];
             if (!prop.IsActivable) continue;
             if(IsSideInteractable(prop.name)) sideProps.Add(prop);
         }
@@ -106,9 +106,9 @@ public struct GameInteractionStruct
 
         AnimalPropName victimFlags = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.propFlags;
         NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Temp);
-        for (int i = 0; i < playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.singleProps.Length; i++)
+        for (int i = 0; i < playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.props.singlesLength; i++)
         {
-            AnimalProp prop = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.singleProps[i];
+            AnimalProp prop = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.props.singles[i];
             if (!prop.IsActivable) continue;
             if (IsSideInteractable(prop.name)) sideProps.Add(prop);
         }

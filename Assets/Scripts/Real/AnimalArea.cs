@@ -116,18 +116,18 @@ public class AnimalArea : MonoBehaviour, IAnimalArea
         if (foodConsumed == 0) return 0;
         if (isConsumedFood) food -= foodConsumed;
 
-        for (int i = 0; i < spots[localId].animal.pairProps.Length; i++)
+        for (int i = 0; i < spots[localId].animal.props.pairsLength; i++)
         {
-            if (isConsumedFood && spots[localId].animal.pairProps[i].name == AnimalPropName.Interaction && food > 0)
+            if (isConsumedFood && spots[localId].animal.props.pairs[i].name == AnimalPropName.Interaction && food > 0)
             {
-                AnimalId oth = spots[localId].animal.pairProps[i].GetOtherAnimalId(new(ownerId, localId));
+                AnimalId oth = spots[localId].animal.props.pairs[i].GetOtherAnimalId(new(ownerId, localId));
                 if (oth.ownerId != ownerId) throw new Exception("GAMEBREAKING RULE Trying to feed another animal");
                 food -= PairFeed(oth.localId, breakingId, food);
 
             }
-            else if (spots[localId].animal.pairProps[i].name == AnimalPropName.Cooperation)
+            else if (spots[localId].animal.props.pairs[i].name == AnimalPropName.Cooperation)
             {
-                AnimalId oth = spots[localId].animal.pairProps[i].GetOtherAnimalId(new(ownerId, localId));
+                AnimalId oth = spots[localId].animal.props.pairs[i].GetOtherAnimalId(new(ownerId, localId));
                 if (oth.ownerId != ownerId) throw new Exception("GAMEBREAKING RULE Trying to feed another animal");
                 food -= PairFeed(oth.localId, breakingId, food, false, true);
             }
@@ -176,11 +176,11 @@ public class AnimalArea : MonoBehaviour, IAnimalArea
     public void Kill(int localId)
     {
         AnimalId myId = new(ownerId, localId);
-        for (int i = 0; i < spots[localId].animal.pairProps.Length; i++)
+        for (int i = 0; i < spots[localId].animal.props.pairsLength; i++)
         {
-            AnimalId oth = spots[localId].animal.pairProps[i].GetOtherAnimalId(myId);
+            AnimalId oth = spots[localId].animal.props.pairs[i].GetOtherAnimalId(myId);
             if (oth.ownerId != ownerId) throw new Exception("GAMEBREAKING RULE животное было связано парным свойством с другим !!!");
-            spots[oth.localId].RemoveProp(spots[localId].animal.pairProps[i]);
+            spots[oth.localId].RemoveProp(spots[localId].animal.props.pairs[i]);
         }
         spots[localId].Kill();
     }
