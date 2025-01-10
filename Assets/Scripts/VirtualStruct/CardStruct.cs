@@ -5,7 +5,7 @@ using Unity.Collections;
 using UnityEngine;
 using fstring = Unity.Collections.FixedString32Bytes;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct CardStruct : ICard
 {
     public static readonly CardStruct NULL = new CardStruct() { main = AnimalProp.NULL };

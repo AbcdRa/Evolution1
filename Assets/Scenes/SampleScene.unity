@@ -921,7 +921,8 @@ MonoBehaviour:
     type: 3}
   drawArcPrefab: {fileID: -8593188698024249866, guid: a1a497dbf0c10104fa5d876899002a74,
     type: 3}
-  animalInfoCardPrefab: {fileID: 0}
+  animalInfoCardPrefab: {fileID: 8123720891403757728, guid: 6c221fd335c641e44974448f72e9a00a,
+    type: 3}
   errorPropSO: {fileID: 11400000, guid: 9c1baf33cd1f5bb48a6ef25c9d23048d, type: 2}
   animalSpotPrefab: {fileID: 7297019796686254001, guid: 4e70f67da2c43214ba42812107bd9148,
     type: 3}

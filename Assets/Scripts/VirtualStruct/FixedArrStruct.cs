@@ -1,7 +1,7 @@
 ﻿using System;
 using Unity.Burst;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct FixedArr10<T> where T : unmanaged
 {
     private T _field0;
@@ -59,9 +59,50 @@ public struct FixedArr10<T> where T : unmanaged
 }
 
 
+public struct FixedArr4<T> where T : unmanaged
+{
+    private T _field0;
+    private T _field1;
+    private T _field2;
+    private T _field3;
 
-[BurstCompile]
-public struct FixedArr20<T> where T : unmanaged
+
+    // Индексатор для доступа по индексу
+    public T this[int index]
+    {
+        get
+        {
+            return index switch
+            {
+                0 => _field0,
+                1 => _field1,
+                2 => _field2,
+                3 => _field3,
+                _ => throw new IndexOutOfRangeException($"Index {index} is out of range for FixedArr10.")
+            };
+        }
+        set
+        {
+            switch (index)
+            {
+                case 0: _field0 = value; break;
+                case 1: _field1 = value; break;
+                case 2: _field2 = value; break;
+                case 3: _field3 = value; break;
+                default: throw new IndexOutOfRangeException($"Index {index} is out of range for FixedArr10.");
+            }
+        }
+    }
+
+    // Длина массива
+    public int Length => 4;
+}
+
+
+
+
+[BurstCompile(DisableDirectCall = true)]
+public struct FixedList20<T> where T : unmanaged
 {
     private T _field0;
     private T _field1;
@@ -145,5 +186,11 @@ public struct FixedArr20<T> where T : unmanaged
     }
 
     // Длина массива
-    public int Length => 20;
+    public int Capacity => 20;
+    public int Length;
+
+    internal void Add(in T animalSpotStruct)
+    {
+        this[Length++] = animalSpotStruct;
+    }
 }

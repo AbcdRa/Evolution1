@@ -5,7 +5,7 @@ using Unity.Burst;
 using Unity.Collections;
 using UnityEngine.SocialPlatforms.Impl;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct AnimalAreaStruct
 {
     public int ownerId;
@@ -15,7 +15,7 @@ public struct AnimalAreaStruct
 
     public AnimalAreaStruct(int ownerId, List<AnimalSpotStruct> spots, AnimalSpotStruct freeSpot) { 
         this.ownerId = ownerId;
-        this.spots = new(spots.Count, Allocator.Temp);
+        this.spots = new(10, Allocator.Persistent);
         this.freeSpot = freeSpot;
         for (int i = 0; i < spots.Count; i++) { 
             this.spots.Add(spots[i]);
@@ -49,14 +49,19 @@ public struct AnimalAreaStruct
 
     public void OrganizateSpots()
     {
-        //TODO Можно оптимизировать!!
-        NativeList<AnimalSpotStruct> newSpots = new NativeList<AnimalSpotStruct>(amount, Allocator.TempJob);
-        for(int i = 0; i < amount; i++) { 
-            if(spots[i].isFree) continue;
-            newSpots.Add(spots[i]);
+        //TODO Можно оптимизировать!! (Пришлось)
+        for (int i = 0; i < this.spots.Length;)
+        {
+            if (this.spots[i].isFree)
+            {
+                this.spots.RemoveAt(i);
+
+            }
+            else
+            {
+                i++;
+            }
         }
-        spots.Dispose();
-        spots = newSpots;
         for (int i = 0; i < amount; i++) {
             spots[i].SetLocalId(i);
         }

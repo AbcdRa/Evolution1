@@ -2,7 +2,7 @@
 using Unity.Burst;
 using UnityEngine;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct FoodManangerStruct
 {
     public static readonly FoodManangerStruct NULL = new FoodManangerStruct() { food = -1 };
@@ -16,7 +16,8 @@ public struct FoodManangerStruct
 
     public void SpawnFood(int length)
     {
-        food = UnityEngine.Random.Range(1, 7) + UnityEngine.Random.Range(1, 7) + length/2;
+        var random = new Unity.Mathematics.Random(10);
+        food = random.NextInt(1, 7) + random.NextInt(1, 7) + length/2;
     }
 
     internal void Consume(int amount)

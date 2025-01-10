@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct HandStruct
 {
     public int amount => cards.Length;
@@ -19,7 +19,7 @@ public struct HandStruct
         }
     }
 
-    public void TakeCardsFromDeck(in DeckStruct deck, int cardAmount)
+    public void TakeCardsFromDeck(ref DeckStruct deck, int cardAmount)
     {
         for (int i = 0; i < cardAmount; i++) {
             if (deck.amount <= 0) return;

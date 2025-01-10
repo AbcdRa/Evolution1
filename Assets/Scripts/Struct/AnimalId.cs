@@ -3,7 +3,7 @@ using Unity.Burst;
 using Unity.Collections;
 using fstring = Unity.Collections.FixedString32Bytes;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct AnimalId
 {
 
@@ -34,7 +34,7 @@ public struct AnimalId
     }
 }
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct PropId
 {
 

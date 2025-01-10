@@ -16,10 +16,10 @@ public class VirtualSimulation
         NativeList<MoveStruct> moves = vgm.GetAllPossibleMoves();
         NativeArray<VGMstruct> vgms = new(1, Allocator.Persistent);
         vgms[0] = vgm;
-        MoveStruct.ExecuteMove(vgm, moves[0]);
+        MoveStruct.ExecuteMove(ref vgm, moves[0]);
         List<CalculateMoveJob> jobs = new();
         List<JobHandle> jobHandles = new();
-        for (int i = 0; i < moves.Length; i++)
+        for (int i = 0; i < 1; i++)
         {
 
             CalculateMoveJob job = new CalculateMoveJob(vgm, moves[i], GameMananger.instance.currentTurn);
@@ -48,7 +48,7 @@ public class VirtualSimulation
 
 }
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct CalculateMoveJob : IJob
 {
 
@@ -72,7 +72,7 @@ public struct CalculateMoveJob : IJob
         for (int i = 0; i < attempts; i++)
         {
             VGMstruct vgmInit = vgmStruct;
-            MoveStruct.ExecuteMove(vgmInit, vMove);
+            MoveStruct.ExecuteMove(ref vgmInit, vMove);
             winRank += vgmInit.MakeRandomMovesUntilTerminate(targetPlayer) ? 1 : 0;
         }
         rating = (winRank + 0f) / attempts;

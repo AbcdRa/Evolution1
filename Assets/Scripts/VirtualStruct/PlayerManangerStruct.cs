@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct PlayerManangerStruct
 {
-    public NativeArray<PlayerStruct> players;
+    public FixedArr4<PlayerStruct> players;
 
     public PlayerManangerStruct(List<PlayerStruct> players)
     {
-        this.players = new(players.Count, Allocator.Persistent);
+        this.players = new();
         for (int i = 0; i < players.Count; i++) { 
             this.players[i] = (players[i]);
         }

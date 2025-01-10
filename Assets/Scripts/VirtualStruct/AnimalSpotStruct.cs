@@ -5,36 +5,36 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.VisualScripting;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct AnimalSpotStruct
 {
     public int localId;
     public AnimalStruct animal;
     public bool isFree => animal.isNull;
-    public NativeList<CardStruct> cards;
+    //public NativeList<CardStruct> cards;
 
     public AnimalSpotStruct(int localId, in AnimalStruct animal, List<CardStruct> cards)
     {
         this.localId = localId;
         this.animal = animal;
-        this.cards = new(cards.Count, Allocator.TempJob);
-        foreach(CardStruct card in cards)
-        {
-            this.cards.Add(card);
-        }
+        //this.cards = new(cards.Count, Allocator.TempJob);
+        //foreach(CardStruct card in cards)
+        //{
+        //    this.cards.Add(card);
+        //}
     }
 
     internal bool AddPropToAnimal(in CardStruct card, bool isRotated)
     {
         bool isAdded = animal.AddProp(card, isRotated);
-        if (isAdded) { cards.Add(card); }
+        //if (isAdded) { cards.Add(card); }
         return isAdded;
     }
 
     internal void Kill()
     {
         animal = AnimalStruct.NULL;
-        cards.Dispose();
+        //cards.Dispose();
     }
 
     internal void SetLocalId(int i)
@@ -51,7 +51,7 @@ public struct AnimalSpotStruct
     internal bool CreateAnimal(in CardStruct card, int localId)
     {
         animal = new AnimalStruct(localId);
-        cards.Add(card);
+        //cards.Add(card);
         return true;
     }
 

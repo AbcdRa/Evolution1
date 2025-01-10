@@ -7,18 +7,18 @@ using Unity.Burst;
 using Unity.Collections;
 using UnityEngine.SocialPlatforms.Impl;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct PropArray
 {
-    public NativeArray<AnimalProp> singles;
-    public NativeArray<AnimalProp> pairs;
+    public FixedList20<AnimalProp> singles;
+    public FixedList20<AnimalProp> pairs;
     public int singlesLength;
     public int pairsLength;
 
     public PropArray(int capacity)
     {
-        singles = new NativeArray<AnimalProp>(capacity, Allocator.Persistent);
-        pairs = new NativeArray<AnimalProp>(capacity, Allocator.Persistent);
+        singles = new ();
+        pairs = new ();
         singlesLength = 0;
         pairsLength = 0;
     }
@@ -195,7 +195,7 @@ public struct PropArray
 }
 
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct AnimalStruct : IDisposable
 {
     public static readonly AnimalStruct NULL = new AnimalStruct() { localId = -1, food = -1, fat = -1, maxFat = -2, maxFood = 0 };

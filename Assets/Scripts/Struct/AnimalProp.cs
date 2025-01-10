@@ -17,7 +17,7 @@ public enum AnimalPropName
 }
 
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public static class AnimalPropExtensions
 {
     // Метод-расширение для проверки флага

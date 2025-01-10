@@ -4,7 +4,7 @@ using Unity.Burst;
 using fstring = Unity.Collections.FixedString32Bytes;
 
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct PlayerStruct
 {
     public bool isAbleToMove;
@@ -30,9 +30,9 @@ public struct PlayerStruct
         return animalArea.CreateAnimal(card);
     }
 
-    internal void GetCardsFromDeck(in DeckStruct deck, int cardAmount)
+    internal void GetCardsFromDeck(ref DeckStruct deck, int cardAmount)
     {
-        hand.TakeCardsFromDeck(deck, cardAmount);
+        hand.TakeCardsFromDeck(ref deck, cardAmount);
     }
 
     public int Feed(in AnimalId target, in FoodManangerStruct foodMananger)

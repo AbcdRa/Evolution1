@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct DeckStruct
 {
     public NativeList<CardStruct> cards;

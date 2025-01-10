@@ -5,7 +5,7 @@ using UnityEngine;
 using fstring = Unity.Collections.FixedString32Bytes;
 
 public enum MoveType { Pass, PlayProp, CreateAnimal, AddPropToAnimal, Feed, ResponseToAttack}
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct MoveNotationMG
 {
     public readonly static FixedString32Bytes[] runes = new FixedString32Bytes[]
@@ -18,7 +18,7 @@ public struct MoveNotationMG
     }
 }
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct MoveData
 {
     public MoveType type;
@@ -43,7 +43,7 @@ public struct MoveData
 
 }
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct MoveStruct
 {
     public float rating;
@@ -57,7 +57,7 @@ public struct MoveStruct
         this.rating = rating;
     }
 
-    public static void ExecuteMove(in VGMstruct vgm, in MoveStruct move)
+    public static void ExecuteMove(ref VGMstruct vgm, in MoveStruct move)
     {
         switch(move.data.type)
         {

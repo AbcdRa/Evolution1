@@ -2,7 +2,7 @@
 using Unity.Collections;
 using Unity.Burst;
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct PairAnimalId
 {
     internal static readonly PairAnimalId NULL = new(-1,-1,-1,-1);
@@ -35,7 +35,7 @@ public struct PairAnimalId
 
 
 
-[BurstCompile]
+[BurstCompile(DisableDirectCall = true)]
 public struct VGMstruct
 {
     public PlayerManangerStruct playerMananger;
@@ -165,7 +165,7 @@ public struct VGMstruct
         NativeList<MoveStruct> moves = GetAllPossibleSidesMoves(_sideTurnsInfo);
         if(moves.Length == 1)
         {
-            MoveStruct.ExecuteMove(this, moves[0]);
+            MoveStruct.ExecuteMove(ref this, moves[0]);
         } 
         NextTurn(_sideTurnsInfo.second.ownerId);
 
@@ -236,7 +236,7 @@ public struct VGMstruct
             int cardAmount = playerMananger.players[i % playerMananger.players.Length].animalArea.amount + 1;
             if (cardAmount == 1 && playerMananger.players[i % playerMananger.players.Length].hand.amount == 0)
                 cardAmount = 6;
-            playerMananger.players[i % playerMananger.players.Length].GetCardsFromDeck(deck, cardAmount);
+            playerMananger.players[i % playerMananger.players.Length].GetCardsFromDeck(ref deck, cardAmount);
         }
         NextPhase();
     }
@@ -501,15 +501,16 @@ public struct VGMstruct
     public bool MakeRandomMovesUntilTerminate(int targetPlayer)
     {
         int k = 0;
+        var random = new Unity.Mathematics.Random(10);
 
-        while (isOver)
+        while (!isOver)
         {
             NativeList<MoveStruct> moves = isSideTurns ? GetAllPossibleSidesMoves(_sideTurnsInfo) : GetAllPossibleMoves();
             //МДА НЕ ИДЕАЛЬНО КОНЕЧНО TODO оптимизировать
-            MoveStruct randomMove = moves[UnityEngine.Random.Range(0, moves.Length)];
-            MoveStruct.ExecuteMove(this, randomMove);
+            MoveStruct randomMove = moves[random.NextInt(0, moves.Length)];
+            MoveStruct.ExecuteMove(ref this, randomMove);
             k++;
-            if (k > 1600) throw new Exception("Бесконечная игра");
+            if (k > 3200) throw new Exception("Бесконечная игра");
         }
 
         return targetPlayer == GetWinner();
