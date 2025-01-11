@@ -8,21 +8,23 @@ using Unity.VisualScripting;
 [BurstCompile(DisableDirectCall = true)]
 public struct AnimalSpotStruct
 {
-    public int localId;
+    public AnimalId id;
     public AnimalStruct animal;
     public bool isFree => animal.isNull;
     //public NativeList<CardStruct> cards;
 
-    public AnimalSpotStruct(int localId, in AnimalStruct animal, List<CardStruct> cards)
+    public AnimalSpotStruct(AnimalId id, in AnimalStruct animal)
     {
-        this.localId = localId;
+        this.id = id;
         this.animal = animal;
+
         //this.cards = new(cards.Count, Allocator.TempJob);
         //foreach(CardStruct card in cards)
         //{
         //    this.cards.Add(card);
         //}
     }
+
 
     internal bool AddPropToAnimal(in CardStruct card, bool isRotated)
     {
@@ -37,10 +39,9 @@ public struct AnimalSpotStruct
         //cards.Dispose();
     }
 
-    internal void SetLocalId(int i)
+    internal void SetLocalAndOwnerId(in AnimalId id)
     {
-        localId = i;
-        animal.localId = i;
+        this.id = id;
     }
 
     internal bool IsPossibleToAddProp(in AnimalProp prop)

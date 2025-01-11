@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerControls.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\DeckStruct.cs" />
+    <Compile Include="Assets\Scripts\VirtualStruct\PlayerInfoStruct.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\MoveStruct.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Real\Deck.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Assets\Scripts\Real\Dice.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IAnimalSpot.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerInteraction.cs" />
+    <Compile Include="Assets\Scripts\VirtualStruct\PlayerSpots.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IGameMananger.cs" />
     <Compile Include="Assets\Scripts\Real\SelectionController.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDeck.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Assets\Scripts\VirtualStruct\HandStruct.cs" />
     <Compile Include="Assets\Scripts\Real\PlayerMananger.cs" />
     <Compile Include="Assets\Scripts\Real\AnimalArea.cs" />
+    <Compile Include="Assets\Scripts\VirtualStruct\VGMStructXL.cs" />
     <Compile Include="Assets\Scripts\Real\Player.cs" />
   </ItemGroup>
   <ItemGroup>
