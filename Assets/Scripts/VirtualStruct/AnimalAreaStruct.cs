@@ -62,16 +62,16 @@ public struct AnimalAreaStruct
                 i++;
             }
         }
-        for (int i = 0; i < amount; i++) {
-            spots[i].SetLocalId(i);
-        }
+        //for (int i = 0; i < amount; i++) {
+        //    spots[i].SetLocalId(i);
+        //}
     }
 
     internal bool CreateAnimal(in CardStruct card)
     {
         bool isCreated = freeSpot.CreateAnimal(card, spots.Length);
         if(!isCreated) return false;
-        freeSpot.SetLocalId(spots.Length);
+        //freeSpot.SetLocalId(spots.Length);
         spots.Add(freeSpot);
         freeSpot = new();
         return isCreated; 

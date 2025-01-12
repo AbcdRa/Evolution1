@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\Interfaces\IHand.cs" />
     <Compile Include="Assets\Scripts\Real\PrefabDataSingleton.cs" />
     <Compile Include="Assets\Scripts\CardSO.cs" />
+    <Compile Include="Assets\Scripts\VirtualStruct\Hands.cs" />
     <Compile Include="Assets\Scripts\Real\ArcWithArrows.cs" />
     <Compile Include="Assets\Scripts\Virtual\VirtaulSimulation.cs" />
     <Compile Include="Assets\Scripts\Struct\AnimalProp.cs" />

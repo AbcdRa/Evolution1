@@ -14,9 +14,9 @@ public struct PlayerSpots
         switch (id.ownerId)
         {
             case 0: return spots1[id.localId];
-            case 1: return spots1[id.localId];
-            case 2: return spots1[id.localId];
-            case 3: return spots1[id.localId];
+            case 1: return spots2[id.localId];
+            case 2: return spots3[id.localId];
+            case 3: return spots4[id.localId];
         }
         throw new Exception("WTF");
     }
@@ -26,9 +26,9 @@ public struct PlayerSpots
         switch (id.ownerId)
         {
             case 0: spots1[id.localId] = spot; break;
-            case 1: spots1[id.localId] = spot; break;
-            case 2: spots1[id.localId] = spot; break;
-            case 3: spots1[id.localId] = spot; break;
+            case 1: spots2[id.localId] = spot; break;
+            case 2: spots3[id.localId] = spot; break;
+            case 3: spots4[id.localId] = spot; break;
         }
     }
 
@@ -189,6 +189,13 @@ public struct PlayerSpots
         return food;
     }
 
+    internal void KillById(AnimalId predatorId, AnimalId victimId)
+    {
+        throw new NotImplementedException();
+    }
 
-
+    internal void StartSurvivingPhase()
+    {
+        throw new NotImplementedException();
+    }
 }

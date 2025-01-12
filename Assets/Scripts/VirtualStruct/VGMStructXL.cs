@@ -11,6 +11,7 @@ using UnityEngine.UIElements;
 public struct VGMstructXL
 {
     public PlayerSpots spots;
+    public Hands hands;
 
     public NativeList<CardStruct> deck;
     public NativeList<PlayerInfo> players;
@@ -159,9 +160,6 @@ public struct VGMstructXL
 
 
 
-
-
-
     internal void Pass(int playerId)
     {
         PlayerInfo player = players[playerId];
@@ -173,16 +171,31 @@ public struct VGMstructXL
 
     internal void PlayProp(int playerId, in CardStruct card, in AnimalId target1, in AnimalId target2, bool isRotated = false)
     {
-        _sideTurnsInfo = GameInteractionStruct.PlayProp(playerMananger, playerId, card, target1, target2, isRotated);
+        
+
+        AnimalProp prop = isRotated ? card.second : card.main;
+        switch (prop.name)
+        {
+            case AnimalPropName.Sleep:
+                _sideTurnsInfo = PlaySleep(target1); break;
+            case AnimalPropName.Fasciest:
+                _sideTurnsInfo = PlayFasciest(target1); break;
+            case AnimalPropName.Piracy:
+                _sideTurnsInfo = PlayPiracy(target1, target2); break;
+            case AnimalPropName.Predator:
+                _sideTurnsInfo = PlayPredator(target1, target2); break;
+        }
         if (_sideTurnsInfo.Equals(PairAnimalId.DOING_NEXT_TURN))
         {
             NextTurn(); return;
         }
         if (_sideTurnsInfo.Equals(PairAnimalId.NOT_DOING_NEXT_TURN)) return;
-        if (_sideTurnsInfo.Equals(PairAnimalId.DESTROY_FOOD)) { foodMananger.Consume(1); return; }
+        if (_sideTurnsInfo.Equals(PairAnimalId.DESTROY_FOOD)) { food -= 1; return; }
         if (_sideTurnsInfo.first.Equals(PairAnimalId.PIRACY_FOOD.first))
         {
-            playerMananger.players[_sideTurnsInfo.second.ownerId].animalArea.spots[_sideTurnsInfo.second.localId].animal.DecreaseFood();
+            AnimalSpotStruct piracyTarget = spots.GetSpot(_sideTurnsInfo.second);
+            piracyTarget.animal.DecreaseFood();
+            spots.SetSpot(piracyTarget);
             return;
         }
         NativeList<MoveStruct> moves = GetAllPossibleSidesMoves(_sideTurnsInfo);
@@ -194,12 +207,75 @@ public struct VGMstructXL
 
     }
 
+
+
+    private PairAnimalId PlaySleep(in AnimalId target)
+    {
+        AnimalSpotStruct spot = spots.GetSpot(target);
+        spot.animal.ActivateSleepProp();
+        spots.SetSpot(spot);
+        return PairAnimalId.NOT_DOING_NEXT_TURN;
+    }
+
+    private PairAnimalId PlayFasciest(in AnimalId target)
+    {
+        AnimalSpotStruct spot = spots.GetSpot(target);
+        spot.animal.ActivateFasciestProp();
+        spots.SetSpot(spot);
+        return PairAnimalId.DESTROY_FOOD;
+    }
+
+    private PairAnimalId PlayPiracy(in AnimalId pirate, in AnimalId victim)
+    {
+        //TODO Ну ты хоть бы проверил возможно ли пиратство
+        //Я знаю что двойные проверки не супер круто, но все таки
+        AnimalSpotStruct pirateSpot = spots.GetSpot(pirate);
+
+        pirateSpot.animal.ActivatePiraceProp();
+        spots.SetSpot(pirateSpot);
+        PairAnimalId sideTurnsInfo = PairAnimalId.PIRACY_FOOD;
+        sideTurnsInfo.second = victim;
+        return sideTurnsInfo;
+    }
+
+    private PairAnimalId PlayPredator(in AnimalId predatorId, in AnimalId victimId)
+    {
+        PairAnimalId sideTurnsInfo = new(predatorId, victimId);
+        AnimalSpotStruct predator = spots.GetSpot(predatorId);
+        AnimalSpotStruct victim = spots.GetSpot(victimId);
+
+
+        if (!GameInteractionStruct.IsCanAttack(predator.animal, victim.animal))
+            throw new Exception("GameBreaking Trying to attack immortal victim");
+
+        AnimalPropName victimFlags = victim.animal.propFlags;
+        NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Temp);
+        for (int i = 0; i < victim.animal.props.singlesLength; i++)
+        {
+            AnimalProp prop = victim.animal.props.singles[i];
+            if (!prop.IsActivable) continue;
+            if (GameInteractionStruct.IsSideInteractable(prop.name)) sideProps.Add(prop);
+        }
+        if (sideProps.Length == 0)
+        {
+            spots.KillById(predatorId, victimId);
+            return PairAnimalId.DOING_NEXT_TURN;
+        }
+        return sideTurnsInfo;
+    }
+
+
+
     internal void PlaySideProp(int playerId, in AnimalProp prop, in AnimalId friendId, in AnimalId enemyId)
     {
+        AnimalSpotStruct friendSpot = spots.GetSpot(friendId);
+        AnimalSpotStruct enemySpot = spots.GetSpot(enemyId);
+
         switch (prop.name)
         {
             case AnimalPropName.Fast:
-                playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.ActivateFastProp();
+                friendSpot.animal.ActivateFastProp();
+                spots.SetSpot(friendSpot);
                 int diceResult = GetDiceResult();
                 if (diceResult >= 4)
                 {
@@ -208,21 +284,25 @@ public struct VGMstructXL
                 }
                 if (GetAllPossibleSidesMoves(_sideTurnsInfo).Length == 0)
                 {
-                    playerMananger.KillById(enemyId, friendId);
+                    spots.KillById(enemyId, friendId);
                 }
                 break;
             case AnimalPropName.Mimic:
-                playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.ActivateMimicProp();
+                friendSpot.animal.ActivateMimicProp();
+                spots.SetSpot(friendSpot);
                 _sideTurnsInfo.second = prop.secondAnimalId;
                 break;
             case AnimalPropName.DropTail:
-                playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.ActivateDropTailProp();
+                friendSpot.animal.ActivateDropTailProp();
                 _sideTurnsInfo = PairAnimalId.NULL;
-                playerMananger.players[enemyId.ownerId].animalArea.spots[enemyId.localId].animal.Feed();
+
+                enemySpot.animal.Feed();
+                spots.SetSpot(enemySpot);
                 AnimalProp targetProp = prop.secondAnimalId.ownerId == 0 ?
-                    playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.props.singles[prop.secondAnimalId.localId] :
-                    playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.props.pairs[prop.secondAnimalId.localId];
-                playerMananger.players[playerId].animalArea.spots[friendId.localId].animal.RemoveProp(targetProp);
+                    friendSpot.animal.props.singles[prop.secondAnimalId.localId] :
+                    friendSpot.animal.props.pairs[prop.secondAnimalId.localId];
+                friendSpot.animal.RemoveProp(targetProp);
+                spots.SetSpot(friendSpot);
                 break;
         }
     }
@@ -246,18 +326,15 @@ public struct VGMstructXL
 
     private void StartSurvivingPhase()
     {
-        for (int i = 0; i < playerMananger.players.Length; i++)
-        {
-            playerMananger.players[i].animalArea.StartSurvivingPhase();
-        }
+        spots.StartSurvivingPhase();
     }
 
 
     private void StartPreDevelopPhase()
     {
-        for (int i = currentPivot; i <= currentPivot + playerMananger.players.Length; i++)
+        for (int i = currentPivot; i <= currentPivot + players.Length; i++)
         {
-            int cardAmount = playerMananger.players[i % playerMananger.players.Length].animalArea.amount + 1;
+            int cardAmount = players[i % players.Length].animalAmount + 1;
             if (cardAmount == 1 && playerMananger.players[i % playerMananger.players.Length].hand.amount == 0)
                 cardAmount = 6;
             playerMananger.players[i % playerMananger.players.Length].GetCardsFromDeck(ref deck, cardAmount);
@@ -476,6 +553,7 @@ public struct VGMstructXL
                                     IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].second);
                                 if (!isPossibleToAdd) continue;
                                 moves.Add(MoveStruct.GetAddPropMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i], friendSpots[j], AnimalId.NULL, false));
+
                             }
                         }
                     }
