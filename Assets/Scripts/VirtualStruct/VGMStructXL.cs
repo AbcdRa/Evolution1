@@ -4,6 +4,7 @@ using Unity.Burst;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UIElements;
+using System.Linq;
 
 
 
@@ -334,10 +335,18 @@ public struct VGMstructXL
     {
         for (int i = currentPivot; i <= currentPivot + players.Length; i++)
         {
-            int cardAmount = players[i % players.Length].animalAmount + 1;
-            if (cardAmount == 1 && playerMananger.players[i % playerMananger.players.Length].hand.amount == 0)
+            int playerId = i % players.Length;
+            int cardAmount = players[playerId].animalAmount + 1;
+            if (cardAmount == 1 && hands.GetHandAmount(playerId) == 0)
                 cardAmount = 6;
-            playerMananger.players[i % playerMananger.players.Length].GetCardsFromDeck(ref deck, cardAmount);
+
+            for(int j = 0; j < cardAmount; j++)
+            {
+                if(deck.Length == 0) break;
+                CardStruct card = deck[deck.Length - 1];
+                hands.AddCard(playerId, card);
+                deck.RemoveAt(deck.Length - 1);
+            }
         }
         NextPhase();
     }
@@ -345,11 +354,11 @@ public struct VGMstructXL
 
     private int FindNextTurn()
     {
-        int nextTurn = (currentTurn + 1) % playerMananger.players.Length;
-        while (!playerMananger.players[nextTurn].isAbleToMove)
+        int nextTurn = (currentTurn + 1) % players.Length;
+        while (!players[nextTurn].isAbleToMove)
         {
-            nextTurn = (nextTurn + 1) % playerMananger.players.Length;
-            if (nextTurn == currentTurn && !playerMananger.players[nextTurn].isAbleToMove) return -1;
+            nextTurn = (nextTurn + 1) % players.Length;
+            if (nextTurn == currentTurn && !players[nextTurn].isAbleToMove) return -1;
         }
         return nextTurn;
     }
@@ -412,20 +421,20 @@ public struct VGMstructXL
         NativeList<PairAnimalId> pairEnemySpots = new NativeList<PairAnimalId>(5, Allocator.Temp);
         NativeList<PairAnimalId> pairFriendSpots = new NativeList<PairAnimalId>(5, Allocator.Temp);
 
-        for (int i = 0; i < playerMananger.players.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
-            for (int j = 0; j < playerMananger.players[i].animalArea.amount; j++)
+            for (int j = 0; j < players[i].animalAmount; j++)
             {
                 if (i == currentTurn)
                 {
                     friendSpots.Add(new(i, j));
-                    for (int k = j; k < playerMananger.players[i].animalArea.amount; k++)
+                    for (int k = j; k < players[i].animalAmount; k++)
                         pairFriendSpots.Add(new(i, j, i, k));
                 }
                 else
                 {
                     enemySpots.Add(new(i, j));
-                    for (int k = j; k < playerMananger.players[i].animalArea.amount; k++)
+                    for (int k = j; k < players[i].animalAmount; k++)
                         pairEnemySpots.Add(new(i, j, i, k));
                 }
             }
@@ -436,51 +445,50 @@ public struct VGMstructXL
         switch (currentPhase)
         {
             case 0:
-                for (int i = 0; i < playerMananger.players[currentTurn].hand.amount; i++)
+                for (int i = 0; i < hands.GetHandAmount(currentTurn); i++)
                 {
-                    moves.Add(MoveStruct.GetCreateAnimalMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i]));
-                    if (playerMananger.players[currentTurn].hand.cards[i].main.isHostile())
+                    CardStruct card = hands.GetHandCard(new(currentTurn, i));
+                    moves.Add(MoveStruct.GetCreateAnimalMove(currentTurn, card));
+                    if (card.main.isHostile())
                     {
-                        if (playerMananger.players[currentTurn].hand.cards[i].main.isPair)
+                        if (card.main.isPair)
                         {
                             for (int j = 0; j < pairEnemySpots.Length; j++)
                             {
-                                bool isPossibleToAdd = playerMananger.players[pairEnemySpots[j].first.ownerId].animalArea.spots[pairEnemySpots[j].first.localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].main);
+                                
+                                bool isPossibleToAdd = spots.GetSpot(pairEnemySpots[j].first).IsPossibleToAddProp(card.main);
                                 if (!isPossibleToAdd) continue;
-                                isPossibleToAdd = playerMananger.players[pairEnemySpots[j].second.ownerId].animalArea.spots[pairEnemySpots[j].second.localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].main);
+                                isPossibleToAdd = spots.GetSpot(pairEnemySpots[j].second).IsPossibleToAddProp(card.main);
                                 if (!isPossibleToAdd) continue;
                                 moves.Add(MoveStruct.
-                                    GetAddPropMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i], pairEnemySpots[j].first, pairEnemySpots[j].second, false));
+                                    GetAddPropMove(currentTurn, card, pairEnemySpots[j].first, pairEnemySpots[j].second, false));
                             }
                         }
                         else
                         {
                             for (int j = 0; j < enemySpots.Length; j++)
                             {
-                                bool isPossibleToAdd = playerMananger.players[enemySpots[j].ownerId].animalArea.spots[enemySpots[j].localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].main);
+                                bool isPossibleToAdd = spots.GetSpot(enemySpots[j]).IsPossibleToAddProp(card.main);
                                 if (!isPossibleToAdd) continue;
-                                moves.Add(MoveStruct.GetAddPropMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i], enemySpots[j], AnimalId.NULL, false));
+                                moves.Add(MoveStruct.GetAddPropMove(currentTurn, card, enemySpots[j], AnimalId.NULL, false));
                             }
                         }
 
                     }
                     else
                     {
-                        if (playerMananger.players[currentTurn].hand.cards[i].main.isPair)
+                        if (card.main.isPair)
                         {
                             for (int j = 0; j < pairFriendSpots.Length; j++)
                             {
-                                bool isPossibleToAdd = playerMananger.players[pairFriendSpots[j].first.ownerId].animalArea.spots[pairFriendSpots[j].first.localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].main);
+                                bool isPossibleToAdd = spots.GetSpot(pairFriendSpots[j].first).
+                                    IsPossibleToAddProp(card.main);
                                 if (!isPossibleToAdd) continue;
-                                isPossibleToAdd = playerMananger.players[pairFriendSpots[j].second.ownerId].animalArea.spots[pairFriendSpots[j].second.localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].main);
+                                isPossibleToAdd = spots.GetSpot(pairFriendSpots[j].second).
+                                    IsPossibleToAddProp(card.main);
                                 if (!isPossibleToAdd) continue;
                                 moves.Add(MoveStruct.
-                                    GetAddPropMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i], pairFriendSpots[j].first, pairFriendSpots[j].second, false));
+                                    GetAddPropMove(currentTurn, card, pairFriendSpots[j].first, pairFriendSpots[j].second, false));
                             }
 
                         }
@@ -488,60 +496,55 @@ public struct VGMstructXL
                         {
                             for (int j = 0; j < friendSpots.Length; j++)
                             {
-                                bool isPossibleToAdd = playerMananger.players[friendSpots[j].ownerId].animalArea.spots[friendSpots[j].localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].main);
+                                bool isPossibleToAdd = spots.GetSpot(friendSpots[j]).
+                                    IsPossibleToAddProp(card.main);
                                 if (!isPossibleToAdd) continue;
-                                moves.Add(MoveStruct.GetAddPropMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i], friendSpots[j], AnimalId.NULL, false));
+                                moves.Add(MoveStruct.GetAddPropMove(currentTurn, card, friendSpots[j], AnimalId.NULL, false));
                             }
                         }
 
                     }
-                    if (playerMananger.players[currentTurn].hand.cards[i].second.isNull()) continue;
-
-
-                    if (playerMananger.players[currentTurn].hand.cards[i].second.isHostile())
+                    if (card.second.isNull()) continue;
+                    if (card.second.isHostile())
                     {
-                        if (playerMananger.players[currentTurn].hand.cards[i].second.isPair)
+                        if (card.second.isPair)
                         {
                             for (int j = 0; j < pairEnemySpots.Length; j++)
                             {
-                                bool isPossibleToAdd = playerMananger.players[pairEnemySpots[j].first.ownerId].animalArea.spots[pairEnemySpots[j].first.localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].second);
+
+                                bool isPossibleToAdd = spots.GetSpot(pairEnemySpots[j].first).IsPossibleToAddProp(card.second);
                                 if (!isPossibleToAdd) continue;
-                                isPossibleToAdd = playerMananger.players[pairEnemySpots[j].second.ownerId].animalArea.spots[pairEnemySpots[j].second.localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].second);
+                                isPossibleToAdd = spots.GetSpot(pairEnemySpots[j].second).IsPossibleToAddProp(card.second);
                                 if (!isPossibleToAdd) continue;
                                 moves.Add(MoveStruct.
-                                    GetAddPropMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i], pairEnemySpots[j].first, pairEnemySpots[j].second, false));
+                                    GetAddPropMove(currentTurn, card, pairEnemySpots[j].first, pairEnemySpots[j].second, true));
                             }
                         }
                         else
                         {
                             for (int j = 0; j < enemySpots.Length; j++)
                             {
-                                bool isPossibleToAdd = playerMananger.players[enemySpots[j].ownerId].animalArea.spots[enemySpots[j].localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].second);
+                                bool isPossibleToAdd = spots.GetSpot(enemySpots[j]).IsPossibleToAddProp(card.second);
                                 if (!isPossibleToAdd) continue;
-                                moves.Add(MoveStruct.GetAddPropMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i], enemySpots[j], AnimalId.NULL, false));
+                                moves.Add(MoveStruct.GetAddPropMove(currentTurn, card, enemySpots[j], AnimalId.NULL, true));
                             }
-
                         }
 
                     }
                     else
                     {
-                        if (playerMananger.players[currentTurn].hand.cards[i].second.isPair)
+                        if (card.second.isPair)
                         {
                             for (int j = 0; j < pairFriendSpots.Length; j++)
                             {
-                                bool isPossibleToAdd = playerMananger.players[pairFriendSpots[j].first.ownerId].animalArea.spots[pairFriendSpots[j].first.localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].second);
+                                bool isPossibleToAdd = spots.GetSpot(pairFriendSpots[j].first).
+                                    IsPossibleToAddProp(card.second);
                                 if (!isPossibleToAdd) continue;
-                                isPossibleToAdd = playerMananger.players[pairFriendSpots[j].second.ownerId].animalArea.spots[pairFriendSpots[j].second.localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].second);
+                                isPossibleToAdd = spots.GetSpot(pairFriendSpots[j].second).
+                                    IsPossibleToAddProp(card.second);
                                 if (!isPossibleToAdd) continue;
                                 moves.Add(MoveStruct.
-                                    GetAddPropMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i], pairFriendSpots[j].first, pairFriendSpots[j].second, false));
+                                    GetAddPropMove(currentTurn, card, pairFriendSpots[j].first, pairFriendSpots[j].second, true));
                             }
 
                         }
@@ -549,19 +552,19 @@ public struct VGMstructXL
                         {
                             for (int j = 0; j < friendSpots.Length; j++)
                             {
-                                bool isPossibleToAdd = playerMananger.players[friendSpots[j].ownerId].animalArea.spots[friendSpots[j].localId].
-                                    IsPossibleToAddProp(playerMananger.players[currentTurn].hand.cards[i].second);
+                                bool isPossibleToAdd = spots.GetSpot(friendSpots[j]).
+                                    IsPossibleToAddProp(card.second);
                                 if (!isPossibleToAdd) continue;
-                                moves.Add(MoveStruct.GetAddPropMove(currentTurn, playerMananger.players[currentTurn].hand.cards[i], friendSpots[j], AnimalId.NULL, false));
-
+                                moves.Add(MoveStruct.GetAddPropMove(currentTurn, card, friendSpots[j], AnimalId.NULL, true));
                             }
                         }
+
                     }
                 }
                 moves.Add(MoveStruct.GetPassMove(currentTurn));
                 break;
             case 1:
-                for (int i = 0; i < playerMananger.players[currentTurn].animalArea.amount; i++)
+                for (int i = 0; i < players[currentTurn].animalAmount; i++)
                 {
                     bool isFull = playerMananger.players[currentTurn].animalArea.spots[i].animal.isFull();
                     if (!isFull) moves.Add(MoveStruct.GetFeedMove(currentTurn, new(currentTurn, i)));

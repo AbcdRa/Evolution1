@@ -21,6 +21,19 @@ public struct PlayerSpots
         throw new Exception("WTF");
     }
 
+    public int GetSpotsLength(int playerId)
+    {
+        switch (playerId)
+        {
+            case 0: return spots1.Length;
+            case 1: return spots2.Length;
+            case 2: return spots3.Length;
+            case 3: return spots4.Length;
+        }
+        return 0;
+    }
+
+
     public void SetSpot(AnimalId id, in AnimalSpotStruct spot)
     {
         switch (id.ownerId)

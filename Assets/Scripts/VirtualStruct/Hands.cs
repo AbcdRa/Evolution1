@@ -21,7 +21,19 @@ public struct Hands
         throw new Exception("WTF");
     }
 
-    public void SetSpot(AnimalId id, in CardStruct card)
+    public int GetHandAmount(int playerId)
+    {
+        switch (playerId)
+        {
+            case 0: return hand1.Length;
+            case 1: return hand2.Length;
+            case 2: return hand3.Length;
+            case 3: return hand4.Length;
+        }
+        return 0;
+    }
+
+    public void SetCard(AnimalId id, in CardStruct card)
     {
         switch (id.ownerId)
         {
@@ -32,5 +44,14 @@ public struct Hands
         }
     }
 
-
+    internal void AddCard(int playerId, in CardStruct card)
+    {
+        switch (playerId)
+        {
+            case 0: hand1.Add(card); break;
+            case 1: hand2.Add(card); break;
+            case 2: hand3.Add(card); break;
+            case 3: hand4.Add(card); break;
+        }
+    }
 }
