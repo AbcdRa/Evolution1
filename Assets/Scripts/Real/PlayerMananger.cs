@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 
 public class PlayerMananger : MonoBehaviour, IPlayerMananger
@@ -112,6 +114,69 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
         {
             player.animalArea.UpdateTurnCooldown();
         }
+    }
+
+    public Hands GetHandsStruct(int targetId, List<CardStruct> deck)
+    {
+        List<CardStruct>[] hands = new List<CardStruct>[4] { new(), new(), new(), new() };
+        int[] handLs = new int[4] { players[0].hand.amount, players[1].hand.amount, players[2].hand.amount, players[3].hand.amount };
+        for (int i = 0; i < handLs[0]; i++) { 
+            if(targetId == 0) hands[0].Add(players[0].hand.cards[i].GetStruct());
+            else deck.Add(players[0].hand.cards[i].GetStruct());
+        }
+        for (int i = 0; i < handLs[1]; i++)
+        {
+            if (targetId == 1) hands[1].Add(players[1].hand.cards[i].GetStruct());
+            else deck.Add(players[1].hand.cards[i].GetStruct());
+
+        }
+        for (int i = 0; i < handLs[2]; i++)
+        {
+            if (targetId == 2) hands[2].Add(players[2].hand.cards[i].GetStruct());
+            else deck.Add(players[2].hand.cards[i].GetStruct());
+
+        }
+        for (int i = 0; i < handLs[3]; i++)
+        {
+            if (targetId == 3) hands[3].Add(players[3].hand.cards[i].GetStruct());
+            else deck.Add(players[3].hand.cards[i].GetStruct());
+        }
+
+        deck = DevExtension.Shuffle(deck);
+        for(int i = 0; i < 4; i++)
+        {
+            if (i == targetId) continue;
+            for(int j = 0; j < handLs[i]; j++)
+            {
+                CardStruct card = deck.Last();
+                deck.Remove(card);
+                hands[i].Add(card);
+            }
+        }
+        return new Hands(hands[0], hands[1], hands[2], hands[3]);
+    }
+
+    public List<PlayerInfo> GetPlayerInfoStruct()
+    {
+        List<PlayerInfo> playerInfos = new List<PlayerInfo>(playerAmount);
+
+        foreach (var player in players) {
+            playerInfos.Add(new PlayerInfo(player.isAbleToMove, player.id, player.animalArea.amount));
+        }
+        return playerInfos;
+    }
+
+    public PlayerSpots GetPlayerSpotStruct()
+    {
+        List<AnimalSpotStruct>[] spots = new List<AnimalSpotStruct>[4] { new(), new(), new(), new() };
+        for(int i = 0; i < playerAmount; i++)
+        {
+            for(int j = 0; j < players[i].animalArea.amount; j++)
+            {
+                spots[i].Add(players[i].animalArea.spots[j].GetStruct(i));
+            }
+        }
+        return new PlayerSpots(spots[0], spots[1], spots[2], spots[3]);
     }
 
 }

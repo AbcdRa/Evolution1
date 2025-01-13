@@ -1,6 +1,7 @@
 ﻿
 using Mono.Cecil;
 using System;
+using System.Collections.Generic;
 using Unity.Collections;
 
 public struct PlayerSpots
@@ -9,6 +10,14 @@ public struct PlayerSpots
     public NativeList<AnimalSpotStruct> spots2;
     public NativeList<AnimalSpotStruct> spots3;
     public NativeList<AnimalSpotStruct> spots4;
+
+    public PlayerSpots(List<AnimalSpotStruct> spots1, List<AnimalSpotStruct> spots2, List<AnimalSpotStruct> spots3, List<AnimalSpotStruct> spots4)
+    {
+        this.spots1 = spots1.ToNativeList(Allocator.TempJob);
+        this.spots2 = spots2.ToNativeList(Allocator.TempJob);
+        this.spots3 = spots3.ToNativeList(Allocator.TempJob);
+        this.spots4 = spots4.ToNativeList(Allocator.TempJob);
+    }
 
     public AnimalSpotStruct GetSpot(AnimalId id)
     {

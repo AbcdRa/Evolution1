@@ -10,6 +10,16 @@ public class Deck : MonoBehaviour, IDeck
     private List<CardSO> _cards;
     public int amount => _cards.Count;
 
+    public List<CardStruct> GetCardStruct()
+    {
+        List<CardStruct> cards = new(_cards.Count);
+        for(int i = 0; i < _cards.Count; i++)
+        {
+            cards.Add(_cards[i].GetStruct());
+        }
+        return cards;
+    }
+
     public DeckStruct GetStruct()
     {
         List<CardStruct> cardstructs = new List<CardStruct>();

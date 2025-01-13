@@ -10,6 +10,14 @@ public struct PlayerInfo
     public int id;
     public int animalAmount;
 
+    public PlayerInfo(bool isAbleToMove, int id, int animalAmount)
+    {
+        this.id = id;
+        this.isAbleToMove = isAbleToMove;
+        this.animalAmount = animalAmount;
+    }
+
+
     internal void Pass()
     {
         isAbleToMove = false;

@@ -44,9 +44,9 @@ public struct VGMstructXL
         _sideTurnsInfo = new PairAnimalId();
         this.spots = spots;
         this.deck = new(deck.Count, Allocator.TempJob);
-        for(int i = 0; i < deck.Count; i++) { this.deck[i] = deck[i]; }
+        for(int i = 0; i < deck.Count; i++) { this.deck.Add(deck[i]); }
         this.players = new(players.Count, Allocator.TempJob);
-        for(int i = 0;i < players.Count; i++) { this.players[i] = players[i]; }
+        for(int i = 0;i < players.Count; i++) { this.players.Add(players[i]); }
         this.hands = hands;
         random = new Unity.Mathematics.Random(10u);
         this.food = food;
