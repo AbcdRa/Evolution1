@@ -37,10 +37,6 @@ public class Player : MonoBehaviour, IPlayer
         return animalArea.Feed(localId, foodMananger);
     }
 
-    public PlayerStruct GetStruct()
-    {
-        return new PlayerStruct(id, hand.GetStruct(), animalArea.GetStruct(), isAbleToMove);
-    }
 
     public void InitReset(int id)
     {

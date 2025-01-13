@@ -114,13 +114,4 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
         }
     }
 
-    public PlayerManangerStruct GetStruct()
-    {
-        List<PlayerStruct> list = new List<PlayerStruct>();
-        for (int i = 0; i < players.Length; i++)
-        {
-            list.Add(players[i].GetStruct());
-        }
-        return new PlayerManangerStruct(list);
-    }
 }

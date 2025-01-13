@@ -87,11 +87,9 @@ public class AnimalSpot : MonoBehaviour, IAnimalSpot
         animal.UpdateTurnCooldown();
     }
 
-    public AnimalSpotStruct GetStruct()
+    public AnimalSpotStruct GetStruct(int ownerId)
     {
-        List<CardStruct> cardstructs = new List<CardStruct>();
-        for (int i = 0; i < cards.Count; i++) cardstructs.Add(cards[i].GetStruct());
-        return new AnimalSpotStruct(localId, animal, cardstructs);
+        return new AnimalSpotStruct(new(ownerId, localId), animal);
     }
 
 }

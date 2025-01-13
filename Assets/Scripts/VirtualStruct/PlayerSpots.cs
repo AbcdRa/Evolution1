@@ -1,4 +1,5 @@
 ﻿
+using Mono.Cecil;
 using System;
 using Unity.Collections;
 
@@ -20,6 +21,20 @@ public struct PlayerSpots
         }
         throw new Exception("WTF");
     }
+
+
+    public AnimalSpotStruct GetSpot(int ownerId, int localId)
+    {
+        switch (ownerId)
+        {
+            case 0: return spots1[localId];
+            case 1: return spots2[localId];
+            case 2: return spots3[localId];
+            case 3: return spots4[localId];
+        }
+        throw new Exception("WTF");
+    }
+
 
     public int GetSpotsLength(int playerId)
     {

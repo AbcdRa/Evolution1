@@ -5,6 +5,7 @@ using static UnityEngine.GraphicsBuffer;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UIElements;
 using System.Linq;
+using System.Collections.Generic;
 
 
 
@@ -19,7 +20,7 @@ public struct VGMstructXL
     Unity.Mathematics.Random random;
 
     public int food;
-    public int playersLength;
+    public int playersLength => players.Length;
 
     public int currentPivot;
 
@@ -33,17 +34,24 @@ public struct VGMstructXL
     public bool isSideTurns => _currentSideTurn != -1;
     private PairAnimalId _sideTurnsInfo;
 
-    //public VGMstructXL(in PlayerManangerStruct pm, in DeckStruct deck, in FoodManangerStruct foodMananger, int currentPivot, int currentPhase, int currentTurn, int currentSideTurn)
-    //{
-    //    playerMananger = pm;
-    //    this.deck = deck;
-    //    this.foodMananger = foodMananger;
-    //    this.currentPivot = currentPivot;
-    //    this.currentPhase = currentPhase;
-    //    _currentSideTurn = currentSideTurn;
-    //    _currentTurn = currentTurn;
-    //    _sideTurnsInfo = new PairAnimalId();
-    //}
+    public VGMstructXL(int currentPivot, int currentPhase, int currentTurn, int currentSideTurn, in PlayerSpots spots, in Hands hands,
+                       List<CardStruct> deck, List<PlayerInfo> players, int food)
+    {
+        this.currentPivot = currentPivot;
+        this.currentPhase = currentPhase;
+        _currentSideTurn = currentSideTurn;
+        _currentTurn = currentTurn;
+        _sideTurnsInfo = new PairAnimalId();
+        this.spots = spots;
+        this.deck = new(deck.Count, Allocator.TempJob);
+        for(int i = 0; i < deck.Count; i++) { this.deck[i] = deck[i]; }
+        this.players = new(players.Count, Allocator.TempJob);
+        for(int i = 0;i < players.Count; i++) { this.players[i] = players[i]; }
+        this.hands = hands;
+        random = new Unity.Mathematics.Random(10u);
+        this.food = food;
+
+    }
 
 
     public int GetWinner()
@@ -369,9 +377,9 @@ public struct VGMstructXL
         AnimalId myAnimalId = sideTurnsInfo.second;
         AnimalId enemyId = sideTurnsInfo.first;
         NativeList<MoveStruct> moves = new NativeList<MoveStruct>(4, Allocator.TempJob);
-        for (int i = 0; i < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.singlesLength; i++)
+        for (int i = 0; i < spots.GetSpot(myAnimalId).animal.props.singlesLength; i++)
         {
-            AnimalProp prop = playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.singles[i];
+            AnimalProp prop = spots.GetSpot(myAnimalId).animal.props.singles[i];
             if (!prop.IsActivable) continue;
             if (prop.name == AnimalPropName.Fast)
             {
@@ -379,13 +387,13 @@ public struct VGMstructXL
             }
             else if (prop.name == AnimalPropName.DropTail)
             {
-                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.singlesLength; j++)
+                for (int j = 0; j < spots.GetSpot(myAnimalId).animal.props.singlesLength; j++)
                 {
                     prop.mainAnimalId = myAnimalId;
                     prop.secondAnimalId = new(0, j);
                     moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
                 }
-                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.pairsLength; j++)
+                for (int j = 0; j < spots.GetSpot(myAnimalId).animal.props.pairsLength; j++)
                 {
                     prop.mainAnimalId = myAnimalId;
                     prop.secondAnimalId = new(1, j);
@@ -395,12 +403,12 @@ public struct VGMstructXL
             }
             else if (prop.name == AnimalPropName.Mimic)
             {
-                for (int j = 0; j < playerMananger.players[currentTurn].animalArea.amount; j++)
+                for (int j = 0; j < players[currentTurn].animalAmount; j++)
                 {
                     if (j == myAnimalId.localId) continue;
                     bool isCanMimic = GameInteractionStruct.
-                        IsCanAttack(playerMananger.players[enemyId.ownerId].animalArea.spots[enemyId.localId].animal,
-                            playerMananger.players[currentTurn].animalArea.spots[j].animal);
+                        IsCanAttack(spots.GetSpot(enemyId).animal,
+                            spots.GetSpot(new(currentTurn, j)).animal);
                     if (isCanMimic)
                     {
                         prop.mainAnimalId = myAnimalId;
@@ -566,22 +574,24 @@ public struct VGMstructXL
             case 1:
                 for (int i = 0; i < players[currentTurn].animalAmount; i++)
                 {
-                    bool isFull = playerMananger.players[currentTurn].animalArea.spots[i].animal.isFull();
+                    
+                    bool isFull = spots.GetSpot(new(currentTurn, i)).animal.isFull();
                     if (!isFull) moves.Add(MoveStruct.GetFeedMove(currentTurn, new(currentTurn, i)));
                 }
                 if (moves.Length == 0) moves.Add(MoveStruct.GetPassMove(currentTurn));
                 PropId propId = new PropId();
                 while (!propId.isNull())
                 {
-                    propId = playerMananger.players[currentTurn].GetNextInteractablPropId(propId);
+                    propId = GetNextInteractablPropId(currentTurn, propId);
                     if (propId.isNull()) break;
-                    AnimalProp prop = playerMananger.players[currentTurn].animalArea.spots[propId.spotlId].animal.props.singles[propId.proplId];
+                    
+                    AnimalProp prop = spots.GetSpot(new(currentTurn, propId.spotlId)).animal.props.singles[propId.proplId];
                     if (prop.name == AnimalPropName.Predator)
                     {
                         for (int i = 0; i < enemySpots.Length; i++)
                         {
-                            if (GameInteractionStruct.IsCanAttack(playerMananger.players[currentTurn].animalArea.spots[propId.spotlId].animal,
-                                playerMananger.players[enemySpots[i].ownerId].animalArea.spots[enemySpots[i].localId].animal))
+                            if (GameInteractionStruct.IsCanAttack(spots.GetSpot(new(currentTurn, propId.spotlId)).animal,
+                                spots.GetSpot(enemySpots[i]).animal))
                                 moves.Add(MoveStruct.GetPlayPropMove(currentTurn, prop, new(currentTurn, propId.spotlId), enemySpots[i]));
                         }
                     }
@@ -598,7 +608,7 @@ public struct VGMstructXL
                     {
                         for (int i = 0; i < enemySpots.Length; i++)
                         {
-                            if (playerMananger.players[enemySpots[i].ownerId].animalArea.spots[enemySpots[i].localId].animal.IsPiracyTarget())
+                            if (spots.GetSpot(enemySpots[i]).animal.IsPiracyTarget())
                                 moves.Add(MoveStruct.GetPlayPropMove(currentTurn, prop, new(currentTurn, propId.spotlId), enemySpots[i]));
                         }
                     }
@@ -607,6 +617,19 @@ public struct VGMstructXL
                 break;
         }
         return moves;
+    }
+
+    private PropId GetNextInteractablPropId(int playerId, PropId prv)
+    {
+        for (int i = prv.spotlId; i < players[playerId].animalAmount; i++)
+        {
+            for (int j = prv.proplId; j < spots.GetSpot(playerId, i).animal.props.singlesLength; j++)
+            {
+                bool isInteractable = spots.GetSpot(playerId, i).animal.props.singles[j].IsInteractable();
+                if (isInteractable) return new PropId(i, j);
+            }
+        }
+        return PropId.NULL;
     }
 
     public bool MakeRandomMovesUntilTerminate(int targetPlayer)

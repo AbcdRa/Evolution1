@@ -7,7 +7,6 @@ public interface IPlayerMananger
     bool AddPropToAnimal(int playerId, ICard card, AnimalId target);
     bool CreateAnimal(int playerId, ICard card);
     int Feed(int playerId, AnimalId target, IFoodMananger foodMananger);
-    PlayerManangerStruct GetStruct();
     void KillById(AnimalId predatorId, AnimalId victimId);
     void Pass(int playerId);
     void ResetPass();

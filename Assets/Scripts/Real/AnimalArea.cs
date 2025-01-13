@@ -185,15 +185,6 @@ public class AnimalArea : MonoBehaviour, IAnimalArea
         spots[localId].Kill();
     }
 
-    public AnimalAreaStruct GetStruct()
-    {
-        List<AnimalSpotStruct> animalSpotStructs = new List<AnimalSpotStruct>();
-        for(int i = 0; i < spots.Count; i++)
-        {
-            animalSpotStructs.Add(spots[i].GetStruct());
-        }
-        return new AnimalAreaStruct(ownerId, animalSpotStructs, _freeSpot.GetStruct());
-    }
 
     public void InitReset()
     {

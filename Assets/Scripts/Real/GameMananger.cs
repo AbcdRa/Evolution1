@@ -252,9 +252,8 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     }
 
-    internal VGMstruct GetStruct(Player player)
+    internal VGMstructXL GetStruct(Player player)
     {
-        return new VGMstruct(playerMananger.GetStruct(), deck.GetStruct(), foodMananger.GetStruct(),
-            currentPivot, currentPhase, _currentTurn, _currentSideTurn);
+        return new VGMstructXL();
     }
 }
