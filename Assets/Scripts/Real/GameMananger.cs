@@ -258,8 +258,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
         PlayerSpots ps = playerMananger.GetPlayerSpotStruct();
         List<CardStruct> deck = this.deck.GetCardStruct();
         Hands hs = playerMananger.GetHandsStruct(player.id, deck);
-        List<PlayerInfo> py = playerMananger.GetPlayerInfoStruct();
         
-        return new VGMstructXL(currentPivot, currentPhase, _currentTurn, _currentSideTurn, ps, hs, deck, py, foodMananger.food);
+        return new VGMstructXL(currentPivot, currentPhase, _currentTurn, _currentSideTurn, ps, hs, deck, foodMananger.food);
     }
 }

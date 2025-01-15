@@ -28,7 +28,7 @@ public class VirtualSimulation
         {
             job.Complete();
         }
-        for (int i = 0; i < moves.Length; i++)
+        for (int i = 0; i < 1; i++)
         {
             Debug.Log(jobs[i].rating);
         }
@@ -50,7 +50,7 @@ public class VirtualSimulation
 public struct CalculateMoveJob : IJob
 {
 
-    [ReadOnly] VGMstructXL vgmStruct;
+    VGMstructXL vgmStruct;
     [ReadOnly] MoveStruct vMove;
     [ReadOnly] int targetPlayer;
     public float rating;

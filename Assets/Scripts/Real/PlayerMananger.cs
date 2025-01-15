@@ -156,12 +156,12 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
         return new Hands(hands[0], hands[1], hands[2], hands[3]);
     }
 
-    public List<PlayerInfo> GetPlayerInfoStruct()
+    public FixedArr4<bool> GetPlayerInfoStruct()
     {
-        List<PlayerInfo> playerInfos = new List<PlayerInfo>(playerAmount);
+        FixedArr4<bool> playerInfos = new();
 
-        foreach (var player in players) {
-            playerInfos.Add(new PlayerInfo(player.isAbleToMove, player.id, player.animalArea.amount));
+        for(int i = 0; i < players.Length; i++) {
+            playerInfos[i] = (players[i].isAbleToMove);
         }
         return playerInfos;
     }

@@ -68,7 +68,6 @@
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerControls.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\DeckStruct.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\PlayerInfoStruct.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\MoveStruct.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Real\Deck.cs" />

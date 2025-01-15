@@ -3,6 +3,7 @@ using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using Unity.Collections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public struct PlayerSpots
 {
@@ -10,6 +11,7 @@ public struct PlayerSpots
     public NativeList<AnimalSpotStruct> spots2;
     public NativeList<AnimalSpotStruct> spots3;
     public NativeList<AnimalSpotStruct> spots4;
+    public FixedArr4<bool> isAbleToMove;
 
     public PlayerSpots(List<AnimalSpotStruct> spots1, List<AnimalSpotStruct> spots2, List<AnimalSpotStruct> spots3, List<AnimalSpotStruct> spots4)
     {
@@ -17,6 +19,7 @@ public struct PlayerSpots
         this.spots2 = spots2.ToNativeList(Allocator.TempJob);
         this.spots3 = spots3.ToNativeList(Allocator.TempJob);
         this.spots4 = spots4.ToNativeList(Allocator.TempJob);
+        isAbleToMove = new();
     }
 
     public AnimalSpotStruct GetSpot(AnimalId id)
@@ -71,6 +74,14 @@ public struct PlayerSpots
 
     internal void SetSpot(in AnimalSpotStruct spot)
     {
+        if (spot.id.localId == GetSpotsLength(spot.id.ownerId)) {
+            switch (spot.id.ownerId) {
+                case 0: spots1.Add(spot); break;
+                case 1: spots2.Add(spot); break;
+                case 2: spots3.Add(spot); break;
+                case 3: spots4.Add(spot); break;
+            }
+        } else 
         SetSpot(spot.id, spot);
     }
 
@@ -228,11 +239,103 @@ public struct PlayerSpots
 
     internal void KillById(AnimalId predatorId, AnimalId victimId)
     {
+        AnimalSpotStruct predator = GetSpot(predatorId);
+        AnimalSpotStruct victim = GetSpot(victimId);
+
+        if (victim.animal.propFlags.HasFlagFast(AnimalPropName.Poison)) 
+            predator.animal.AddFlag(AnimalPropName.RIsPoisoned);
+
+        Kill(victimId);
+        OrganizateSpots();
+        AnimalId nearScavenger = FindNearScavenger(predatorId.ownerId);
+        if (!nearScavenger.isNull)
+        {
+            AnimalSpotStruct scavenger = GetSpot(nearScavenger);
+            scavenger.animal.ActivateScavenger();
+            Feed(nearScavenger, 1);
+            SetSpot(scavenger);
+        }
+        predator.animal.Feed(2);
+        SetSpot(predator);
+    }
+
+    private AnimalId FindNearScavenger(int ownerId)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void OrganizateSpots()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Kill(AnimalId victimId)
+    {
         throw new NotImplementedException();
     }
 
     internal void StartSurvivingPhase()
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < spots1.Length;)
+        {
+            if (!spots1[i].animal.CanSurvive()) spots1.RemoveAt(i);
+            else
+            {
+                AnimalSpotStruct spot = spots1[i];
+                spot.SetLocalAndOwnerId(new(0, i));
+                spots1[i] = spot;
+                i++;
+
+            }
+        }
+        for (int i = 0; i < spots2.Length;)
+        {
+            if (!spots2[i].animal.CanSurvive()) spots2.RemoveAt(i);
+            else
+            {
+                AnimalSpotStruct spot = spots2[i];
+                spot.SetLocalAndOwnerId(new(1, i));
+                spots2[i] = spot;
+                i++;
+
+            }
+        }
+        for (int i = 0; i < spots3.Length;)
+        {
+            if (!spots3[i].animal.CanSurvive()) spots3.RemoveAt(i);
+            else
+            {
+                AnimalSpotStruct spot = spots3[i];
+                spot.SetLocalAndOwnerId(new(2, i));
+                spots3[i] = spot;
+                i++;
+
+            }
+        }
+        for (int i = 0; i < spots4.Length;)
+        {
+            if (!spots4[i].animal.CanSurvive()) spots4.RemoveAt(i);
+            else {
+                AnimalSpotStruct spot = spots4[i];
+                spot.SetLocalAndOwnerId(new(3, i));
+                spots4[i] = spot;
+                i++;
+                
+            }
+        }
     }
-}
+
+    internal void ResetPass()
+    {
+        for (int i = 0; i < isAbleToMove.Length; i++) {
+            isAbleToMove[i] = true;    
+        }
+    }
+
+    internal void Pass(int playerId)
+    {
+        isAbleToMove[playerId] = false;
+    }
+
+
+}   

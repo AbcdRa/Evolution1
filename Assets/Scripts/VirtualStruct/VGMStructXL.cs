@@ -16,11 +16,10 @@ public struct VGMstructXL
     public Hands hands;
 
     public NativeList<CardStruct> deck;
-    public NativeList<PlayerInfo> players;
     Unity.Mathematics.Random random;
 
     public int food;
-    public int playersLength => players.Length;
+    public int playersLength => 4;
 
     public int currentPivot;
 
@@ -35,7 +34,7 @@ public struct VGMstructXL
     private PairAnimalId _sideTurnsInfo;
 
     public VGMstructXL(int currentPivot, int currentPhase, int currentTurn, int currentSideTurn, in PlayerSpots spots, in Hands hands,
-                       List<CardStruct> deck, List<PlayerInfo> players, int food)
+                       List<CardStruct> deck, int food)
     {
         this.currentPivot = currentPivot;
         this.currentPhase = currentPhase;
@@ -45,8 +44,6 @@ public struct VGMstructXL
         this.spots = spots;
         this.deck = new(deck.Count, Allocator.TempJob);
         for(int i = 0; i < deck.Count; i++) { this.deck.Add(deck[i]); }
-        this.players = new(players.Count, Allocator.TempJob);
-        for(int i = 0;i < players.Count; i++) { this.players.Add(players[i]); }
         this.hands = hands;
         random = new Unity.Mathematics.Random(10u);
         this.food = food;
@@ -113,12 +110,7 @@ public struct VGMstructXL
 
     private void ResetPass()
     {
-        for (int i = 0; i < players.Length; i++)
-        {
-            PlayerInfo p = players[i];
-            p.ResetPass();
-            players[i] = p;
-        }
+        spots.ResetPass();
     }
 
     internal bool AddPropToAnimal(int playerId, in CardStruct card, in AnimalId target, bool isRotated)
@@ -133,21 +125,17 @@ public struct VGMstructXL
 
     private AnimalSpotStruct CreateFreeSpot(int playerId)
     {
-        return new AnimalSpotStruct(new(playerId, players[playerId].animalAmount), AnimalStruct.NULL);
+        return new AnimalSpotStruct(new(playerId, spots.GetSpotsLength(playerId)), AnimalStruct.NULL);
     }
 
     internal bool CreateAnimal(int playerId, in CardStruct card)
     {
         bool isAddedSuccesful = false;
         AnimalSpotStruct freeSpot = CreateFreeSpot(playerId);
-        PlayerInfo player = players[playerId];
-        isAddedSuccesful = freeSpot.CreateAnimal(card, player.animalAmount);
+        isAddedSuccesful = freeSpot.CreateAnimal(card, spots.GetSpotsLength(playerId));
         if (!isAddedSuccesful) return false;
-        freeSpot.SetLocalAndOwnerId(new(playerId, players[playerId].animalAmount));
+        freeSpot.SetLocalAndOwnerId(new(playerId, spots.GetSpotsLength(playerId)));
         spots.SetSpot(freeSpot);
-
-        player.animalAmount++;
-        players[playerId] = player;
         if (isAddedSuccesful) NextTurn();
         return isAddedSuccesful;
     }
@@ -171,9 +159,7 @@ public struct VGMstructXL
 
     internal void Pass(int playerId)
     {
-        PlayerInfo player = players[playerId];
-        player.Pass();
-        players[playerId] = player;
+        spots.Pass(playerId);
         NextTurn();
     }
 
@@ -341,10 +327,10 @@ public struct VGMstructXL
 
     private void StartPreDevelopPhase()
     {
-        for (int i = currentPivot; i <= currentPivot + players.Length; i++)
+        for (int i = currentPivot; i <= currentPivot + playersLength; i++)
         {
-            int playerId = i % players.Length;
-            int cardAmount = players[playerId].animalAmount + 1;
+            int playerId = i % playersLength;
+            int cardAmount = spots.GetSpotsLength(playerId) + 1;
             if (cardAmount == 1 && hands.GetHandAmount(playerId) == 0)
                 cardAmount = 6;
 
@@ -362,11 +348,11 @@ public struct VGMstructXL
 
     private int FindNextTurn()
     {
-        int nextTurn = (currentTurn + 1) % players.Length;
-        while (!players[nextTurn].isAbleToMove)
+        int nextTurn = (currentTurn + 1) % playersLength;
+        while (!spots.isAbleToMove[nextTurn])
         {
-            nextTurn = (nextTurn + 1) % players.Length;
-            if (nextTurn == currentTurn && !players[nextTurn].isAbleToMove) return -1;
+            nextTurn = (nextTurn + 1) % playersLength;
+            if (nextTurn == currentTurn && !spots.isAbleToMove[nextTurn]) return -1;
         }
         return nextTurn;
     }
@@ -403,7 +389,7 @@ public struct VGMstructXL
             }
             else if (prop.name == AnimalPropName.Mimic)
             {
-                for (int j = 0; j < players[currentTurn].animalAmount; j++)
+                for (int j = 0; j < spots.GetSpotsLength(currentTurn); j++)
                 {
                     if (j == myAnimalId.localId) continue;
                     bool isCanMimic = GameInteractionStruct.
@@ -429,20 +415,20 @@ public struct VGMstructXL
         NativeList<PairAnimalId> pairEnemySpots = new NativeList<PairAnimalId>(5, Allocator.Temp);
         NativeList<PairAnimalId> pairFriendSpots = new NativeList<PairAnimalId>(5, Allocator.Temp);
 
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < playersLength; i++)
         {
-            for (int j = 0; j < players[i].animalAmount; j++)
+            for (int j = 0; j < spots.GetSpotsLength(i) ; j++)
             {
                 if (i == currentTurn)
                 {
                     friendSpots.Add(new(i, j));
-                    for (int k = j; k < players[i].animalAmount; k++)
+                    for (int k = j; k < spots.GetSpotsLength(i); k++)
                         pairFriendSpots.Add(new(i, j, i, k));
                 }
                 else
                 {
                     enemySpots.Add(new(i, j));
-                    for (int k = j; k < players[i].animalAmount; k++)
+                    for (int k = j; k < spots.GetSpotsLength(i); k++)
                         pairEnemySpots.Add(new(i, j, i, k));
                 }
             }
@@ -572,7 +558,7 @@ public struct VGMstructXL
                 moves.Add(MoveStruct.GetPassMove(currentTurn));
                 break;
             case 1:
-                for (int i = 0; i < players[currentTurn].animalAmount; i++)
+                for (int i = 0; i < spots.GetSpotsLength(currentTurn); i++)
                 {
                     
                     bool isFull = spots.GetSpot(new(currentTurn, i)).animal.isFull();
@@ -621,7 +607,7 @@ public struct VGMstructXL
 
     private PropId GetNextInteractablPropId(int playerId, PropId prv)
     {
-        for (int i = prv.spotlId; i < players[playerId].animalAmount; i++)
+        for (int i = prv.spotlId; i < spots.GetSpotsLength(playerId); i++)
         {
             for (int j = prv.proplId; j < spots.GetSpot(playerId, i).animal.props.singlesLength; j++)
             {
