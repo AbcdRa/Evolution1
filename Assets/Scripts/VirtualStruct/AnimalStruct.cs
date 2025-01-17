@@ -12,32 +12,45 @@ public struct PropArray
 {
     public FixedList20<AnimalProp> singles;
     public FixedList20<AnimalProp> pairs;
-    public int singlesLength;
-    public int pairsLength;
+    public int singlesLength => singles.Length;
+    public int pairsLength => pairs.Length;
 
     public PropArray(int capacity)
     {
         singles = new ();
         pairs = new ();
-        singlesLength = 0;
-        pairsLength = 0;
+        //singlesLength = 0;
+        //pairsLength = 0;
     }
 
     internal void Add(in AnimalProp prop)
     {
         if (prop.isPair)
         {
-            pairs[pairsLength++] = prop;
+            pairs.Add(prop);
         }
         else
         {
-            singles[singlesLength++] = prop;
+            singles.Add(prop);
         }
+        //if (prop.isPair)
+        //{
+        //    pairs[pairsLength++] = prop;
+        //}
+        //else
+        //{
+        //    singles[singlesLength++] = prop;
+        //}
     }
 
-    internal void Remove(AnimalProp animalProp)
+    internal bool Remove(in AnimalProp animalProp)
     {
-        throw new NotImplementedException();
+        if (animalProp.isPair) {
+            return pairs.Remove(animalProp);
+        } else
+        {
+            return singles.Remove(animalProp);
+        }
     }
 
     internal bool HasPropName(in AnimalProp animalProp)
@@ -287,9 +300,10 @@ public struct AnimalStruct : IDisposable
         return 0;
     }
 
-    internal void RemoveProp(in AnimalProp animalProp)
+    public void RemoveProp(in AnimalProp animalProp)
     {
-        props.Remove(animalProp);
+        bool isRemoved = props.Remove(animalProp);
+        
         if(!props.HasPropName(animalProp)) propFlags &= ~animalProp.name;
     }
 

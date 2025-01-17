@@ -78,7 +78,7 @@ public struct AnimalSpotStruct
         animal.UpdateTurnCooldown();
     }
 
-    internal void RemoveProp(in AnimalProp animalProp)
+    public void RemoveProp(in AnimalProp animalProp)
     {
         animal.RemoveProp(animalProp);
     }

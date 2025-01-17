@@ -193,4 +193,17 @@ public struct FixedList20<T> where T : unmanaged
     {
         this[Length++] = animalSpotStruct;
     }
+
+    internal bool Remove(in T el)
+    {
+        for(int i = 0; i < Length; i++)
+        {
+            if(el.Equals(this[i]))
+            {
+                Length--;
+                return true;
+            }
+        }
+        return false;
+    }
 }

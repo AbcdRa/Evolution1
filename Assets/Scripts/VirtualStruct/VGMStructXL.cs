@@ -142,7 +142,8 @@ public struct VGMstructXL
 
     internal void Feed(int playerId, in AnimalId target)
     {
-        if (food <= 0) throw new Exception("Trying to feed without food");
+        if (food <= 0) 
+            throw new Exception("Trying to feed without food");
         int foodConsumed = 0;
         if (target.ownerId != playerId) throw new Exception("RuleBreaker as you like");
 
