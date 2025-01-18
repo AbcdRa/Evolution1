@@ -82,5 +82,10 @@ public struct AnimalSpotStruct
     {
         animal.RemoveProp(animalProp);
     }
+
+    public override string ToString()
+    {
+        return $"SPOT[{id.ownerId}~{id.localId}]={animal.ToString()}";
+    }
 }
 

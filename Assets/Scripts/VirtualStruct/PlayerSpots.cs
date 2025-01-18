@@ -13,13 +13,14 @@ public struct PlayerSpots
     public NativeList<AnimalSpotStruct> spots4;
     public FixedArr4<bool> isAbleToMove;
 
-    public PlayerSpots(List<AnimalSpotStruct> spots1, List<AnimalSpotStruct> spots2, List<AnimalSpotStruct> spots3, List<AnimalSpotStruct> spots4)
+    public PlayerSpots(List<AnimalSpotStruct> spots1, List<AnimalSpotStruct> spots2, List<AnimalSpotStruct> spots3, List<AnimalSpotStruct> spots4, FixedArr4<bool> isAbleToMove)
     {
+        //Todo можно заранее 8 capacity
         this.spots1 = spots1.ToNativeList(Allocator.TempJob);
         this.spots2 = spots2.ToNativeList(Allocator.TempJob);
         this.spots3 = spots3.ToNativeList(Allocator.TempJob);
         this.spots4 = spots4.ToNativeList(Allocator.TempJob);
-        isAbleToMove = new();
+        this.isAbleToMove = isAbleToMove;
     }
 
     public AnimalSpotStruct GetSpot(AnimalId id)

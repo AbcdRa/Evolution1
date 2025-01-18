@@ -10,8 +10,8 @@ using UnityEngine.SocialPlatforms.Impl;
 [BurstCompile(DisableDirectCall = true)]
 public struct PropArray
 {
-    public FixedList20<AnimalProp> singles;
-    public FixedList20<AnimalProp> pairs;
+    public FixedListProps20 singles;
+    public FixedListProps20 pairs;
     public int singlesLength => singles.Length;
     public int pairsLength => pairs.Length;
 
@@ -372,5 +372,10 @@ public struct AnimalStruct : IDisposable
     public void Dispose()
     {
         
+    }
+
+    public override string ToString()
+    {
+        return $"a[{food}/{maxFood}][{fat}/{maxFat}]{propFlags}";
     }
 }

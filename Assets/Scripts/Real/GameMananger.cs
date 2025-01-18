@@ -261,4 +261,9 @@ public class GameMananger : MonoBehaviour, IGameMananger
         
         return new VGMstructXL(currentPivot, currentPhase, _currentTurn, _currentSideTurn, ps, hs, deck, foodMananger.food);
     }
+
+    public ICard FindCard(CardStruct card)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -98,18 +98,20 @@ public struct MoveStruct
 
     public static void ExecuteMove(IGameMananger gm, in MoveStruct move)
     {
+        ICard card = gm.FindCard(move.data.card);
         switch (move.data.type)
         {
             case MoveType.Pass:
                 gm.Pass(move.data.playerId); break;
             case MoveType.CreateAnimal:
-                gm.CreateAnimal(move.data.playerId, move.data.card); break;
+                
+                gm.CreateAnimal(move.data.playerId, card); break;
             case MoveType.AddPropToAnimal:
-                gm.AddPropToAnimal(move.data.playerId, move.data.card, move.data.target1, move.data.isRotated); break;
+                gm.AddPropToAnimal(move.data.playerId, card, move.data.target1, move.data.isRotated); break;
             case MoveType.Feed:
                 gm.Feed(move.data.playerId, move.data.target1); break;
             case MoveType.PlayProp:
-                gm.PlayProp(move.data.playerId, move.data.card, move.data.target1, move.data.target2); break;
+                gm.PlayProp(move.data.playerId, card, move.data.target1, move.data.target2); break;
         }
     }
 
@@ -175,5 +177,10 @@ public struct MoveStruct
         MoveData data = new MoveData(MoveType.PlayProp, playerId, CardStruct.NULL, prop, target1, target2);
         MoveStruct move = new MoveStruct(notation, data, 0f);
         return move;
+    }
+
+    public override string ToString()
+    {
+        return "M{"+notation+"}";
     }
 }

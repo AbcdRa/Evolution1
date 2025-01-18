@@ -169,14 +169,16 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
     public PlayerSpots GetPlayerSpotStruct()
     {
         List<AnimalSpotStruct>[] spots = new List<AnimalSpotStruct>[4] { new(), new(), new(), new() };
+        FixedArr4<bool> isAbleToMove = new();
         for(int i = 0; i < playerAmount; i++)
         {
+            isAbleToMove[i] = players[i].isAbleToMove;
             for(int j = 0; j < players[i].animalArea.amount; j++)
             {
                 spots[i].Add(players[i].animalArea.spots[j].GetStruct(i));
             }
         }
-        return new PlayerSpots(spots[0], spots[1], spots[2], spots[3]);
+        return new PlayerSpots(spots[0], spots[1], spots[2], spots[3], isAbleToMove);
     }
 
 }

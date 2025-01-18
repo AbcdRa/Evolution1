@@ -559,12 +559,12 @@ public struct VGMstructXL
                 moves.Add(MoveStruct.GetPassMove(currentTurn));
                 break;
             case 1:
-                for (int i = 0; i < spots.GetSpotsLength(currentTurn); i++)
-                {
-                    
-                    bool isFull = spots.GetSpot(new(currentTurn, i)).animal.isFull();
-                    if (!isFull) moves.Add(MoveStruct.GetFeedMove(currentTurn, new(currentTurn, i)));
-                }
+                if(food > 0)
+                    for (int i = 0; i < spots.GetSpotsLength(currentTurn); i++)
+                    {
+                        bool isFull = spots.GetSpot(new(currentTurn, i)).animal.isFull();
+                        if (!isFull) moves.Add(MoveStruct.GetFeedMove(currentTurn, new(currentTurn, i)));
+                    }
                 if (moves.Length == 0) moves.Add(MoveStruct.GetPassMove(currentTurn));
                 PropId propId = new PropId();
                 while (!propId.isNull())
@@ -640,5 +640,9 @@ public struct VGMstructXL
         return random.NextInt(1, 7);
     }
 
+    public override string ToString()
+    {
+        return $"VGM[{currentPhase}/{currentTurn}][D{deck.Length}][F{food}]";
+    }
 
 }

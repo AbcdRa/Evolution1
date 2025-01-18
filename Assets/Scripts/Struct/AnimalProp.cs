@@ -70,6 +70,17 @@ public struct AnimalProp
     public int phaseCooldown;
     public int turnCooldown;
 
+    public AnimalProp(AnimalPropSO animalPropSO) 
+    {
+        this.name = animalPropSO.PropName;
+        this.hungerIncrease = animalPropSO.HungerIncrease;
+        this.isPair = animalPropSO.IsPair;
+        this.mainAnimalId = AnimalId.NULL;
+        this.secondAnimalId = AnimalId.NULL;
+        this.phaseCooldown = 0;
+        this.turnCooldown = 0;
+    }
+
     public bool IsActivable => phaseCooldown == 0 && turnCooldown == 0;
 
     public void Activate()
@@ -136,5 +147,7 @@ public struct AnimalProp
         if (oth.secondAnimalId.Equals(mainAnimalId) && oth.mainAnimalId.Equals(secondAnimalId)) return true;
         return false;
     }
+
+
 }
 
