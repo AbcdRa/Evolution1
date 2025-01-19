@@ -18,11 +18,6 @@ public struct AnimalSpotStruct
         this.id = id;
         this.animal = animal;
 
-        //this.cards = new(cards.Count, Allocator.TempJob);
-        //foreach(CardStruct card in cards)
-        //{
-        //    this.cards.Add(card);
-        //}
     }
 
 

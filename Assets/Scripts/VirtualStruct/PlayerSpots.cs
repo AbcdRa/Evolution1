@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
-public struct PlayerSpots
+public struct PlayerSpots : IDisposable
 {
     public NativeList<AnimalSpotStruct> spots1;
     public NativeList<AnimalSpotStruct> spots2;
@@ -16,10 +16,10 @@ public struct PlayerSpots
     public PlayerSpots(List<AnimalSpotStruct> spots1, List<AnimalSpotStruct> spots2, List<AnimalSpotStruct> spots3, List<AnimalSpotStruct> spots4, FixedArr4<bool> isAbleToMove)
     {
         //Todo можно заранее 8 capacity
-        this.spots1 = spots1.ToNativeList(Allocator.TempJob);
-        this.spots2 = spots2.ToNativeList(Allocator.TempJob);
-        this.spots3 = spots3.ToNativeList(Allocator.TempJob);
-        this.spots4 = spots4.ToNativeList(Allocator.TempJob);
+        this.spots1 = spots1.ToNativeList(Allocator.Persistent);
+        this.spots2 = spots2.ToNativeList(Allocator.Persistent);
+        this.spots3 = spots3.ToNativeList(Allocator.Persistent);
+        this.spots4 = spots4.ToNativeList(Allocator.Persistent);
         this.isAbleToMove = isAbleToMove;
     }
 
@@ -338,5 +338,11 @@ public struct PlayerSpots
         isAbleToMove[playerId] = false;
     }
 
-
+    public void Dispose()
+    {
+        spots1.Dispose();
+        spots2.Dispose();
+        spots3.Dispose();
+        spots4.Dispose();
+    }
 }   

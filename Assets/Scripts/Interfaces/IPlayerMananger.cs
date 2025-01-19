@@ -11,6 +11,7 @@ public interface IPlayerMananger
     int Feed(int playerId, AnimalId target, IFoodMananger foodMananger);
     Hands GetHandsStruct(int target, List<CardStruct> deck);
     PlayerSpots GetPlayerSpotStruct();
+    IAnimalSpot GetSpot(AnimalId target);
     void KillById(AnimalId predatorId, AnimalId victimId);
     void Pass(int playerId);
     void ResetPass();

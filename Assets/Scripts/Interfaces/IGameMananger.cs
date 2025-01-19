@@ -15,5 +15,5 @@ public interface IGameMananger
     public void AddPropToAnimal(int playerId, ICard card, in AnimalId target1, bool isRotated);
     public void Feed(int playerId, in AnimalId target1);
     public void PlayProp(int playerId, ICard card, in AnimalId target1, in AnimalId target2, bool isRotated = false);
-    public ICard FindCard(CardStruct card);
+    public ICard FindCard(CardStruct card, int playerId, AnimalId target);
 }

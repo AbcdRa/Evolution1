@@ -59,7 +59,7 @@ public struct GameInteractionStruct
            throw new Exception("GameBreaking Trying to attack immortal victim");
 
         AnimalPropName victimFlags = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.propFlags;
-        NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Temp);
+        NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Persistent);
         for(int i = 0; i < playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.props.singlesLength; i++)
         {
             AnimalProp prop = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.props.singles[i];
@@ -69,7 +69,11 @@ public struct GameInteractionStruct
         if (sideProps.Length == 0)
         {
             playerMananger.KillById(predatorId, victimId);
+            sideProps.Dispose();
             return PairAnimalId.DOING_NEXT_TURN;
+        } else
+        {
+            sideProps.Dispose();
         }
         return sideTurnsInfo;
     }
@@ -105,7 +109,7 @@ public struct GameInteractionStruct
             throw new Exception("GameBreaking Trying to attack immortal victim");
 
         AnimalPropName victimFlags = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.propFlags;
-        NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Temp);
+        NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Persistent);
         for (int i = 0; i < playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.props.singlesLength; i++)
         {
             AnimalProp prop = playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal.props.singles[i];
@@ -115,7 +119,11 @@ public struct GameInteractionStruct
         if (sideProps.Length == 0)
         {
             playerMananger.KillById(predatorId, victimId);
+            sideProps.Dispose();
             return PairAnimalId.DOING_NEXT_TURN;
+        } else
+        {
+            sideProps.Dispose();
         }
         return sideTurnsInfo;
     }

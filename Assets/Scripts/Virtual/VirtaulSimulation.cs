@@ -46,7 +46,8 @@ public class VirtualSimulation
 
 }
 
-[BurstCompile(DisableDirectCall = true)]
+//[BurstCompile(DisableDirectCall = true)]
+[BurstCompile(Debug = true)]
 public struct CalculateMoveJob : IJob
 {
 

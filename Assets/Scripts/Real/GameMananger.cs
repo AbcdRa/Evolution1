@@ -262,8 +262,23 @@ public class GameMananger : MonoBehaviour, IGameMananger
         return new VGMstructXL(currentPivot, currentPhase, _currentTurn, _currentSideTurn, ps, hs, deck, foodMananger.food);
     }
 
-    public ICard FindCard(CardStruct card)
+    public ICard FindCard(CardStruct card, int playerId, AnimalId target)
     {
-        throw new NotImplementedException();
+        if (target.isNull)
+        {
+            for (int i = 0; i < playerMananger.players[playerId].hand.amount; i++)
+            {
+                if(card.id == playerMananger.players[playerId].hand.cards[i].id)
+                {
+                    return playerMananger.players[playerId].hand.cards[i];
+                }
+            }
+            throw new Exception("Can't find card");
+        }
+        else
+        {
+            IAnimalSpot spot = playerMananger.GetSpot(target);
+            return spot.FindCard(card);
+        }
     }
 }

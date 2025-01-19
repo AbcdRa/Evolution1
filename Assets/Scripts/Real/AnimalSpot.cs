@@ -92,5 +92,12 @@ public class AnimalSpot : MonoBehaviour, IAnimalSpot
         return new AnimalSpotStruct(new(ownerId, localId), animal);
     }
 
+    public ICard FindCard(CardStruct card)
+    {
+        for (int i = 0; i < cards.Count; i++) { 
+            if(card.SoftEqual(cards[i])) return cards[i];
+        }
+        throw new Exception("Cant find");
+    }
 }
 

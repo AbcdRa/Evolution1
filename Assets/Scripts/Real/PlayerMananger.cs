@@ -181,4 +181,8 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
         return new PlayerSpots(spots[0], spots[1], spots[2], spots[3], isAbleToMove);
     }
 
+    public IAnimalSpot GetSpot(AnimalId target)
+    {
+        return players[target.ownerId].animalArea.spots[target.localId];
+    }
 }

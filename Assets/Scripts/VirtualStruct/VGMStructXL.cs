@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 
 [BurstCompile(DisableDirectCall = true)]
-public struct VGMstructXL
+public struct VGMstructXL : IDisposable
 {
     public PlayerSpots spots;
     public Hands hands;
@@ -42,7 +42,8 @@ public struct VGMstructXL
         _currentTurn = currentTurn;
         _sideTurnsInfo = new PairAnimalId();
         this.spots = spots;
-        this.deck = new(deck.Count, Allocator.TempJob);
+        
+        this.deck = new(deck.Count, Allocator.Persistent);
         for(int i = 0; i < deck.Count; i++) { this.deck.Add(deck[i]); }
         this.hands = hands;
         random = new Unity.Mathematics.Random(10u);
@@ -423,20 +424,20 @@ public struct VGMstructXL
                 if (i == currentTurn)
                 {
                     friendSpots.Add(new(i, j));
-                    for (int k = j; k < spots.GetSpotsLength(i); k++)
+                    for (int k = j+1; k < spots.GetSpotsLength(i); k++)
                         pairFriendSpots.Add(new(i, j, i, k));
                 }
                 else
                 {
                     enemySpots.Add(new(i, j));
-                    for (int k = j; k < spots.GetSpotsLength(i); k++)
+                    for (int k = j+1; k < spots.GetSpotsLength(i); k++)
                         pairEnemySpots.Add(new(i, j, i, k));
                 }
             }
         }
 
 
-        NativeList<MoveStruct> moves = new NativeList<MoveStruct>(64, Allocator.TempJob);
+        NativeList<MoveStruct> moves = new NativeList<MoveStruct>(64, Allocator.Persistent);
         switch (currentPhase)
         {
             case 0:
@@ -627,6 +628,7 @@ public struct VGMstructXL
             NativeList<MoveStruct> moves = isSideTurns ? GetAllPossibleSidesMoves(_sideTurnsInfo) : GetAllPossibleMoves();
             //МДА НЕ ИДЕАЛЬНО КОНЕЧНО TODO оптимизировать
             MoveStruct randomMove = moves[random.NextInt(0, moves.Length)];
+            moves.Dispose();
             MoveStruct.ExecuteMove(ref this, randomMove);
             k++;
             if (k > 3200) throw new Exception("Бесконечная игра");
@@ -645,4 +647,10 @@ public struct VGMstructXL
         return $"VGM[{currentPhase}/{currentTurn}][D{deck.Length}][F{food}]";
     }
 
+    public void Dispose()
+    {
+        spots.Dispose();
+        hands.Dispose();
+        deck.Dispose();
+    }
 }

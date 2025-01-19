@@ -98,19 +98,21 @@ public struct MoveStruct
 
     public static void ExecuteMove(IGameMananger gm, in MoveStruct move)
     {
-        ICard card = gm.FindCard(move.data.card);
+        
         switch (move.data.type)
         {
             case MoveType.Pass:
                 gm.Pass(move.data.playerId); break;
             case MoveType.CreateAnimal:
-                
+                ICard card = gm.FindCard(move.data.card, move.data.playerId, AnimalId.NULL);
                 gm.CreateAnimal(move.data.playerId, card); break;
             case MoveType.AddPropToAnimal:
+                card = gm.FindCard(move.data.card, move.data.playerId, AnimalId.NULL);
                 gm.AddPropToAnimal(move.data.playerId, card, move.data.target1, move.data.isRotated); break;
             case MoveType.Feed:
                 gm.Feed(move.data.playerId, move.data.target1); break;
             case MoveType.PlayProp:
+                card = gm.FindCard(move.data.card, move.data.playerId, move.data.target1);
                 gm.PlayProp(move.data.playerId, card, move.data.target1, move.data.target2); break;
         }
     }
