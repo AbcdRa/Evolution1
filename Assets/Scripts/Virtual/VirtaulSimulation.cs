@@ -19,7 +19,7 @@ public class VirtualSimulation
         List<JobHandle> jobHandles = new();
         for (int i = 0; i < 1; i++)
         {
-            MoveStruct.ExecuteMove(ref vgm, moves[0]);
+            vgm.ExecuteMove(moves[i]);
             CalculateMoveJob job = new CalculateMoveJob(vgm, moves[i], GameMananger.instance.currentTurn);
             jobs.Add(job);
             jobHandles.Add(job.Schedule());
@@ -71,7 +71,7 @@ public struct CalculateMoveJob : IJob
         for (int i = 0; i < attempts; i++)
         {
             VGMstructXL vgmInit = vgmStruct;
-            MoveStruct.ExecuteMove(ref vgmInit, vMove);
+            vgmInit.ExecuteMove(vMove);
             winRank += vgmInit.MakeRandomMovesUntilTerminate(targetPlayer) ? 1 : 0;
         }
         rating = (winRank + 0f) / attempts;

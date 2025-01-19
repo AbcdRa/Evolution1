@@ -1,8 +1,10 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Collections;
 
+[BurstCompile]
 public struct Hands : IDisposable
 {
     public NativeList<CardStruct> hand1;

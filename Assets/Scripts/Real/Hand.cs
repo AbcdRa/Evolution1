@@ -17,16 +17,6 @@ public class Hand : MonoBehaviour, IHand
 
     public List<ICard> cards => _cards;
 
-    public HandStruct GetStruct()
-    {
-        List<CardStruct> cards = new List<CardStruct>();
-        foreach (var card in this._cards)
-        {
-            cards.Add(card.GetStruct());
-        }
-        return new HandStruct(cards);
-    }
-
     public void InitReset(int ownerId)
     {
         this.ownerId = ownerId;

@@ -116,7 +116,7 @@ public struct VGMstructXL : IDisposable
 
     internal bool AddPropToAnimal(int playerId, in CardStruct card, in AnimalId target, bool isRotated)
     {
-        if (target.ownerId != playerId) throw new Exception("RuleBreaker as you like");
+        if (target.ownerId != playerId) throw new Exception($"RuleBreaker as you like Add prop {card.ToFString()} isRotated = {isRotated} {this.ToString()} plId = {playerId}, target = {target.ToFString()} ");
         AnimalSpotStruct spot = spots.GetSpot(target);
         bool isAdded = spot.AddPropToAnimal(card, isRotated);
         if(!isAdded) return false;
@@ -198,8 +198,10 @@ public struct VGMstructXL : IDisposable
         NativeList<MoveStruct> moves = GetAllPossibleSidesMoves(_sideTurnsInfo);
         if (moves.Length == 1)
         {
-            MoveStruct.ExecuteMove(ref this, moves[0]);
+            ExecuteMove(moves[0]);
+            
         }
+        moves.Dispose();
         NextTurn(_sideTurnsInfo.second.ownerId);
 
     }
@@ -246,7 +248,7 @@ public struct VGMstructXL : IDisposable
             throw new Exception("GameBreaking Trying to attack immortal victim");
 
         AnimalPropName victimFlags = victim.animal.propFlags;
-        NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Temp);
+        NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Persistent);
         for (int i = 0; i < victim.animal.props.singlesLength; i++)
         {
             AnimalProp prop = victim.animal.props.singles[i];
@@ -256,7 +258,11 @@ public struct VGMstructXL : IDisposable
         if (sideProps.Length == 0)
         {
             spots.KillById(predatorId, victimId);
+            sideProps.Dispose();
             return PairAnimalId.DOING_NEXT_TURN;
+        } else
+        {
+            sideProps.Dispose();
         }
         return sideTurnsInfo;
     }
@@ -279,10 +285,12 @@ public struct VGMstructXL : IDisposable
                     _sideTurnsInfo = PairAnimalId.NULL;
                     return;
                 }
-                if (GetAllPossibleSidesMoves(_sideTurnsInfo).Length == 0)
+                NativeList<MoveStruct> sideMoves = GetAllPossibleSidesMoves(_sideTurnsInfo);
+                if (sideMoves.Length == 0)
                 {
                     spots.KillById(enemyId, friendId);
                 }
+                sideMoves.Dispose();
                 break;
             case AnimalPropName.Mimic:
                 friendSpot.animal.ActivateMimicProp();
@@ -364,7 +372,7 @@ public struct VGMstructXL : IDisposable
     {
         AnimalId myAnimalId = sideTurnsInfo.second;
         AnimalId enemyId = sideTurnsInfo.first;
-        NativeList<MoveStruct> moves = new NativeList<MoveStruct>(4, Allocator.TempJob);
+        NativeList<MoveStruct> moves = new NativeList<MoveStruct>(4, Allocator.Persistent);
         for (int i = 0; i < spots.GetSpot(myAnimalId).animal.props.singlesLength; i++)
         {
             AnimalProp prop = spots.GetSpot(myAnimalId).animal.props.singles[i];
@@ -412,10 +420,10 @@ public struct VGMstructXL : IDisposable
 
     public NativeList<MoveStruct> GetAllPossibleMoves()
     {
-        NativeList<AnimalId> enemySpots = new NativeList<AnimalId>(5, Allocator.Temp);
-        NativeList<AnimalId> friendSpots = new NativeList<AnimalId>(5, Allocator.Temp);
-        NativeList<PairAnimalId> pairEnemySpots = new NativeList<PairAnimalId>(5, Allocator.Temp);
-        NativeList<PairAnimalId> pairFriendSpots = new NativeList<PairAnimalId>(5, Allocator.Temp);
+        NativeList<AnimalId> enemySpots = new NativeList<AnimalId>(5, Allocator.Persistent);
+        NativeList<AnimalId> friendSpots = new NativeList<AnimalId>(5, Allocator.Persistent);
+        NativeList<PairAnimalId> pairEnemySpots = new NativeList<PairAnimalId>(5, Allocator.Persistent);
+        NativeList<PairAnimalId> pairFriendSpots = new NativeList<PairAnimalId>(5, Allocator.Persistent);
 
         for (int i = 0; i < playersLength; i++)
         {
@@ -604,6 +612,10 @@ public struct VGMstructXL : IDisposable
                 }
                 break;
         }
+        enemySpots.Dispose();
+        friendSpots.Dispose();
+        pairEnemySpots.Dispose();
+        pairFriendSpots.Dispose();
         return moves;
     }
 
@@ -629,7 +641,7 @@ public struct VGMstructXL : IDisposable
             //МДА НЕ ИДЕАЛЬНО КОНЕЧНО TODO оптимизировать
             MoveStruct randomMove = moves[random.NextInt(0, moves.Length)];
             moves.Dispose();
-            MoveStruct.ExecuteMove(ref this, randomMove);
+            ExecuteMove(randomMove);
             k++;
             if (k > 3200) throw new Exception("Бесконечная игра");
         }
@@ -652,5 +664,26 @@ public struct VGMstructXL : IDisposable
         spots.Dispose();
         hands.Dispose();
         deck.Dispose();
+    }
+
+
+
+    public void ExecuteMove(in MoveStruct move)
+    {
+        switch (move.data.type)
+        {
+            case MoveType.Pass:
+                Pass(move.data.playerId); break;
+            case MoveType.CreateAnimal:
+                CreateAnimal(move.data.playerId, move.data.card); break;
+            case MoveType.AddPropToAnimal:
+                AddPropToAnimal(move.data.playerId, move.data.card, move.data.target1, move.data.isRotated); break;
+            case MoveType.Feed:
+                Feed(move.data.playerId, move.data.target1); break;
+            case MoveType.PlayProp:
+                PlayProp(move.data.playerId, move.data.card, move.data.target1, move.data.target2); break;
+            case MoveType.ResponseToAttack:
+                PlaySideProp(move.data.playerId, move.data.prop, move.data.target1, move.data.target2); break;
+        }
     }
 }

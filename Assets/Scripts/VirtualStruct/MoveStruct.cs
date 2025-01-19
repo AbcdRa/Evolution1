@@ -57,43 +57,8 @@ public struct MoveStruct
         this.rating = rating;
     }
 
-    public static void ExecuteMove(ref VGMstruct vgm, in MoveStruct move)
-    {
-        switch(move.data.type)
-        {
-            case MoveType.Pass:
-                vgm.Pass(move.data.playerId); break;
-            case MoveType.CreateAnimal:
-                vgm.CreateAnimal(move.data.playerId, move.data.card); break;
-            case MoveType.AddPropToAnimal:
-                vgm.AddPropToAnimal(move.data.playerId, move.data.card, move.data.target1, move.data.isRotated); break;
-            case MoveType.Feed:
-                vgm.Feed(move.data.playerId, move.data.target1); break;
-            case MoveType.PlayProp:
-                vgm.PlayProp(move.data.playerId, move.data.card, move.data.target1, move.data.target2); break;
-            case MoveType.ResponseToAttack:
-                vgm.PlaySideProp(move.data.playerId, move.data.prop, move.data.target1, move.data.target2); break;
-        }
-    }
 
-    public static void ExecuteMove(ref VGMstructXL vgm, in MoveStruct move)
-    {
-        switch (move.data.type)
-        {
-            case MoveType.Pass:
-                vgm.Pass(move.data.playerId); break;
-            case MoveType.CreateAnimal:
-                vgm.CreateAnimal(move.data.playerId, move.data.card); break;
-            case MoveType.AddPropToAnimal:
-                vgm.AddPropToAnimal(move.data.playerId, move.data.card, move.data.target1, move.data.isRotated); break;
-            case MoveType.Feed:
-                vgm.Feed(move.data.playerId, move.data.target1); break;
-            case MoveType.PlayProp:
-                vgm.PlayProp(move.data.playerId, move.data.card, move.data.target1, move.data.target2); break;
-            case MoveType.ResponseToAttack:
-                vgm.PlaySideProp(move.data.playerId, move.data.prop, move.data.target1, move.data.target2); break;
-        }
-    }
+
 
 
     public static void ExecuteMove(IGameMananger gm, in MoveStruct move)

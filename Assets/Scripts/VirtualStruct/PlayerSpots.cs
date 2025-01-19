@@ -2,9 +2,11 @@
 using Mono.Cecil;
 using System;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
+[BurstCompile]
 public struct PlayerSpots : IDisposable
 {
     public NativeList<AnimalSpotStruct> spots1;

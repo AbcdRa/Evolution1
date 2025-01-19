@@ -64,10 +64,8 @@
     <Compile Include="Assets\Scripts\Real\DiceMananger.cs" />
     <Compile Include="Assets\Scripts\Struct\GameInteractionStruct.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IFoodMananger.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\PlayerManangerStruct.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayer.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerControls.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\DeckStruct.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\MoveStruct.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Real\Deck.cs" />
@@ -110,10 +108,8 @@
     <Compile Include="Assets\Scripts\VirtualStruct\AnimalSpotStruct.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IAnimalArea.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\AnimalAreaStruct.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\PlayerStruct.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\CardStruct.cs" />
     <Compile Include="Assets\Scripts\AnimalPropSO.cs" />
-    <Compile Include="Assets\Scripts\VirtualStruct\HandStruct.cs" />
     <Compile Include="Assets\Scripts\Real\PlayerMananger.cs" />
     <Compile Include="Assets\Scripts\Real\AnimalArea.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\VGMStructXL.cs" />

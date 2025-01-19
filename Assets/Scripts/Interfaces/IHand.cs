@@ -8,7 +8,6 @@ public interface IHand
     public ICard selected {  get; }
     public List<ICard> cards { get; }
 
-    HandStruct GetStruct();
     void InitReset(int ownerId);
     void RemoveCard(ICard card);
     void Select(Card card);

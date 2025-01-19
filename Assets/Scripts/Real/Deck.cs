@@ -20,12 +20,6 @@ public class Deck : MonoBehaviour, IDeck
         return cards;
     }
 
-    public DeckStruct GetStruct()
-    {
-        List<CardStruct> cardstructs = new List<CardStruct>();
-        for (int i = 0; i < _cards.Count; i++) cardstructs.Add(_cards[i].GetStruct());
-        return new DeckStruct(cardstructs);
-    }
 
     public void SetupGame()
     {
