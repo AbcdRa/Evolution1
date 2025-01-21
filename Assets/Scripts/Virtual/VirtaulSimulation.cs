@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
@@ -10,11 +11,10 @@ using UnityEngine.Jobs;
 
 public class VirtualSimulation
 {
-    public MoveStruct GetBestMove(Player player)
+    public unsafe MoveStruct GetBestMove(Player player)
     {
         VGMstructXL vgm = GameMananger.instance.GetStruct(player);
         NativeList<MoveStruct> moves = vgm.GetAllPossibleMoves();
-
         List<CalculateMoveJob> jobs = new();
         List<JobHandle> jobHandles = new();
         for (int i = 0; i < 1; i++)
@@ -47,6 +47,7 @@ public class VirtualSimulation
 }
 
 //[BurstCompile(DisableDirectCall = true)]
+
 [BurstCompile(Debug = true)]
 public struct CalculateMoveJob : IJob
 {
@@ -72,8 +73,12 @@ public struct CalculateMoveJob : IJob
         {
             VGMstructXL vgmInit = vgmStruct;
             vgmInit.ExecuteMove(vMove);
+
             winRank += vgmInit.MakeRandomMovesUntilTerminate(targetPlayer) ? 1 : 0;
+            vgmInit.Dispose();
         }
+        vgmStruct.Dispose();
+       
         rating = (winRank + 0f) / attempts;
     }
 }

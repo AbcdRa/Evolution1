@@ -17,8 +17,8 @@ public struct PropArray
 
     public PropArray(int capacity)
     {
-        singles = new ();
-        pairs = new ();
+        singles = new (capacity);
+        pairs = new (capacity);
         //singlesLength = 0;
         //pairsLength = 0;
     }
