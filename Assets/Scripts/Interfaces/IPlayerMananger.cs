@@ -12,6 +12,7 @@ public interface IPlayerMananger
     Hands GetHandsStruct(int target, List<CardStruct> deck);
     PlayerSpots GetPlayerSpotStruct();
     IAnimalSpot GetSpot(AnimalId target);
+    VPlayerMananger GetVirtual(Player player, List<CardStruct> deck);
     void KillById(AnimalId predatorId, AnimalId victimId);
     void Pass(int playerId);
     void ResetPass();

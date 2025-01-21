@@ -281,4 +281,11 @@ public class GameMananger : MonoBehaviour, IGameMananger
             return spot.FindCard(card);
         }
     }
+
+    public VGame GetVirtual(Player player)
+    {
+        List<CardStruct> fDeck = deck.GetCardStruct();
+        VPlayerMananger vPlayerMananger = playerMananger.GetVirtual(player, fDeck);
+        return new VGame(currentPivot, currentPhase, _currentTurn, _currentSideTurn, vPlayerMananger, fDeck, foodMananger.food, _sideTurnsInfo);
+    }
 }

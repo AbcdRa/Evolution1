@@ -48,9 +48,11 @@ public class Player : MonoBehaviour, IPlayer
 
     public void MakeVirtualTurn()
     {
-        VirtualSimulation vr = new VirtualSimulation();
-        MoveStruct bestMove = vr.GetBestMove(this);
-        MoveStruct.ExecuteMove(GameMananger.instance, bestMove);
+        VirtualSimulation vr = new VirtualSimulation(this);
+        StartCoroutine(vr.WaitingMove());
+        //VMove bestMove = 
+        //vr.GetBestMove(this);
+        //VMove.ExecuteMove(GameMananger.instance, bestMove);
     }
 
     public void Pass()

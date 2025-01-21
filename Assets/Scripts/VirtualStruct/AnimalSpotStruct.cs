@@ -39,6 +39,12 @@ public struct AnimalSpotStruct
         this.id = id;
     }
 
+    internal void SetLocalAndOwnerId(int ownerId, int localId)
+    {
+        this.id = new(ownerId, localId);
+    }
+
+
     internal bool IsPossibleToAddProp(in AnimalProp prop)
     {
         return animal.IsPossibleToAdd(prop);
