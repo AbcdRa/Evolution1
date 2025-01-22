@@ -10,9 +10,9 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 public class VPlayerMananger
 {
     public int playersAmount => players.Count;
-    List<List<AnimalSpotStruct>> spots;
-    List<List<CardStruct>> hands;
-    List<VPlayer> players;
+    public List<List<AnimalSpotStruct>> spots;
+    public List<List<CardStruct>> hands;
+    public List<VPlayer> players;
 
     public VPlayerMananger(List<List<AnimalSpotStruct>> spots, List<List<CardStruct>> hands, List<VPlayer> players)
     {
@@ -22,14 +22,18 @@ public class VPlayerMananger
     }
     //public FixedArr4<bool> isAbleToMove { get; internal set; }
 
-    internal void AddCard(int playerId, CardStruct card)
+    internal void AddCard(int playerId, in CardStruct card)
     {
-        throw new NotImplementedException();
+        hands[playerId].Add(card);
     }
 
-    internal bool AddPropToAnimal(CardStruct card, AnimalId target, bool isRotated)
+    internal bool AddPropToAnimal(in CardStruct card, AnimalId target, bool isRotated)
     {
-        throw new NotImplementedException();
+        AnimalSpotStruct spot = GetSpot(target);
+        bool isAdded = spot.AddPropToAnimal(card, isRotated);
+        if (!isAdded) return false;
+        SetSpot(target, spot);
+        return true;
     }
 
     internal bool CreateAnimal(int playerId, CardStruct card)
@@ -42,9 +46,9 @@ public class VPlayerMananger
         return isAddedSuccesful;
     }
 
-    internal void DecreaseFood(object piracyTarget, int v)
+    internal void DecreaseFood(in AnimalId piracyTargetId, int v)
     {
-        throw new NotImplementedException();
+        spots[piracyTargetId.ownerId][piracyTargetId.localId].DecreaseFood(v);
     }
 
     internal VPlayerMananger DeepCopy()
@@ -68,7 +72,7 @@ public class VPlayerMananger
             {
                 cardsCopyIn.Add(hands[i][j]);
             }
-            hands.Add(cardsCopyIn);
+            handsCopy.Add(cardsCopyIn);
         }
         List<VPlayer> playersCopy = new(players.Count);
         for(int i =0; i < players.Count; i++)
@@ -78,10 +82,6 @@ public class VPlayerMananger
         return new VPlayerMananger(spotsCopy, handsCopy, playersCopy);
     }
 
-    internal int Feed(AnimalId target, int food, bool v)
-    {
-        throw new NotImplementedException();
-    }
 
     internal VPlayer GetCurrentPlayer(int currentTurn)
     {
@@ -100,6 +100,8 @@ public class VPlayerMananger
 
     public AnimalSpotStruct GetSpot(AnimalId target)
     {
+        if ((target.ownerId < 0 || target.ownerId > spots.Count) || (target.localId < 0 || spots[target.ownerId].Count < target.localId))
+            throw new ArgumentException("WTF"+target.ToString());
         return spots[target.ownerId][target.localId];
     }
 
@@ -116,7 +118,25 @@ public class VPlayerMananger
 
     internal bool IsWinner(VPlayer player)
     {
-        throw new NotImplementedException();
+        int[] scores = new int[players.Count];
+        for(int i = 0; i < spots.Count; i++)
+        {
+            for(int j = 0; j < spots[i].Count; j++)
+            {
+                scores[i] += spots[i][j].GetScore();
+            }
+        }
+        int bestScore = 0;
+        int bestScoreId = 0;
+        for(int i = 0; i < scores.Length; i++)
+        {
+            if (scores[i] > bestScore)
+            {
+                bestScore = scores[i];
+                bestScoreId = i;
+            }
+        }
+        return player.id == bestScoreId;
     }
 
     internal void KillById(AnimalId predatorId, AnimalId victimId)
@@ -128,7 +148,7 @@ public class VPlayerMananger
             predator.animal.AddFlag(AnimalPropName.RIsPoisoned);
 
         Kill(victimId);
-        OrganizateSpots();
+        
         AnimalId nearScavenger = FindNearScavenger(predatorId.ownerId);
         if (!nearScavenger.isNull)
         {
@@ -141,7 +161,7 @@ public class VPlayerMananger
         SetSpot(predator);
     }
 
-    private int Feed(in AnimalId id, int foodAmount, bool isBlueFood = true, int foodConsume = 1)
+    public int Feed(in AnimalId id, int foodAmount, bool isBlueFood = true, int foodConsume = 1)
     {
         AnimalSpotStruct targetSpot = GetSpot(id);
         if (isBlueFood)
@@ -206,17 +226,50 @@ public class VPlayerMananger
 
     private AnimalId FindNearScavenger(int ownerId)
     {
-        throw new NotImplementedException();
+        for (int i = ownerId; i < ownerId + spots.Count; i++)
+        {
+            int owId = i % spots.Count;
+            for (int j = 0; j < spots[owId].Count; j++)
+            {
+                if (spots[owId][j].animal.propFlags.HasFlag(AnimalPropName.Scavenger)) return new(owId, j);
+            }
+        }
+        return AnimalId.NULL;
     }
 
     private void OrganizateSpots()
     {
-        throw new NotImplementedException();
+        //TODO Необязательно обновлять все, достаточно только несколько
+        for(int i = 0; i < spots.Count; i++)
+        {
+            for(int j = 0; j < spots[i].Count; j++)
+            {
+                spots[i][j].SetOwnerAndLocalId(i, j);
+            }
+        }
     }
 
     private void Kill(AnimalId victimId)
     {
-        throw new NotImplementedException();
+        AnimalSpotStruct victim = GetSpot(victimId);
+        for(int i = 0; i < victim.animal.props.pairs.Length; i++)
+        {
+            AnimalProp prop = victim.animal.props.pairs[i];
+            AnimalId oth = prop.GetOtherAnimalId(victimId);
+            RemoveProp(oth, prop);
+        }
+        RemoveSpot(victimId);
+    }
+
+    private void RemoveSpot(AnimalId victimId)
+    {
+        spots[victimId.ownerId].RemoveAt(victimId.localId);
+        OrganizateSpots();
+    }
+
+    private void RemoveProp(AnimalId id, in AnimalProp prop)
+    {
+        spots[id.ownerId][id.localId].RemoveProp(prop);
     }
 
     internal void Pass(int playerId)
@@ -260,6 +313,8 @@ public class VPlayerMananger
 
     internal void SetSpot(AnimalSpotStruct friendSpot)
     {
+        if (friendSpot.id.localId == spots[friendSpot.id.ownerId].Count)
+            spots[friendSpot.id.ownerId].Add(friendSpot);
         spots[friendSpot.id.ownerId][friendSpot.id.localId] = friendSpot;
     }
 
@@ -278,7 +333,7 @@ public class VPlayerMananger
                 else
                 {
                     AnimalSpotStruct spot = spots[j][i];
-                    spot.SetLocalAndOwnerId(j, i);
+                    spot.SetOwnerAndLocalId(j, i);
                     spots[j][i] = spot;
                     i++;
 
@@ -292,7 +347,7 @@ public class VPlayerMananger
     {
         for (int j = 0; j < spots.Count; j++)
         {
-            for (int i = 0; i < spots[j].Count;)
+            for (int i = 0; i < spots[j].Count; i++)
             {
                 spots[j][i].UpdatePhaseCooldown();
             }
@@ -303,7 +358,7 @@ public class VPlayerMananger
     {
         for (int j = 0; j < spots.Count; j++)
         {
-            for (int i = 0; i < spots[j].Count;)
+            for (int i = 0; i < spots[j].Count; i++)
             {
                 spots[j][i].UpdateTurnCooldown();
             }
@@ -317,5 +372,17 @@ public class VPlayerMananger
     internal bool IsAbleToMove(int playerId)
     {
         return players[playerId].isAbleToMove;
+    }
+
+    internal void RemoveCardFromHand(int playerId, CardStruct card)
+    {
+        for (int i = 0; i < hands[playerId].Count; i++) {
+            if (hands[playerId][i].id == card.id)
+            {
+                hands[playerId].RemoveAt(i);
+                return;
+            }
+        }
+        throw new Exception("I CAN'T FIND CARD!!");
     }
 }

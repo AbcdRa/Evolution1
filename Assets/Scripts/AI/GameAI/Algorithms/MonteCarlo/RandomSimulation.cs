@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using GameAI.GameInterfaces;
@@ -120,6 +121,7 @@ namespace GameAI.Algorithms.MonteCarlo
             for (int i = 0; i < count; i++)
             {
                 double score = moveStats[i].Score();
+                Debug.WriteLine(score);
                 if (score > bestScoreFound)
                 {
                     bestScoreFound = score;

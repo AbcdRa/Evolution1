@@ -266,10 +266,19 @@ public struct AnimalStruct : IDisposable
         AnimalProp prop = isRotated ? card.second : card.main;
         bool isPossibleToAdd = IsPossibleToAdd(prop);
         if(!isPossibleToAdd) return false;
+        if(prop.name == AnimalPropName.Fat)
+        {
+            maxFat++;
+            if(!props.HasPropName(prop))
+            {
+                props.Add(prop);
+                
+            }
+            propFlags |= prop.name;
+            return true;
+        }
         props.Add(prop);
-
         maxFood += prop.hungerIncrease;
-        if (prop.name == AnimalPropName.Fat) maxFat++;
         propFlags |= prop.name;
         return true;
 

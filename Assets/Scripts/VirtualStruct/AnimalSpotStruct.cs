@@ -39,9 +39,10 @@ public struct AnimalSpotStruct
         this.id = id;
     }
 
-    internal void SetLocalAndOwnerId(int ownerId, int localId)
+    internal void SetOwnerAndLocalId(int ownerId, int localId)
     {
-        this.id = new(ownerId, localId);
+        this.id.ownerId = ownerId;
+        this.id.localId = localId;
     }
 
 
@@ -87,6 +88,11 @@ public struct AnimalSpotStruct
     public override string ToString()
     {
         return $"SPOT[{id.ownerId}~{id.localId}]={animal.ToString()}";
+    }
+
+    internal void DecreaseFood(int v)
+    {
+        animal.food -= v;
     }
 }
 

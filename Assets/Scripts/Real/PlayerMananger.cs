@@ -142,7 +142,7 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
             else deck.Add(players[3].hand.cards[i].GetStruct());
         }
 
-        deck = DevExtension.Shuffle(deck);
+        deck = DevExtension.Shuffle(deck, GameMananger.rng);
         for(int i = 0; i < 4; i++)
         {
             if (i == targetId) continue;
@@ -200,7 +200,7 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
             }
         }
 
-        deck = DevExtension.Shuffle(deck);
+        deck = DevExtension.Shuffle(deck, GameMananger.rng);
 
         for(int i = 0; i < players.Length; i++)
         {

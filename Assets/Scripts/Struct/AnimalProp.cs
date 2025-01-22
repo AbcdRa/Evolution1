@@ -9,12 +9,7 @@ using fstring = Unity.Collections.FixedString32Bytes;
 using Unity.Burst;
 
 
-[Flags]
-public enum AnimalPropName
-{
-    Empty, Aqua, Big, Borrow, Camouflage, Cooperation, DropTail, Fasciest, Fast, Fat, Interaction,
-    Mimic, Parasite, Piracy, Poison, Predator, Scavenger, SharpEye, Sleep, Symbiosis, ERROR, RIsPoisoned, RIsSymbiontSlave
-}
+
 
 
 [BurstCompile(DisableDirectCall = true)]
@@ -42,13 +37,19 @@ public static class AnimalPropExtensions
 //    Mimic, Parasite, Piracy, Poison, Predator, Scavenger, SharpEye, Sleep, Symbiosis, VIRTUAL
 //}
 
-
+[Flags]
+public enum AnimalPropName
+{
+    Empty, Aqua, Big, Borrow, Camouflage, Cooperation, DropTail, Fasciest, Fast, Fat, Interaction,
+    Mimic, Parasite, Piracy, Poison, Predator, Scavenger, SharpEye, Sleep, Symbiosis, ERROR, RIsPoisoned, RIsSymbiontSlave
+}
 
 public struct AnimalPropNameToFString
 {
     public readonly static FixedString32Bytes[] runes = new FixedString32Bytes[] 
-    { "Aqua", "Big", "Borrow", "Camouflage", "Cooperation", "DropTail", "Fasciest", "Fast", "Fat", "Interaction",
-      "Mimic", "Parasite", "Piracy", "Poison", "Predator", "Scavenger", "SharpEye", "Sleep", "Symbiosis", "ERROR", "VIRTUAL" };
+    { "Empty", "Aqua", "Big", "Borrow", "Camouflage", "Cooperation", "DropTail", "Fasciest", "Fast", "Fat", "Interaction",
+      "Mimic", "Parasite", "Piracy", "Poison", "Predator", "Scavenger", "SharpEye", "Sleep", "Symbiosis", "ERROR", "RIsPoisoned",
+      "RIsSymbiontSlave"};
     
     public static fstring GetName(in AnimalPropName name)
     {
@@ -107,11 +108,13 @@ public struct AnimalProp
 
     public void UpdateTurnCooldown()
     {
+        if (turnCooldown == 0) return;
         turnCooldown--;
     }
 
     public void UpdatePhaseCooldown()
     {
+        if (phaseCooldown == 0) return;
         phaseCooldown--;
     }
 
@@ -126,6 +129,11 @@ public struct AnimalProp
     {
         
         return AnimalPropNameToFString.GetName(name);
+    }
+
+    public override string ToString()
+    {
+        return ToFString().Value;
     }
 
     internal bool isHostile()

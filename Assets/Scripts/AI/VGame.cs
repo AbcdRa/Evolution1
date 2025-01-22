@@ -1,17 +1,19 @@
 ﻿using GameAI.Algorithms.MonteCarlo;
 using GameAI.GameInterfaces;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-
+using System.IO;
 using Unity.Collections;
-
+using UnityEngine;
 using SRandom = Unity.Mathematics.Random;
-
+public enum MoveType { Pass, PlayProp, CreateAnimal, AddPropToAnimal, Feed, ResponseToAttack}
 
 public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
 {
+    private int s = 0;
     private SRandom random;
-    private VPlayerMananger vPM;
+    public VPlayerMananger vPM;
 
     public List<CardStruct> deck;
     public int food;
@@ -39,6 +41,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
         this.food = food;
         this.deck = deck;
         this.vPM = vPM;
+        random = new(10u);
     }
 
 
@@ -56,6 +59,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
 
     public void DoMove(VMove move)
     {
+        SaveJson();
         switch (move.data.type)
         {
             case MoveType.Pass:
@@ -67,7 +71,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
             case MoveType.Feed:
                 Feed(move.data.playerId, move.data.target1); break;
             case MoveType.PlayProp:
-                PlayProp(move.data.playerId, move.data.card, move.data.target1, move.data.target2); break;
+                PlayProp(move.data.playerId, move.data.prop, move.data.target1, move.data.target2); break;
             case MoveType.ResponseToAttack:
                 PlaySideProp(move.data.playerId, move.data.prop, move.data.target1, move.data.target2); break;
         }
@@ -151,9 +155,11 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
 
     public bool AddPropToAnimal(int playerId, in CardStruct card, in AnimalId target, bool isRotated)
     {
-        if (target.ownerId != playerId) throw new Exception($"RuleBreaker as you like Add prop {card.ToFString()} isRotated = {isRotated} {this.ToString()} plId = {playerId}, target = {target.ToFString()} ");
+        if (!(isRotated ? card.second : card.main).isHostile() && target.ownerId != playerId) 
+            throw new Exception($"RuleBreaker as you like Add prop {card.ToFString()} isRotated = {isRotated} {this.ToString()} plId = {playerId}, target = {target.ToFString()} ");
         bool isAdded = vPM.AddPropToAnimal(card, target, isRotated);
         if (!isAdded) return false;
+        vPM.RemoveCardFromHand(playerId, card);
         return true;
     }
 
@@ -162,7 +168,11 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
     public bool CreateAnimal(int playerId, in CardStruct card)
     {
         bool isAddedSuccesful = vPM.CreateAnimal(playerId, card);
-        if (isAddedSuccesful) NextTurn();
+        if (isAddedSuccesful)
+        {
+            NextTurn();
+            vPM.RemoveCardFromHand(playerId, card);
+        }
         return isAddedSuccesful;
     }
 
@@ -190,9 +200,8 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
     }
 
 
-    public void PlayProp(int playerId, in CardStruct card, in AnimalId target1, in AnimalId target2, bool isRotated = false)
+    public void PlayProp(int playerId, in AnimalProp prop, in AnimalId target1, in AnimalId target2)
     {
-        AnimalProp prop = isRotated ? card.second : card.main;
         switch (prop.name)
         {
             case AnimalPropName.Sleep:
@@ -372,6 +381,17 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
             if (nextTurn == currentTurn && !vPM.IsAbleToMove(nextTurn)) return -1;
         }
         return nextTurn;
+    }
+
+    private void SaveJson()
+    {
+
+        string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+
+        // Записываем JSON строку в файл
+        string filePath = Path.Combine(Application.persistentDataPath, "vgame/s" + s.ToString() + ".json");
+        File.WriteAllText(filePath, json);
+        s++;
     }
 
 
@@ -583,7 +603,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
                         if (!isFull) moves.Add(VMove.GetFeedMove(currentTurn, new(currentTurn, i)));
                     }
                 if (moves.Count == 0) moves.Add(VMove.GetPassMove(currentTurn));
-                PropId propId = new PropId();
+                PropId propId = new PropId(0, -1);
                 while (!propId.isNull())
                 {
                     propId = GetNextInteractablPropId(currentTurn, propId);
@@ -625,6 +645,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
 
     private PropId GetNextInteractablPropId(int playerId, PropId prv)
     {
+        prv.proplId++;
         for (int i = prv.spotlId; i < vPM.GetSpotsLength(playerId); i++)
         {
             for (int j = prv.proplId; j < vPM.GetSpot(playerId, i).animal.props.singlesLength; j++)
@@ -646,4 +667,13 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
         return $"VGM[{currentPhase}/{currentTurn}][D{deck.Count}][F{food}]";
     }
 
+    internal void MakeRandomMove()
+    {
+        List<VMove> moves = GetLegalMoves();
+        if (moves.Count == 0) 
+            throw new Exception("WTF");
+        VMove move = moves[random.NextInt(0, moves.Count)];
+        DoMove(move);
+        moves.Clear();
+    }
 }

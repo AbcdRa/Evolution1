@@ -2,6 +2,42 @@
 using Unity.Collections;
 using fstring = Unity.Collections.FixedString32Bytes;
 
+public struct MoveNotationMG
+{
+    public readonly static FixedString32Bytes[] runes = new FixedString32Bytes[]
+      { "pass", "play", "newa", "addp", "feed", "sply"};
+
+    public static fstring GetName(in MoveType name)
+    {
+        //TODO Сложнее но Можно оптимизировать
+        return runes[(int)name];
+    }
+}
+
+public struct MoveData
+{
+    public MoveType type;
+    public int playerId;
+    public bool isRotated;
+    public CardStruct card;
+    public AnimalId target1;
+    public AnimalId target2;
+    public AnimalProp prop;
+
+
+    public MoveData(MoveType type, int playerId, in CardStruct card, AnimalProp prop, in AnimalId t1, in AnimalId t2, bool isRotated = false)
+    {
+        this.type = type;
+        this.playerId = playerId;
+        this.card = card;
+        this.target1 = t1;
+        this.target2 = t2;
+        this.isRotated = isRotated;
+        this.prop = prop;
+    }
+
+}
+
 
 public class VMove
 {
@@ -63,6 +99,8 @@ public class VMove
 
     public static VMove GetAddPropMove(int playerId, in CardStruct card, in AnimalId target1, in AnimalId target2, bool isRotated)
     {
+        if (playerId != target1.ownerId && !(isRotated ? card.second : card.main).isHostile()) 
+            throw new System.Exception("WTF!");
         fstring notation = playerId.ToFString();
         notation.Append(MoveNotationMG.GetName(MoveType.AddPropToAnimal));
         notation.Append(card.ToFString());
@@ -82,6 +120,8 @@ public class VMove
 
     public static VMove GetPlayPropMove(int playerId, in AnimalProp prop, in AnimalId target1, in AnimalId target2)
     {
+        if (prop.name == AnimalPropName.ERROR)
+            throw new System.Exception("WTF Error prop!");
         fstring notation = playerId.ToFString();
         notation.Append(MoveNotationMG.GetName(MoveType.PlayProp));
         notation.Append(prop.ToFString());
