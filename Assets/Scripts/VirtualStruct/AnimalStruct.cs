@@ -114,97 +114,21 @@ public struct PropArray
 
     }
 
-    internal bool ActivateSleepProp()
+    public bool ActivateProp(AnimalPropName name)
     {
         for (int i = 0; i < singlesLength; i++)
         {
-            if (singles[i].name == AnimalPropName.Sleep)
+            if (singles[i].name == name)
             {
-                singles[i].Activate();
-
+                AnimalProp prop = singles[i];
+                prop.Activate();
+                singles[i] = prop;
                 return true;
             }
         }
         return false;
     }
 
-    internal bool ActivateFasciestProp()
-    {
-        for (int i = 0; i < singlesLength; i++)
-        {
-            if (singles[i].name == AnimalPropName.Fasciest)
-            {
-                singles[i].Activate();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    internal bool ActivatePiraceProp()
-    {
-        for (int i = 0; i < singlesLength; i++)
-        {
-            if (singles[i].name == AnimalPropName.Piracy)
-            {
-                singles[i].Activate();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    internal bool ActivateFastProp()
-    {
-        for (int i = 0; i < singlesLength; i++)
-        {
-            if (singles[i].name == AnimalPropName.Fast)
-            {
-                singles[i].Activate();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    internal bool ActivateMimicProp()
-    {
-        for (int i = 0; i < singlesLength; i++)
-        {
-            if (singles[i].name == AnimalPropName.Mimic)
-            {
-                singles[i].Activate();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    internal bool ActivateScavengerProp()
-    {
-        for (int i = 0; i < singlesLength; i++)
-        {
-            if (singles[i].name == AnimalPropName.Scavenger)
-            {
-                singles[i].Activate();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    internal bool ActivateDropTailProp()
-    {
-        for (int i = 0; i < singlesLength; i++)
-        {
-            if (singles[i].name == AnimalPropName.DropTail)
-            {
-                singles[i].Activate();
-                return true;
-            }
-        }
-        return false;
-    }
 }
 
 
@@ -280,6 +204,10 @@ public struct AnimalStruct : IDisposable
         props.Add(prop);
         maxFood += prop.hungerIncrease;
         propFlags |= prop.name;
+        if(prop.name == AnimalPropName.Symbiosis && prop.secondAnimalId.localId == localId)
+        {
+            propFlags |= AnimalPropName.RIsSymbiontSlave;
+        }
         return true;
 
     }
@@ -335,12 +263,12 @@ public struct AnimalStruct : IDisposable
 
     internal void ActivateSleepProp()
     {
-        if(props.ActivateSleepProp()) food = maxFood;
+        if(props.ActivateProp(AnimalPropName.Sleep)) food = maxFood;
     }
 
     internal void ActivateFasciestProp()
     {
-        props.ActivateFasciestProp();
+        props.ActivateProp(AnimalPropName.Fasciest);
     }
 
     internal void DecreaseFood()
@@ -350,22 +278,22 @@ public struct AnimalStruct : IDisposable
 
     internal void ActivatePiraceProp()
     {
-        if(props.ActivatePiraceProp()) food++;
+        if(props.ActivateProp(AnimalPropName.Piracy)) food++;
     }
 
     internal void ActivateFastProp()
     {
-        props.ActivateFastProp();
+        props.ActivateProp(AnimalPropName.Fast);
     }
 
     internal void ActivateMimicProp()
     {
-        props.ActivateMimicProp();
+        props.ActivateProp(AnimalPropName.Mimic);
     }
 
     internal void ActivateDropTailProp()
     {
-        props.ActivateDropTailProp();
+        props.ActivateProp(AnimalPropName.DropTail);
     }
 
     internal void AddFlag(AnimalPropName flag)
@@ -375,7 +303,7 @@ public struct AnimalStruct : IDisposable
 
     internal void ActivateScavenger()
     {
-        if(props.ActivateScavengerProp()) food++;
+        if(props.ActivateProp(AnimalPropName.Scavenger)) food++;
     }
 
     public void Dispose()
@@ -386,5 +314,10 @@ public struct AnimalStruct : IDisposable
     public override string ToString()
     {
         return $"a[{food}/{maxFood}][{fat}/{maxFat}]{propFlags}";
+    }
+
+    internal void ActivatePredator()
+    {
+        props.ActivateProp(AnimalPropName.Predator);
     }
 }

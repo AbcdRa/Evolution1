@@ -4,29 +4,35 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using System.Text;
 using Unity.Collections;
+using UnityEditorInternal.VR;
 using UnityEngine;
 using SRandom = Unity.Mathematics.Random;
+
 public enum MoveType { Pass, PlayProp, CreateAnimal, AddPropToAnimal, Feed, ResponseToAttack}
 
 public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
 {
-    private int s = 0;
+    [JsonProperty] private int s = 0;
     private SRandom random;
     public VPlayerMananger vPM;
+    public VMove m;
 
     public List<CardStruct> deck;
     public int food;
 
     public int currentPivot;
     public int currentPhase;
-    private int _currentTurn;
-    private int _currentSideTurn;
+    [JsonProperty] private int _currentTurn;
+    [JsonProperty] private int _currentSideTurn;
     public int currentTurn => (_currentSideTurn == -1) ? _currentTurn : _currentSideTurn;
     public bool isSideTurns => _currentSideTurn != -1;
     VPlayer ICurrentPlayer<VPlayer>.CurrentPlayer => vPM.GetCurrentPlayer(currentTurn);
+    private string debugJson => CompressString(ToJson());
 
-    private PairAnimalId _sideTurnsInfo;
+    [JsonProperty] private PairAnimalId _sideTurnsInfo;
 
 
 
@@ -59,7 +65,8 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
 
     public void DoMove(VMove move)
     {
-        SaveJson();
+        m = move;
+        //SaveJson();
         switch (move.data.type)
         {
             case MoveType.Pass:
@@ -67,7 +74,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
             case MoveType.CreateAnimal:
                 CreateAnimal(move.data.playerId, move.data.card); break;
             case MoveType.AddPropToAnimal:
-                AddPropToAnimal(move.data.playerId, move.data.card, move.data.target1, move.data.isRotated); break;
+                AddPropToAnimal(move.data.playerId, move.data.card, move.data.target1, move.data.target2, move.data.isRotated); break;
             case MoveType.Feed:
                 Feed(move.data.playerId, move.data.target1); break;
             case MoveType.PlayProp:
@@ -75,6 +82,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
             case MoveType.ResponseToAttack:
                 PlaySideProp(move.data.playerId, move.data.prop, move.data.target1, move.data.target2); break;
         }
+        s++;
     }
 
     public List<VMove> GetLegalMoves()
@@ -153,13 +161,18 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
         vPM.ResetPass();
     }
 
-    public bool AddPropToAnimal(int playerId, in CardStruct card, in AnimalId target, bool isRotated)
+    public bool AddPropToAnimal(int playerId, in CardStruct card, in AnimalId target, in AnimalId pairTarget, bool isRotated)
     {
         if (!(isRotated ? card.second : card.main).isHostile() && target.ownerId != playerId) 
             throw new Exception($"RuleBreaker as you like Add prop {card.ToFString()} isRotated = {isRotated} {this.ToString()} plId = {playerId}, target = {target.ToFString()} ");
-        bool isAdded = vPM.AddPropToAnimal(card, target, isRotated);
+        bool isAdded = vPM.AddPropToAnimal(card, target, pairTarget, isRotated);
         if (!isAdded) return false;
-        vPM.RemoveCardFromHand(playerId, card);
+        if (isAdded)
+        {
+            NextTurn();
+            vPM.RemoveCardFromHand(playerId, card);
+            if (vPM.hands[playerId].Count == 0) vPM.players[playerId].isAbleToMove = false;
+        }
         return true;
     }
 
@@ -167,13 +180,14 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
 
     public bool CreateAnimal(int playerId, in CardStruct card)
     {
-        bool isAddedSuccesful = vPM.CreateAnimal(playerId, card);
-        if (isAddedSuccesful)
+        bool isAdded = vPM.CreateAnimal(playerId, card);
+        if (isAdded)
         {
             NextTurn();
             vPM.RemoveCardFromHand(playerId, card);
+            if (vPM.hands[playerId].Count == 0) vPM.players[playerId].isAbleToMove = false;
         }
-        return isAddedSuccesful;
+        return isAdded;
     }
 
     public void Feed(int playerId, in AnimalId target)
@@ -306,6 +320,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
                 if (sideMoves.Count == 0)
                 {
                     vPM.KillById(enemyId, friendId);
+                    
                 }
 
                 break;
@@ -383,15 +398,57 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
         return nextTurn;
     }
 
+    public static string Base64Encode(string plainText)
+    {
+        var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+        return System.Convert.ToBase64String(plainTextBytes);
+    }
+
+    private string filePath;
+
+    public static string CompressString(string text)
+    {
+        byte[] buffer = Encoding.UTF8.GetBytes(text);
+        using (var memoryStream = new MemoryStream())
+        {
+            using (var gzipStream = new GZipStream(memoryStream, CompressionMode.Compress, true))
+            {
+                gzipStream.Write(buffer, 0, buffer.Length);
+            }
+            return Convert.ToBase64String(memoryStream.ToArray());
+        }
+    }
+
+    public static string DecompressString(byte[] compressedData)
+    {
+        using (var memoryStream = new MemoryStream(compressedData))
+        {
+            using (var gzipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
+            {
+                using (var decompressedStream = new MemoryStream())
+                {
+                    gzipStream.CopyTo(decompressedStream);
+                    byte[] decompressedData = decompressedStream.ToArray();
+                    return Encoding.UTF8.GetString(decompressedData);
+                }
+            }
+        }
+    }
+
     private void SaveJson()
     {
 
         string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-
+        //string baseJson = Base64Encode(json);
         // Записываем JSON строку в файл
-        string filePath = Path.Combine(Application.persistentDataPath, "vgame/s" + s.ToString() + ".json");
+        filePath = Path.Combine(Application.persistentDataPath, "vgame/s" + s.ToString() + ".json");
         File.WriteAllText(filePath, json);
-        s++;
+       
+    }
+
+    private string ToJson()
+    {
+        return JsonConvert.SerializeObject(this, Formatting.Indented); 
     }
 
 

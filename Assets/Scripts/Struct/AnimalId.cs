@@ -3,6 +3,7 @@ using Unity.Burst;
 using Unity.Collections;
 using fstring = Unity.Collections.FixedString32Bytes;
 
+
 [BurstCompile(DisableDirectCall = true)]
 public struct AnimalId
 {
@@ -31,6 +32,11 @@ public struct AnimalId
 
     public bool Equals(AnimalId other) { 
         return ownerId == other.ownerId && localId == other.localId;
+    }
+
+    public override string ToString()
+    {
+        return ToFString().Value;
     }
 }
 

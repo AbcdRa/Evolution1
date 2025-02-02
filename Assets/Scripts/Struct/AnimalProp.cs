@@ -40,24 +40,32 @@ public static class AnimalPropExtensions
 [Flags]
 public enum AnimalPropName
 {
-    Empty, Aqua, Big, Borrow, Camouflage, Cooperation, DropTail, Fasciest, Fast, Fat, Interaction,
-    Mimic, Parasite, Piracy, Poison, Predator, Scavenger, SharpEye, Sleep, Symbiosis, ERROR, RIsPoisoned, RIsSymbiontSlave
+    Empty =            0b0000000000000000000000000000001, 
+    Aqua =             0b0000000000000000000000000000010, 
+    Big =              0b0000000000000000000000000000100, 
+    Borrow =           0b0000000000000000000000000001000, 
+    Camouflage =       0b0000000000000000000000000010000,
+    Cooperation =      0b0000000000000000000000000100000,
+    DropTail =         0b0000000000000000000000001000000, 
+    Fasciest =         0b0000000000000000000000010000000,
+    Fast =             0b0000000000000000000000100000000,
+    Fat =              0b0000000000000000000001000000000,
+    Interaction =      0b0000000000000000000010000000000,
+    Mimic =            0b0000000000000000000100000000000,
+    Parasite =         0b0000000000000000001000000000000, 
+    Piracy =           0b0000000000000000010000000000000,
+    Poison =           0b0000000000000000100000000000000,
+    Predator =         0b0000000000000001000000000000000,
+    Scavenger =        0b0000000000000010000000000000000,
+    SharpEye =         0b0000000000000100000000000000000,
+    Sleep =            0b0000000000001000000000000000000,
+    Symbiosis =        0b0000000000010000000000000000000,
+    ERROR =            0b0000000000100000000000000000000,
+    RIsPoisoned =      0b0000000001000000000000000000000,
+    RIsSymbiontSlave = 0b0000000010000000000000000000000
 }
 
-public struct AnimalPropNameToFString
-{
-    public readonly static FixedString32Bytes[] runes = new FixedString32Bytes[] 
-    { "Empty", "Aqua", "Big", "Borrow", "Camouflage", "Cooperation", "DropTail", "Fasciest", "Fast", "Fat", "Interaction",
-      "Mimic", "Parasite", "Piracy", "Poison", "Predator", "Scavenger", "SharpEye", "Sleep", "Symbiosis", "ERROR", "RIsPoisoned",
-      "RIsSymbiontSlave"};
-    
-    public static fstring GetName(in AnimalPropName name)
-    {
-        //TODO Сложнее но Можно оптимизировать
-        return runes[(int)name];
-    }
 
-}
 
 public struct AnimalProp
 {
@@ -128,7 +136,7 @@ public struct AnimalProp
     internal fstring ToFString()
     {
         
-        return AnimalPropNameToFString.GetName(name);
+        return new fstring(name.ToString());
     }
 
     public override string ToString()

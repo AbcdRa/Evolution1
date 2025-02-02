@@ -27,13 +27,39 @@ public class VPlayerMananger
         hands[playerId].Add(card);
     }
 
-    internal bool AddPropToAnimal(in CardStruct card, AnimalId target, bool isRotated)
+    internal bool AddPropToAnimal(CardStruct card, in AnimalId target, in AnimalId pairTarget, bool isRotated)
     {
-        AnimalSpotStruct spot = GetSpot(target);
-        bool isAdded = spot.AddPropToAnimal(card, isRotated);
-        if (!isAdded) return false;
-        SetSpot(target, spot);
-        return true;
+
+        
+        if((isRotated ? card.second : card.main).isPair)
+        {
+            if(isRotated)
+            {
+                card.second.mainAnimalId = target;
+                card.second.secondAnimalId = pairTarget;
+            } else
+            {
+                card.main.mainAnimalId = target;
+                card.main.secondAnimalId = pairTarget;
+            }
+            AnimalSpotStruct spot = GetSpot(target);
+            bool isAdded = spot.AddPropToAnimal(card, isRotated);
+            if (!isAdded) return false;
+            AnimalSpotStruct pairSpot = GetSpot(pairTarget);
+            isAdded = pairSpot.AddPropToAnimal(card, isRotated);
+            if (!isAdded) throw new Exception("Pair prop adding error");
+            SetSpot(spot);
+            SetSpot(pairSpot);
+            return true;
+        } else
+        {
+            AnimalSpotStruct spot = GetSpot(target);
+            bool isAdded = spot.AddPropToAnimal(card, isRotated);
+            if (!isAdded) return false;
+            SetSpot(target, spot);
+            return true;
+        }
+
     }
 
     internal bool CreateAnimal(int playerId, CardStruct card)
@@ -157,8 +183,11 @@ public class VPlayerMananger
             Feed(nearScavenger, 1);
             SetSpot(scavenger);
         }
-        predator.animal.Feed(2);
+        predator.animal.ActivatePredator();
         SetSpot(predator);
+        Feed(predatorId, 2, true, 2);
+        
+        
     }
 
     public int Feed(in AnimalId id, int foodAmount, bool isBlueFood = true, int foodConsume = 1)
@@ -167,8 +196,9 @@ public class VPlayerMananger
         if (isBlueFood)
         {
             if (foodConsume > 1) targetSpot.Feed(foodConsume - 1, foodConsume - 1);
-            PairFeed(id, id, foodAmount, true, false);
             SetSpot(id, targetSpot);
+            PairFeed(id, id, foodAmount, true, false);
+            
             return 0;
         }
         else
@@ -211,15 +241,19 @@ public class VPlayerMananger
                 AnimalId oth = spot.animal.props.pairs[i].GetOtherAnimalId(id);
                 if (oth.ownerId != id.ownerId) throw new Exception("GAMEBREAKING RULE Trying to feed another animal");
                 food -= PairFeed(oth, breaking, food);
+                spot.animal.props.pairs[i].Activate();
 
             }
             else if (spot.animal.props.pairs[i].name == AnimalPropName.Cooperation)
             {
                 AnimalId oth = spot.animal.props.pairs[i].GetOtherAnimalId(id);
                 if (oth.ownerId != id.ownerId) throw new Exception("GAMEBREAKING RULE Trying to feed another animal");
-                food -= PairFeed(oth, breaking, food, false, true);
+                food -= PairFeed(oth, breaking, food, false, false);
+                spot.animal.props.pairs[i].Activate();
+                
             }
         }
+        SetSpot(spot);
         return food;
     }
 
@@ -244,7 +278,9 @@ public class VPlayerMananger
         {
             for(int j = 0; j < spots[i].Count; j++)
             {
-                spots[i][j].SetOwnerAndLocalId(i, j);
+                AnimalSpotStruct spot = spots[i][j];
+                spot.SetOwnerAndLocalId(i, j);
+                SetSpot(spot);
             }
         }
     }

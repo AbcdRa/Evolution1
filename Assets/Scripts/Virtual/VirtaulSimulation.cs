@@ -12,7 +12,6 @@ using UnityEngine.Jobs;
 using UnityEngine.UIElements;
 
 
-
 public class VirtualSimulation
 {
     VGame vGame;
@@ -21,6 +20,7 @@ public class VirtualSimulation
     public VirtualSimulation(Player player)
     {
         vGame = GameMananger.instance.GetVirtual(player);
+
         onMoveReady = new();
     }
 
@@ -42,7 +42,7 @@ public class VirtualSimulation
         //    }
         //}
 
-        VMove move = GameAI.Algorithms.MonteCarlo.RandomSimulation<VGame, VMove, VPlayer>.Search(vGame, 100);
+        VMove move = GameAI.Algorithms.MonteCarlo.RandomSimulation<VGame, VMove, VPlayer>.Search(vGame, 1, GameMananger.rng);
         Debug.Log("Finisging");
         onMoveReady.Invoke();
     }

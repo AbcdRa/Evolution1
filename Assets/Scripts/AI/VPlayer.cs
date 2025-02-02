@@ -25,4 +25,9 @@ public class VPlayer
     {
         isAbleToMove = true;
     }
+
+    public override string ToString()
+    {
+        return $"p{id}{(isAbleToMove ? 'A':'P')}";
+    }
 }

@@ -42,11 +42,12 @@ public struct MoveData
 public class VMove
 {
     public MoveData data;
-    public fstring notation;
+    private fstring _notation;
+    public string notation => _notation.Value;
 
     public VMove(in fstring notation, in MoveData data)
     {
-        this.notation = notation;
+        this._notation = notation;
         this.data = data;
     }
 
@@ -104,6 +105,7 @@ public class VMove
         fstring notation = playerId.ToFString();
         notation.Append(MoveNotationMG.GetName(MoveType.AddPropToAnimal));
         notation.Append(card.ToFString());
+        notation.Append(">" + target1.ToFString() + (target2.isNull ? "" : ("&" + target2.ToFString())));
         MoveData data = new MoveData(MoveType.AddPropToAnimal, playerId, card, AnimalProp.NULL, target1, target2, isRotated);
         return new(notation, data);
     }
@@ -135,7 +137,7 @@ public class VMove
 
     public override string ToString()
     {
-        return "M{" + notation + "}";
+        return "M{" + _notation + "}";
     }
 }
 

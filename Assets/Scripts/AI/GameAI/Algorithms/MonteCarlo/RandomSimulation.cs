@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using GameAI.GameInterfaces;
+using SRandom = Unity.Mathematics.Random;
 
 namespace GameAI.Algorithms.MonteCarlo
 {
@@ -91,7 +92,7 @@ namespace GameAI.Algorithms.MonteCarlo
         /// </summary>
         /// <param name="game">The starting gamestate.</param>
         /// <param name="simulations">The number of simulations to perform.</param>
-        public static TMove Search(TGame game, int simulations)
+        public static TMove Search(TGame game, int simulations, SRandom rng)
         {
             TPlayer aiPlayer = game.CurrentPlayer;
             List<TMove> legalMoves = game.GetLegalMoves();
@@ -99,17 +100,32 @@ namespace GameAI.Algorithms.MonteCarlo
             MoveStats[] moveStats = new MoveStats[count];
             int moveIndex;
             TGame copy;
-            Random rng = new Random();
 
             for (int i = 0; i < simulations; i++)
             {
-                moveIndex = rng.Next(0, count);
+                moveIndex = rng.NextInt(0, count);
                 copy = game.DeepCopy();
-                copy.DoMove(legalMoves[moveIndex]);
-
+                TMove m = legalMoves[moveIndex];
+                copy.DoMove(m);
+                
+                int k = 0;
                 while (!copy.IsGameOver())
-                    copy.DoMove(
-                        copy.GetLegalMoves().RandomItem(rng));
+                {
+                    k++;
+                    try
+                    {
+                        m = copy.GetLegalMoves().RandomItem(rng);
+                        copy.DoMove(m);
+                        if (k > 1000) throw new Exception("Inf game");
+                    } catch (Exception e)
+                    {
+                        
+
+                        throw new Exception($"Cath it {simulations} ~ {k}"+e.Message);
+                    }
+
+                }
+
 
                 moveStats[moveIndex].executions++;
                 if (copy.IsWinner(aiPlayer))

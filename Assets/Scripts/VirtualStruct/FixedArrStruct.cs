@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using Unity.Burst;
 
 [BurstCompile(DisableDirectCall = true)]
@@ -200,26 +201,26 @@ public struct FixedArr4<T> where T : unmanaged
 
 public struct FixedListProps20
 {
-    private AnimalProp _field0;
-    private AnimalProp _field1;
-    private AnimalProp _field2;
-    private AnimalProp _field3;
-    private AnimalProp _field4;
-    private AnimalProp _field5;
-    private AnimalProp _field6;
-    private AnimalProp _field7;
-    private AnimalProp _field8;
-    private AnimalProp _field9;
-    private AnimalProp _field10;
-    private AnimalProp _field11;
-    private AnimalProp _field12;
-    private AnimalProp _field13;
-    private AnimalProp _field14;
-    private AnimalProp _field15;
-    private AnimalProp _field16;
-    private AnimalProp _field17;
-    private AnimalProp _field18;
-    private AnimalProp _field19;
+    [JsonProperty] private AnimalProp _field0;
+    [JsonProperty] private AnimalProp _field1;
+    [JsonProperty] private AnimalProp _field2;
+    [JsonProperty] private AnimalProp _field3;
+    [JsonProperty] private AnimalProp _field4;
+    [JsonProperty] private AnimalProp _field5;
+    [JsonProperty] private AnimalProp _field6;
+    [JsonProperty] private AnimalProp _field7;
+    [JsonProperty] private AnimalProp _field8;
+    [JsonProperty] private AnimalProp _field9;
+    [JsonProperty] private AnimalProp _field10;
+    [JsonProperty] private AnimalProp _field11;
+    [JsonProperty] private AnimalProp _field12;
+    [JsonProperty] private AnimalProp _field13;
+    [JsonProperty] private AnimalProp _field14;
+    [JsonProperty] private AnimalProp _field15;
+    [JsonProperty] private AnimalProp _field16;
+    [JsonProperty] private AnimalProp _field17;
+    [JsonProperty] private AnimalProp _field18;
+    [JsonProperty] private AnimalProp _field19;
 
     public FixedListProps20(int cap)
     {
