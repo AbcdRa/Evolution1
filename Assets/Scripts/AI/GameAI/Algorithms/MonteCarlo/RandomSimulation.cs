@@ -114,7 +114,9 @@ namespace GameAI.Algorithms.MonteCarlo
                     k++;
                     try
                     {
-                        m = copy.GetLegalMoves().RandomItem(rng);
+                        //Некооректное удаление парных свойств, отстутствие обнуления пищи
+                        List<TMove> moves = copy.GetLegalMoves();
+                        m = moves.RandomItem(rng);
                         copy.DoMove(m);
                         if (k > 1000) throw new Exception("Inf game");
                     } catch (Exception e)

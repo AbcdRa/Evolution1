@@ -92,11 +92,15 @@ public struct PropArray
     {
         for (int i = 0; i < pairsLength; i++)
         {
-            pairs[i].UpdatePhaseCooldown();
+            AnimalProp prop = pairs[i];
+            prop.UpdatePhaseCooldown();
+            pairs[i] = prop;
         }
         for (int i = 0; i < singlesLength; i++)
         {
-            singles[i].UpdatePhaseCooldown();
+            AnimalProp prop = singles[i];
+            prop.UpdatePhaseCooldown();
+            singles[i] = prop;
         }
 
     }
@@ -105,11 +109,15 @@ public struct PropArray
     {
         for (int i = 0; i < pairsLength; i++)
         {
-            pairs[i].UpdateTurnCooldown();
+            AnimalProp prop = pairs[i];
+            prop.UpdateTurnCooldown();
+            pairs[i] = prop;
         }
         for (int i = 0; i < singlesLength; i++)
         {
-            singles[i].UpdateTurnCooldown();
+            AnimalProp prop = singles[i];
+            prop.UpdateTurnCooldown();
+            singles[i] = prop;
         }
 
     }
@@ -120,6 +128,7 @@ public struct PropArray
         {
             if (singles[i].name == name)
             {
+                //TODO можно сооптимизировать singles.Activate(i)
                 AnimalProp prop = singles[i];
                 prop.Activate();
                 singles[i] = prop;
@@ -129,6 +138,57 @@ public struct PropArray
         return false;
     }
 
+    public bool ActivateProp(int i, bool isPairs=true)
+    {
+        if(isPairs)
+        {
+            if (i >= pairsLength) return false;
+            AnimalProp prop = pairs[i];
+            prop.Activate();
+            pairs[i] = prop;
+        }
+        else
+        {
+            if (i >= singlesLength) return false;
+            AnimalProp prop = singles[i];
+            prop.Activate();
+            singles[i] = prop;
+        }
+        return true;
+    }
+
+    internal void UpdateIdWnenRemove(int ownerId, int localId)
+    {
+        for (int i = 0; i < singlesLength; i++) {
+            if (singles[i].mainAnimalId.ownerId != ownerId && singles[i].secondAnimalId.ownerId != localId) continue;
+            AnimalProp prop = singles[i];
+            if (prop.mainAnimalId.ownerId == ownerId && prop.mainAnimalId.localId > localId)
+            {
+                prop.mainAnimalId.localId--;
+                
+            }
+            if (prop.secondAnimalId.ownerId == ownerId && prop.secondAnimalId.localId > localId)
+            {
+                prop.secondAnimalId.localId--;
+            }
+            singles[i] = prop;
+        }
+        for (int i = 0; i < pairsLength; i++)
+        {
+            if (pairs[i].mainAnimalId.ownerId != ownerId && pairs[i].secondAnimalId.ownerId != localId) continue;
+            AnimalProp prop = pairs[i];
+            if (prop.mainAnimalId.ownerId == ownerId && prop.mainAnimalId.localId > localId)
+            {
+                prop.mainAnimalId.localId--;
+
+            }
+            if (prop.secondAnimalId.ownerId == ownerId && prop.secondAnimalId.localId > localId)
+            {
+                prop.secondAnimalId.localId--;
+            }
+            pairs[i] = prop;
+        }
+    }
 }
 
 
@@ -240,8 +300,25 @@ public struct AnimalStruct : IDisposable
     public void RemoveProp(in AnimalProp animalProp)
     {
         bool isRemoved = props.Remove(animalProp);
-        
         if(!props.HasPropName(animalProp)) propFlags &= ~animalProp.name;
+        if(animalProp.name == AnimalPropName.Symbiosis && propFlags.HasFlag(AnimalPropName.RIsSymbiontSlave))
+        {
+            RemoveSymbiontSlaveFlag();
+        }
+    }
+
+    private void RemoveSymbiontSlaveFlag()
+    {
+        if (!propFlags.HasFlagFast(AnimalPropName.Symbiosis))
+        {
+            propFlags &= ~AnimalPropName.RIsSymbiontSlave;
+            return;
+        }
+
+        for (int i = 0; i < props.pairsLength; i++)
+        {
+            if (props.pairs[i].name == AnimalPropName.Symbiosis && props.pairs[i].secondAnimalId.localId == localId) return;
+        }
     }
 
     internal int GetScore()
@@ -319,5 +396,11 @@ public struct AnimalStruct : IDisposable
     internal void ActivatePredator()
     {
         props.ActivateProp(AnimalPropName.Predator);
+    }
+
+    internal void UpdateIdWhenRemove(int ownerId, int localId)
+    {
+        if (localId < this.localId) localId--;
+        props.UpdateIdWnenRemove(ownerId, localId);
     }
 }

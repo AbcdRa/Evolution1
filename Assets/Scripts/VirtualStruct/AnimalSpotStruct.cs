@@ -94,5 +94,14 @@ public struct AnimalSpotStruct
     {
         animal.food -= v;
     }
+
+    internal void UpdateIdWhenRemove(int ownerId, int localId)
+    {
+        if(id.localId > localId)
+        {
+            id.localId--;
+        }
+        animal.UpdateIdWhenRemove(ownerId, localId);
+    }
 }
 

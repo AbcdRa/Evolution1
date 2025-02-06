@@ -30,7 +30,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     private int _currentTurn;
     private int _currentSideTurn;
-    private PairAnimalId _sideTurnsInfo;
+    private SideTurnInfo _sideTurnsInfo;
 
     public long turnInfo => _currentTurn << 32 | _currentSideTurn;
 
@@ -203,7 +203,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
         NextTurn(_sideTurnsInfo.second.ownerId);
     }
 
-    public List<VMove> GetAllPossibleSidesMoves(in PairAnimalId sideTurnsInfo)
+    public List<VMove> GetAllPossibleSidesMoves(in SideTurnInfo sideTurnsInfo)
     {
         AnimalId myAnimalId = sideTurnsInfo.second;
         AnimalId enemyId = sideTurnsInfo.first;

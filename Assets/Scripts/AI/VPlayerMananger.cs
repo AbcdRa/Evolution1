@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
@@ -241,7 +242,7 @@ public class VPlayerMananger
                 AnimalId oth = spot.animal.props.pairs[i].GetOtherAnimalId(id);
                 if (oth.ownerId != id.ownerId) throw new Exception("GAMEBREAKING RULE Trying to feed another animal");
                 food -= PairFeed(oth, breaking, food);
-                spot.animal.props.pairs[i].Activate();
+                spot.animal.props.ActivateProp(i);
 
             }
             else if (spot.animal.props.pairs[i].name == AnimalPropName.Cooperation)
@@ -249,7 +250,7 @@ public class VPlayerMananger
                 AnimalId oth = spot.animal.props.pairs[i].GetOtherAnimalId(id);
                 if (oth.ownerId != id.ownerId) throw new Exception("GAMEBREAKING RULE Trying to feed another animal");
                 food -= PairFeed(oth, breaking, food, false, false);
-                spot.animal.props.pairs[i].Activate();
+                spot.animal.props.ActivateProp(i);
                 
             }
         }
@@ -285,35 +286,45 @@ public class VPlayerMananger
         }
     }
 
+
+
     private void Kill(AnimalId victimId)
     {
-        AnimalSpotStruct victim = GetSpot(victimId);
-        for(int i = 0; i < victim.animal.props.pairs.Length; i++)
+        Kill(victimId.ownerId, victimId.localId);    
+    }
+
+    private void Kill(int ownerId, int localId)
+    {
+        AnimalSpotStruct victim = GetSpot(ownerId, localId);
+        for (int i = 0; i < victim.animal.props.pairs.Length; i++)
         {
             AnimalProp prop = victim.animal.props.pairs[i];
-            AnimalId oth = prop.GetOtherAnimalId(victimId);
-            RemoveProp(oth, prop);
+            AnimalId oth = prop.GetOtherAnimalId(victim.id);
+            AnimalSpotStruct othSpot = GetSpot(oth);
+            othSpot.RemoveProp(prop);
+            SetSpot(othSpot);
         }
-        RemoveSpot(victimId);
+        ;
+        for (int i = 0; i < spots[ownerId].Count; i++)
+        {
+            if (i == localId) continue;
+            AnimalSpotStruct spot = spots[ownerId][i];
+            spot.UpdateIdWhenRemove(ownerId, localId);
+            spots[ownerId][i] = spot;
+        }
+        spots[ownerId].RemoveAt(localId);
     }
 
-    private void RemoveSpot(AnimalId victimId)
-    {
-        spots[victimId.ownerId].RemoveAt(victimId.localId);
-        OrganizateSpots();
-    }
 
-    private void RemoveProp(AnimalId id, in AnimalProp prop)
-    {
-        spots[id.ownerId][id.localId].RemoveProp(prop);
-    }
+
+
 
     internal void Pass(int playerId)
     {
         players[playerId].Pass();
     }
 
-    internal PairAnimalId Play(AnimalId target, AnimalPropName propName)
+    internal SideTurnInfo Play(AnimalId target, AnimalPropName propName)
     {
         switch(propName)
         {
@@ -321,12 +332,12 @@ public class VPlayerMananger
                 AnimalSpotStruct spot = GetSpot(target);
                 spot.animal.ActivateSleepProp();
                 SetSpot(spot);
-                return PairAnimalId.NOT_DOING_NEXT_TURN;
+                return SideTurnInfo.GetNotSideRegularInfo();
             case AnimalPropName.Fasciest:
                 spot = GetSpot(target);
                 spot.animal.ActivateFasciestProp();
                 SetSpot(spot);
-                return PairAnimalId.DESTROY_FOOD;
+                return SideTurnInfo.GetNotSideDestroyFood();
             case AnimalPropName.Piracy:
                 //TODO Ну ты хоть бы проверил возможно ли пиратство
                 //Я знаю что двойные проверки не супер круто, но все таки
@@ -334,7 +345,7 @@ public class VPlayerMananger
 
                 pirateSpot.animal.ActivatePiraceProp();
                 SetSpot(pirateSpot);
-                PairAnimalId sideTurnsInfo = PairAnimalId.PIRACY_FOOD;
+                SideTurnInfo sideTurnsInfo = SideTurnInfo.GetNotSidePiracy(target, AnimalId.NULL);
                 return sideTurnsInfo;
         }
         throw new NotImplementedException();
@@ -365,7 +376,7 @@ public class VPlayerMananger
         {
             for (int i = 0; i < spots[j].Count;)
             {
-                if (!spots[j][i].animal.CanSurvive()) spots[j].RemoveAt(i);
+                if (!spots[j][i].animal.CanSurvive()) Kill(j, i);
                 else
                 {
                     AnimalSpotStruct spot = spots[j][i];
@@ -379,13 +390,16 @@ public class VPlayerMananger
         
     }
 
+
     internal void UpdatePhaseCooldown()
     {
         for (int j = 0; j < spots.Count; j++)
         {
             for (int i = 0; i < spots[j].Count; i++)
             {
-                spots[j][i].UpdatePhaseCooldown();
+                AnimalSpotStruct spot = spots[j][i];
+                spot.UpdatePhaseCooldown();
+                SetSpot(spot);
             }
         }
     }
@@ -396,7 +410,9 @@ public class VPlayerMananger
         {
             for (int i = 0; i < spots[j].Count; i++)
             {
-                spots[j][i].UpdateTurnCooldown();
+                AnimalSpotStruct spot = spots[j][i];
+                spot.UpdateTurnCooldown();
+                SetSpot(spot);
             }
         }
     }
@@ -420,5 +436,22 @@ public class VPlayerMananger
             }
         }
         throw new Exception("I CAN'T FIND CARD!!");
+    }
+
+    internal bool CanFeed(AnimalId id)
+    {
+        AnimalSpotStruct spot = GetSpot(id);
+        if (spot.animal.isFull()) return false;
+        if (!spot.animal.propFlags.HasFlagFast(AnimalPropName.RIsSymbiontSlave)) return true;
+        for (int i = 0; i < spot.animal.props.pairsLength; i++) {
+            if (spot.animal.props.pairs[i].name == AnimalPropName.Symbiosis && !spot.animal.props.pairs[i].mainAnimalId.Equals(id)
+                && spot.animal.props.pairs[i].secondAnimalId.Equals(id))
+            {
+                AnimalId bossId = spot.animal.props.pairs[i].mainAnimalId;
+                if (GetSpot(bossId).animal.food < GetSpot(bossId).animal.maxFood)
+                    return false;
+            }
+        }
+        return true;
     }
 }
