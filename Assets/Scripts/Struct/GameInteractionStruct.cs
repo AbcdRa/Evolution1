@@ -78,32 +78,30 @@ public struct GameInteractionStruct
     //    return sideTurnsInfo;
     //}
 
-    private static PairAnimalId PlaySleep(in IPlayerMananger playerMananger, in AnimalId target)
+    private static SideTurnInfo PlaySleep(in IPlayerMananger playerMananger, in AnimalId target)
     {
         playerMananger.players[target.ownerId].animalArea.spots[target.localId].animal.ActivateSleepProp();
         //TODO именнованым статическим переменным не учили, че за magic number
-        return PairAnimalId.NOT_DOING_NEXT_TURN;
+        return SideTurnInfo.NotNextTurn;
     }
 
-    private static PairAnimalId PlayFasciest(in IPlayerMananger playerMananger, in AnimalId target)
+    private static SideTurnInfo PlayFasciest(in IPlayerMananger playerMananger, in AnimalId target)
     {
         playerMananger.players[target.ownerId].animalArea.spots[target.localId].animal.ActivateFasciestProp();
-        return PairAnimalId.DESTROY_FOOD;
+        return SideTurnInfo.GetNotSideDestroyFood();
     }
 
-    private static PairAnimalId PlayPiracy(in IPlayerMananger playerMananger, in AnimalId pirate, in AnimalId victim)
+    private static SideTurnInfo PlayPiracy(in IPlayerMananger playerMananger, in AnimalId pirate, in AnimalId victim)
     {
         //TODO Ну ты хоть бы проверил возможно ли пиратство
         //Я знаю что двойные проверки не супер круто, но все таки
         playerMananger.players[pirate.ownerId].animalArea.spots[pirate.localId].animal.ActivatePiraceProp();
-        PairAnimalId sideTurnsInfo = PairAnimalId.PIRACY_FOOD;
-        sideTurnsInfo.second = victim;
+        var sideTurnsInfo = SideTurnInfo.GetNotSidePiracy(pirate, victim);
         return sideTurnsInfo;
     }
 
-    private static PairAnimalId PlayPredator(in IPlayerMananger playerMananger, in AnimalId predatorId, in AnimalId victimId)
+    private static SideTurnInfo PlayPredator(in IPlayerMananger playerMananger, in AnimalId predatorId, in AnimalId victimId)
     {
-        PairAnimalId sideTurnsInfo = new(predatorId, victimId);
         if (!IsCanAttack(playerMananger.players[predatorId.ownerId].animalArea.spots[predatorId.localId].animal,
                          playerMananger.players[victimId.ownerId].animalArea.spots[victimId.localId].animal))
             throw new Exception("GameBreaking Trying to attack immortal victim");
@@ -120,16 +118,16 @@ public struct GameInteractionStruct
         {
             playerMananger.KillById(predatorId, victimId);
             sideProps.Dispose();
-            return PairAnimalId.DOING_NEXT_TURN;
+            return SideTurnInfo.GetSuccessAttackInfo();
         } else
         {
             sideProps.Dispose();
         }
-        return sideTurnsInfo;
+        return SideTurnInfo.GetWaitingSideInfo(predatorId, victimId);
     }
 
 
-    public static PairAnimalId PlayProp(IPlayerMananger playerMananger, int playerId, ICard card, in AnimalId target1, in AnimalId target2, bool isRotated)
+    public static SideTurnInfo PlayProp(IPlayerMananger playerMananger, int playerId, ICard card, in AnimalId target1, in AnimalId target2, bool isRotated)
     {
         AnimalProp prop = isRotated ? card.second : card.main;
         switch (prop.name)
@@ -180,5 +178,7 @@ public struct GameInteractionStruct
             default: return false;
         }
     }
+
+
 }
 

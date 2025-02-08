@@ -9,12 +9,7 @@ using fstring = Unity.Collections.FixedString32Bytes;
 using Unity.Burst;
 
 
-[Flags]
-public enum AnimalPropName
-{
-    Empty, Aqua, Big, Borrow, Camouflage, Cooperation, DropTail, Fasciest, Fast, Fat, Interaction,
-    Mimic, Parasite, Piracy, Poison, Predator, Scavenger, SharpEye, Sleep, Symbiosis, ERROR, RIsPoisoned, RIsSymbiontSlave
-}
+
 
 
 [BurstCompile(DisableDirectCall = true)]
@@ -42,21 +37,35 @@ public static class AnimalPropExtensions
 //    Mimic, Parasite, Piracy, Poison, Predator, Scavenger, SharpEye, Sleep, Symbiosis, VIRTUAL
 //}
 
-
-
-public struct AnimalPropNameToFString
+[Flags]
+public enum AnimalPropName
 {
-    public readonly static FixedString32Bytes[] runes = new FixedString32Bytes[] 
-    { "Aqua", "Big", "Borrow", "Camouflage", "Cooperation", "DropTail", "Fasciest", "Fast", "Fat", "Interaction",
-      "Mimic", "Parasite", "Piracy", "Poison", "Predator", "Scavenger", "SharpEye", "Sleep", "Symbiosis", "ERROR", "VIRTUAL" };
-    
-    public static fstring GetName(in AnimalPropName name)
-    {
-        //TODO Сложнее но Можно оптимизировать
-        return runes[(int)name];
-    }
-
+    Empty =            0b0000000000000000000000000000001, 
+    Aqua =             0b0000000000000000000000000000010, 
+    Big =              0b0000000000000000000000000000100, 
+    Borrow =           0b0000000000000000000000000001000, 
+    Camouflage =       0b0000000000000000000000000010000,
+    Cooperation =      0b0000000000000000000000000100000,
+    DropTail =         0b0000000000000000000000001000000, 
+    Fasciest =         0b0000000000000000000000010000000,
+    Fast =             0b0000000000000000000000100000000,
+    Fat =              0b0000000000000000000001000000000,
+    Interaction =      0b0000000000000000000010000000000,
+    Mimic =            0b0000000000000000000100000000000,
+    Parasite =         0b0000000000000000001000000000000, 
+    Piracy =           0b0000000000000000010000000000000,
+    Poison =           0b0000000000000000100000000000000,
+    Predator =         0b0000000000000001000000000000000,
+    Scavenger =        0b0000000000000010000000000000000,
+    SharpEye =         0b0000000000000100000000000000000,
+    Sleep =            0b0000000000001000000000000000000,
+    Symbiosis =        0b0000000000010000000000000000000,
+    ERROR =            0b0000000000100000000000000000000,
+    RIsPoisoned =      0b0000000001000000000000000000000,
+    RIsSymbiontSlave = 0b0000000010000000000000000000000
 }
+
+
 
 public struct AnimalProp
 {
@@ -102,16 +111,27 @@ public struct AnimalProp
             case AnimalPropName.Fasciest:
                 turnCooldown++;
                 break;
+            case AnimalPropName.Piracy:
+                phaseCooldown++;
+                break;
+            case AnimalPropName.Fast:
+                turnCooldown++;
+                break;
+            case AnimalPropName.Mimic:
+                turnCooldown++;
+                break;
         }
     }
 
     public void UpdateTurnCooldown()
     {
+        if (turnCooldown == 0) return;
         turnCooldown--;
     }
 
     public void UpdatePhaseCooldown()
     {
+        if (phaseCooldown == 0) return;
         phaseCooldown--;
     }
 
@@ -125,7 +145,12 @@ public struct AnimalProp
     internal fstring ToFString()
     {
         
-        return AnimalPropNameToFString.GetName(name);
+        return new fstring(name.ToString());
+    }
+
+    public override string ToString()
+    {
+        return ToFString().Value;
     }
 
     internal bool isHostile()

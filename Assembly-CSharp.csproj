@@ -27,7 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169;USG0001</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,7 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169;USG0001</NoWarn>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -69,47 +69,71 @@
     <Compile Include="Assets\Scripts\VirtualStruct\MoveStruct.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Real\Deck.cs" />
+    <Compile Include="Assets\Scripts\AI\VPlayer.cs" />
     <Compile Include="Assets\Scripts\UI\ColorPallette.cs" />
     <Compile Include="Assets\Scripts\Real\AnimalInfoDisplay.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\ITransition.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\ILegalTransitions.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\FoodManangerStruct.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\VGMStruct.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\Algorithms\MonteCarlo\UCB1Tree.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\AnimalStruct.cs" />
     <Compile Include="Assets\Scripts\UI\UIPlayerInfoMananger.cs" />
     <Compile Include="Assets\Scripts\Real\Card.cs" />
     <Compile Include="Assets\Scripts\UI\UIMananger.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\IGameOver.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\IScore.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IHand.cs" />
     <Compile Include="Assets\Scripts\Real\PrefabDataSingleton.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\ICopyable.cs" />
     <Compile Include="Assets\Scripts\CardSO.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\Algorithms\MonteCarlo\RandomSimulation.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\Algorithms\MonteCarlo\UCB1TreeMultiplayer.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\Hands.cs" />
     <Compile Include="Assets\Scripts\Real\ArcWithArrows.cs" />
     <Compile Include="Assets\Scripts\Virtual\VirtaulSimulation.cs" />
     <Compile Include="Assets\Scripts\Struct\AnimalProp.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\IWinner.cs" />
     <Compile Include="Assets\Scripts\Interfaces\ICard.cs" />
     <Compile Include="Assets\Scripts\Real\SelectionableObject.cs" />
     <Compile Include="Assets\Scripts\Real\GameMananger.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\IInt64Hash.cs" />
     <Compile Include="Assets\Scripts\Real\DrawArc.cs" />
     <Compile Include="Assets\Scripts\Real\Dice.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IAnimalSpot.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerInteraction.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\IDoMove.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\PlayerSpots.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IGameMananger.cs" />
     <Compile Include="Assets\Scripts\Real\SelectionController.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDeck.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\IRollout.cs" />
     <Compile Include="Assets\Scripts\Controllers\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Struct\AnimalId.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\FixedArrStruct.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IPlayerMananger.cs" />
     <Compile Include="Assets\Scripts\Real\AnimalSpot.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\Algorithms\MiniMax\TreeSearch.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\IUndoMove.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\ICurrentPlayer.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\GameInterfaces\ILegalMoves.cs" />
     <Compile Include="Assets\Scripts\Real\Hand.cs" />
     <Compile Include="Assets\Scripts\Real\FoodMananger.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\RandomFactory.cs" />
     <Compile Include="Assets\Scripts\TESTS\ColorTest.cs" />
     <Compile Include="Assets\Scripts\Real\SpecialCard.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\Extensions.cs" />
     <Compile Include="Assets\Scripts\UI\UIPlayerInfo.cs" />
+    <Compile Include="Assets\Scripts\AI\VPlayerMananger.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\AnimalSpotStruct.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IAnimalArea.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\Properties\AssemblyInfo.cs" />
+    <Compile Include="Assets\Scripts\AI\VGame.cs" />
+    <Compile Include="Assets\Scripts\AI\VMove.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\AnimalAreaStruct.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\CardStruct.cs" />
     <Compile Include="Assets\Scripts\AnimalPropSO.cs" />
+    <Compile Include="Assets\Scripts\AI\GameAI\Algorithms\MiniMax\ParallelTreeSearch.cs" />
     <Compile Include="Assets\Scripts\Real\PlayerMananger.cs" />
     <Compile Include="Assets\Scripts\Real\AnimalArea.cs" />
     <Compile Include="Assets\Scripts\VirtualStruct\VGMStructXL.cs" />
@@ -1069,10 +1093,6 @@
       <Project>{EC98DCDB-0094-63DC-AA84-8D29F694BB53}</Project>
       <Name>Unity.Services.Analytics.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="UnityEngine.Purchasing.Stores.csproj">
-      <Project>{DE266113-4299-EA1B-38DE-F635318DDCD2}</Project>
-      <Name>UnityEngine.Purchasing.Stores</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.Burst.Editor.csproj">
       <Project>{3DAF9028-D02A-1BCF-3F7E-4E926B53B3EA}</Project>
       <Name>Unity.Burst.Editor</Name>
@@ -1105,10 +1125,6 @@
       <Project>{CE65C419-0B1C-0DD5-0CB1-837E54D829BF}</Project>
       <Name>Unity.Services.Core.Environments</Name>
     </ProjectReference>
-    <ProjectReference Include="UnityEngine.Purchasing.SecurityCore.csproj">
-      <Project>{92CBEC4B-F6AD-189D-DBE3-0B7BF54181D2}</Project>
-      <Name>UnityEngine.Purchasing.SecurityCore</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.TestTools.CodeCoverage.Editor.csproj">
       <Project>{87225B10-0A35-20EB-AB63-74B0BF79C606}</Project>
       <Name>Unity.TestTools.CodeCoverage.Editor</Name>
@@ -1116,10 +1132,6 @@
     <ProjectReference Include="Unity.Collections.csproj">
       <Project>{68B87F4B-AFFA-580C-F398-CE3AF3F9DFD6}</Project>
       <Name>Unity.Collections</Name>
-    </ProjectReference>
-    <ProjectReference Include="UnityEngine.Purchasing.Codeless.csproj">
-      <Project>{E95345FF-C4D3-BA49-6469-66EEF5659BB3}</Project>
-      <Name>UnityEngine.Purchasing.Codeless</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Collections.Editor.csproj">
       <Project>{B759C3EE-D977-26A8-9948-E32894CE55CF}</Project>
@@ -1141,14 +1153,6 @@
       <Project>{C5CF297E-2B4C-FE76-19FB-838EACCADBF7}</Project>
       <Name>Unity.VSCode.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="UnityEditor.Purchasing.csproj">
-      <Project>{5EF0981F-3510-74F9-E42E-1F80D027547B}</Project>
-      <Name>UnityEditor.Purchasing</Name>
-    </ProjectReference>
-    <ProjectReference Include="UnityEngine.Purchasing.csproj">
-      <Project>{33277185-C21F-E033-0963-7A8D81A960B6}</Project>
-      <Name>UnityEngine.Purchasing</Name>
-    </ProjectReference>
     <ProjectReference Include="UnityEngine.XR.LegacyInputHelpers.csproj">
       <Project>{D19B1159-49BA-A161-6EFB-E399A20EC78A}</Project>
       <Name>UnityEngine.XR.LegacyInputHelpers</Name>
@@ -1160,10 +1164,6 @@
     <ProjectReference Include="Unity.PlasticSCM.Editor.csproj">
       <Project>{35013BC0-6B0D-FED8-7F57-F6CAE6C77983}</Project>
       <Name>Unity.PlasticSCM.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="UnityEngine.Purchasing.SecurityStub.csproj">
-      <Project>{84094787-DB94-03EB-7C8C-297C0EE2BE98}</Project>
-      <Name>UnityEngine.Purchasing.SecurityStub</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.Advertisements.csproj">
       <Project>{B72633E0-CB57-D804-89BC-896E16A78802}</Project>
@@ -1181,9 +1181,9 @@
       <Project>{A631DF32-8981-688C-DFFF-EAC428D8872D}</Project>
       <Name>UnityEditor.SpatialTracking</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
-      <Project>{6A77D635-A042-C7AC-18C5-3F80F3257E24}</Project>
-      <Name>Unity.VisualStudio.Editor</Name>
+    <ProjectReference Include="UnityEngine.Advertisements.Editor.csproj">
+      <Project>{6E065314-73FD-780E-AA97-C770D55CA128}</Project>
+      <Name>UnityEngine.Advertisements.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Core.csproj">
       <Project>{C17CBE74-17AD-FEFC-645E-F5281A80C8E2}</Project>
@@ -1209,13 +1209,9 @@
       <Project>{64294E7D-BF8D-DF1A-AB2D-7265D62B2C71}</Project>
       <Name>UnityEditor.XR.LegacyInputHelpers</Name>
     </ProjectReference>
-    <ProjectReference Include="UnityEngine.Advertisements.Editor.csproj">
-      <Project>{6E065314-73FD-780E-AA97-C770D55CA128}</Project>
-      <Name>UnityEngine.Advertisements.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Purchasing.Common.csproj">
-      <Project>{7557196A-6511-2A65-26F7-D4A5058AEDC3}</Project>
-      <Name>Purchasing.Common</Name>
+    <ProjectReference Include="Unity.VisualStudio.Editor.csproj">
+      <Project>{6A77D635-A042-C7AC-18C5-3F80F3257E24}</Project>
+      <Name>Unity.VisualStudio.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Flow.Editor.csproj">
       <Project>{087B0C63-2D7D-A809-4425-662A4D61F403}</Project>

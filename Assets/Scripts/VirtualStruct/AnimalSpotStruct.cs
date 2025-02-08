@@ -39,6 +39,13 @@ public struct AnimalSpotStruct
         this.id = id;
     }
 
+    internal void SetOwnerAndLocalId(int ownerId, int localId)
+    {
+        this.id.ownerId = ownerId;
+        this.id.localId = localId;
+    }
+
+
     internal bool IsPossibleToAddProp(in AnimalProp prop)
     {
         return animal.IsPossibleToAdd(prop);
@@ -81,6 +88,20 @@ public struct AnimalSpotStruct
     public override string ToString()
     {
         return $"SPOT[{id.ownerId}~{id.localId}]={animal.ToString()}";
+    }
+
+    internal void DecreaseFood(int v)
+    {
+        animal.food -= v;
+    }
+
+    internal void UpdateIdWhenRemove(int ownerId, int localId)
+    {
+        if(id.localId > localId)
+        {
+            id.localId--;
+        }
+        animal.UpdateIdWhenRemove(ownerId, localId);
     }
 }
 

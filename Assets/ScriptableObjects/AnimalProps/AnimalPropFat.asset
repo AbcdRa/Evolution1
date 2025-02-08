@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7bb73d924f1c794e8416b3f93d9fe26, type: 3}
   m_Name: AnimalPropFat
   m_EditorClassIdentifier: 
-  PropName: 8
+  PropName: 512
   HungerIncrease: 0
   IsPair: 0

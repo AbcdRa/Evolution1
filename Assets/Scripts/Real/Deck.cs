@@ -36,9 +36,7 @@ public class Deck : MonoBehaviour, IDeck
 
     public void Shuffle()
     {
-        for (int i = 0; i < _cards.Count; i++) {
-            _cards[i] = _cards[Random.Range(0, _cards.Count)];
-        }
+        _cards = DevExtension.Shuffle(_cards, GameMananger.rng);
     }
 
     public ICard TakeLast()

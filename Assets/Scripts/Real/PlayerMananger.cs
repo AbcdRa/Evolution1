@@ -142,7 +142,7 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
             else deck.Add(players[3].hand.cards[i].GetStruct());
         }
 
-        deck = DevExtension.Shuffle(deck);
+        deck = DevExtension.Shuffle(deck, GameMananger.rng);
         for(int i = 0; i < 4; i++)
         {
             if (i == targetId) continue;
@@ -185,4 +185,46 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
     {
         return players[target.ownerId].animalArea.spots[target.localId];
     }
+
+    public VPlayerMananger GetVirtual(Player player, List<CardStruct> deck)
+    {
+        List<List<AnimalSpotStruct>> spots = new(players.Length);
+        List<List<CardStruct>> hands = new();
+        List<VPlayer> vPlayers = new();
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (i == player.id) continue;
+            for(int j = 0; j < players[i].hand.amount; j++)
+            {
+                deck.Add(players[i].hand.cards[j].GetStruct());
+            }
+        }
+
+        deck = DevExtension.Shuffle(deck, GameMananger.rng);
+
+        for(int i = 0; i < players.Length; i++)
+        {
+            List<AnimalSpotStruct> spotsIn = new();
+            List<CardStruct> handsIn = new();
+            for(int j = 0; j < players[i].animalArea.amount; j++)
+            {
+                spotsIn.Add(players[i].animalArea.spots[j].GetStruct(i));
+            }
+            for(int j = 0; j < players[i].hand.cards.Count; j++)
+            {
+                if(j == player.id) handsIn.Add(players[i].hand.cards[j].GetStruct());
+                else
+                {
+                    handsIn.Add(deck[deck.Count - 1]);
+                    deck.RemoveAt(deck.Count - 1);
+                }
+
+            }
+            spots.Add(spotsIn);
+            hands.Add(handsIn);
+            vPlayers.Add(new VPlayer(players[i].isAbleToMove, players[i].id));
+        }
+        return new VPlayerMananger(spots, hands, vPlayers);
+    }
+
 }

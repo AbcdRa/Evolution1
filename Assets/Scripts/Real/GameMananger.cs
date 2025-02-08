@@ -12,7 +12,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
     [HideInInspector] public UnityEvent onNextTurn;
 
     const int FIRST_TURN_CARDS_AMOUNT = 8;
-
+    public static readonly Unity.Mathematics.Random rng = new(32U);
     [SerializeField] private PlayerMananger _playerMananger;
     [SerializeField] private FoodMananger _foodMananger;
     [SerializeField] private Deck _deck;
@@ -30,7 +30,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     private int _currentTurn;
     private int _currentSideTurn;
-    private PairAnimalId _sideTurnsInfo;
+    private SideTurnInfo _sideTurnsInfo;
 
     public long turnInfo => _currentTurn << 32 | _currentSideTurn;
 
@@ -38,11 +38,13 @@ public class GameMananger : MonoBehaviour, IGameMananger
     {
         if (instance != null) throw new System.Exception("НАРУШЕНИЕ СИНГЛТОНА");
         instance = this;
+  
     }
 
 
     public void SetupGame()
     {
+        _sideTurnsInfo = SideTurnInfo.NextTurn;
         currentPivot = 0;
         _currentSideTurn = -1;
         _currentTurn = 0;
@@ -194,26 +196,26 @@ public class GameMananger : MonoBehaviour, IGameMananger
             playerMananger.players[_sideTurnsInfo.second.ownerId].animalArea.spots[_sideTurnsInfo.second.localId].animal.DecreaseFood();
             return;
         }
-        List<MoveStruct> moves = GetAllPossibleSidesMoves(_sideTurnsInfo);
+        List<VMove> moves = GetAllPossibleSidesMoves(_sideTurnsInfo);
         if (moves.Count == 1)
         {
-            MoveStruct.ExecuteMove(this, moves[0]);
+            VMove.ExecuteMove(this, moves[0]);
         }
         NextTurn(_sideTurnsInfo.second.ownerId);
     }
 
-    public List<MoveStruct> GetAllPossibleSidesMoves(in PairAnimalId sideTurnsInfo)
+    public List<VMove> GetAllPossibleSidesMoves(in SideTurnInfo sideTurnsInfo)
     {
         AnimalId myAnimalId = sideTurnsInfo.second;
         AnimalId enemyId = sideTurnsInfo.first;
-        List<MoveStruct> moves = new();
+        List<VMove> moves = new();
         for (int i = 0; i < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.singlesLength; i++)
         {
             AnimalProp prop = playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.singles[i];
             if (!prop.IsActivable) continue;
             if (prop.name == AnimalPropName.Fast)
             {
-                moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                moves.Add(VMove.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
             }
             else if (prop.name == AnimalPropName.DropTail)
             {
@@ -221,13 +223,13 @@ public class GameMananger : MonoBehaviour, IGameMananger
                 {
                     prop.mainAnimalId = myAnimalId;
                     prop.secondAnimalId = new(0, j);
-                    moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                    moves.Add(VMove.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
                 }
                 for (int j = 0; j < playerMananger.players[currentTurn].animalArea.spots[myAnimalId.localId].animal.props.pairsLength; j++)
                 {
                     prop.mainAnimalId = myAnimalId;
                     prop.secondAnimalId = new(1, j);
-                    moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                    moves.Add(VMove.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
                 }
 
             }
@@ -243,7 +245,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
                     {
                         prop.mainAnimalId = myAnimalId;
                         prop.secondAnimalId = new(currentTurn, j);
-                        moves.Add(MoveStruct.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                        moves.Add(VMove.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
                     }
                 }
             }
@@ -252,15 +254,6 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     }
 
-    internal VGMstructXL GetStruct(Player player)
-    {
-
-        PlayerSpots ps = playerMananger.GetPlayerSpotStruct();
-        List<CardStruct> deck = this.deck.GetCardStruct();
-        Hands hs = playerMananger.GetHandsStruct(player.id, deck);
-        
-        return new VGMstructXL(currentPivot, currentPhase, _currentTurn, _currentSideTurn, ps, hs, deck, foodMananger.food);
-    }
 
     public ICard FindCard(CardStruct card, int playerId, AnimalId target)
     {
@@ -280,5 +273,12 @@ public class GameMananger : MonoBehaviour, IGameMananger
             IAnimalSpot spot = playerMananger.GetSpot(target);
             return spot.FindCard(card);
         }
+    }
+
+    public VGame GetVirtual(Player player)
+    {
+        List<CardStruct> fDeck = deck.GetCardStruct();
+        VPlayerMananger vPlayerMananger = playerMananger.GetVirtual(player, fDeck);
+        return new VGame(currentPivot, currentPhase, _currentTurn, _currentSideTurn, vPlayerMananger, fDeck, foodMananger.food, _sideTurnsInfo);
     }
 }
