@@ -7,27 +7,20 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour, IHand
 {
-    public List<ICard> cards = new();
-    public int amount => cards.Count + (selected!=null?1:0);
+    private List<ICard> _cards = new();
+    public int amount => _cards.Count + (selected!=null?1:0);
     private float CARDS_WIDTH = 0.55f;
     [SerializeField] private int ownerId = -1;
+    
 
     public ICard selected { get; private set; }
 
-    public HandStruct GetStruct()
-    {
-        List<CardStruct> cards = new List<CardStruct>();
-        foreach (var card in this.cards)
-        {
-            cards.Add(card.GetStruct());
-        }
-        return new HandStruct(cards);
-    }
+    public List<ICard> cards => _cards;
 
     public void InitReset(int ownerId)
     {
         this.ownerId = ownerId;
-        cards = new(6);
+        _cards = new(6);
     }
 
     public void TakeCardsFromDeck(IDeck deck, int cardsAmount)
@@ -35,28 +28,28 @@ public class Hand : MonoBehaviour, IHand
         for (int i = 0; i < cardsAmount; i++)
         {
             if (deck.amount <= 0) return;
-            cards.Add(deck.TakeLast());
+            _cards.Add(deck.TakeLast());
         }
         OrganizateCards();
     }
 
     public void OrganizateCards()
     {
-        for (int i = 0; i < cards.Count; i++) {
-            cards[i].transform.parent = transform;
+        for (int i = 0; i < _cards.Count; i++) {
+            _cards[i].transform.parent = transform;
 
-            cards[i].transform.GetComponent<SelectionableObject>().SetSpecificationAndId(SOSpecification.HandCard, ownerId);
+            _cards[i].transform.GetComponent<SelectionableObject>().SetSpecificationAndId(SOSpecification.HandCard, ownerId);
 
-            Vector3 pos = new(i * CARDS_WIDTH-(cards.Count*CARDS_WIDTH/2), 0, 0.001f*i);
-            cards[i].transform.localPosition = pos;
-            cards[i].transform.localRotation = Quaternion.Euler(0f,0f,cards[i].isRotated?180f:0f);
+            Vector3 pos = new(i * CARDS_WIDTH-(_cards.Count*CARDS_WIDTH/2), 0, 0.001f*i);
+            _cards[i].transform.localPosition = pos;
+            _cards[i].transform.localRotation = Quaternion.Euler(0f,0f,_cards[i].isRotated?180f:0f);
         }
     }
 
     public void Select(Card selected)
     {
         ICard selectedCard = null;
-        foreach(var card in cards)
+        foreach(var card in _cards)
         {
             if(card.id == selected.id)
             {
@@ -65,13 +58,13 @@ public class Hand : MonoBehaviour, IHand
             }
         }
         if (selectedCard == null) return;
-        cards.Remove(selectedCard);
+        _cards.Remove(selectedCard);
         selectedCard.transform.gameObject.SetActive(false);
         //По сути копия кода из UnSelect сдеалано это, чтобы не вызывать два раза Organizate
         if(this.selected != null)
         {
             this.selected.transform.gameObject.SetActive(true);
-            cards.Add(this.selected);
+            _cards.Add(this.selected);
         }
         this.selected = selectedCard;
         OrganizateCards();
@@ -83,7 +76,7 @@ public class Hand : MonoBehaviour, IHand
         if (this.selected != null)
         {
             this.selected.transform.gameObject.SetActive(true);
-            cards.Add(this.selected);
+            _cards.Add(this.selected);
             this.selected = null;
             OrganizateCards();
         }
@@ -98,11 +91,11 @@ public class Hand : MonoBehaviour, IHand
             selected = null;
             return;
         }
-        for(int i = 0; i < cards.Count; i++)
+        for(int i = 0; i < _cards.Count; i++)
         {
-            if (cards[i].id == card.id)
+            if (_cards[i].id == card.id)
             {
-                cards.Remove(cards[i]);
+                _cards.Remove(_cards[i]);
                 break;
             }
         }

@@ -10,12 +10,16 @@ public class Deck : MonoBehaviour, IDeck
     private List<CardSO> _cards;
     public int amount => _cards.Count;
 
-    public DeckStruct GetStruct()
+    public List<CardStruct> GetCardStruct()
     {
-        List<CardStruct> cardstructs = new List<CardStruct>();
-        for (int i = 0; i < _cards.Count; i++) cardstructs.Add(_cards[i].GetStruct());
-        return new DeckStruct(cardstructs);
+        List<CardStruct> cards = new(_cards.Count);
+        for(int i = 0; i < _cards.Count; i++)
+        {
+            cards.Add(_cards[i].GetStruct());
+        }
+        return cards;
     }
+
 
     public void SetupGame()
     {
@@ -32,9 +36,7 @@ public class Deck : MonoBehaviour, IDeck
 
     public void Shuffle()
     {
-        for (int i = 0; i < _cards.Count; i++) {
-            _cards[i] = _cards[Random.Range(0, _cards.Count)];
-        }
+        _cards = DevExtension.Shuffle(_cards, GameMananger.rng);
     }
 
     public ICard TakeLast()

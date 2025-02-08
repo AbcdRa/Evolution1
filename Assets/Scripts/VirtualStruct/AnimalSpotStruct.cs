@@ -8,21 +8,18 @@ using Unity.VisualScripting;
 [BurstCompile(DisableDirectCall = true)]
 public struct AnimalSpotStruct
 {
-    public int localId;
+    public AnimalId id;
     public AnimalStruct animal;
     public bool isFree => animal.isNull;
     //public NativeList<CardStruct> cards;
 
-    public AnimalSpotStruct(int localId, in AnimalStruct animal, List<CardStruct> cards)
+    public AnimalSpotStruct(AnimalId id, in AnimalStruct animal)
     {
-        this.localId = localId;
+        this.id = id;
         this.animal = animal;
-        //this.cards = new(cards.Count, Allocator.TempJob);
-        //foreach(CardStruct card in cards)
-        //{
-        //    this.cards.Add(card);
-        //}
+
     }
+
 
     internal bool AddPropToAnimal(in CardStruct card, bool isRotated)
     {
@@ -37,11 +34,17 @@ public struct AnimalSpotStruct
         //cards.Dispose();
     }
 
-    internal void SetLocalId(int i)
+    internal void SetLocalAndOwnerId(in AnimalId id)
     {
-        localId = i;
-        animal.localId = i;
+        this.id = id;
     }
+
+    internal void SetOwnerAndLocalId(int ownerId, int localId)
+    {
+        this.id.ownerId = ownerId;
+        this.id.localId = localId;
+    }
+
 
     internal bool IsPossibleToAddProp(in AnimalProp prop)
     {
@@ -77,9 +80,28 @@ public struct AnimalSpotStruct
         animal.UpdateTurnCooldown();
     }
 
-    internal void RemoveProp(in AnimalProp animalProp)
+    public void RemoveProp(in AnimalProp animalProp)
     {
         animal.RemoveProp(animalProp);
+    }
+
+    public override string ToString()
+    {
+        return $"SPOT[{id.ownerId}~{id.localId}]={animal.ToString()}";
+    }
+
+    internal void DecreaseFood(int v)
+    {
+        animal.food -= v;
+    }
+
+    internal void UpdateIdWhenRemove(int ownerId, int localId)
+    {
+        if(id.localId > localId)
+        {
+            id.localId--;
+        }
+        animal.UpdateIdWhenRemove(ownerId, localId);
     }
 }
 

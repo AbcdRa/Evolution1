@@ -63,5 +63,9 @@ public struct CardStruct : ICard
     {
         isRotated = !isRotated;
     }
+    public override string ToString()
+    {
+        return ""+ToFString();
+    }
 }
 

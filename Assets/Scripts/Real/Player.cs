@@ -1,4 +1,5 @@
 ﻿
+using System.Threading.Tasks;
 using UnityEditor.Media;
 using UnityEngine;
 
@@ -37,10 +38,6 @@ public class Player : MonoBehaviour, IPlayer
         return animalArea.Feed(localId, foodMananger);
     }
 
-    public PlayerStruct GetStruct()
-    {
-        return new PlayerStruct(id, hand.GetStruct(), animalArea.GetStruct(), isAbleToMove);
-    }
 
     public void InitReset(int id)
     {
@@ -52,9 +49,18 @@ public class Player : MonoBehaviour, IPlayer
 
     public void MakeVirtualTurn()
     {
-        VirtualSimulation vr = new VirtualSimulation();
-        MoveStruct bestMove = vr.GetBestMove(this);
-        MoveStruct.ExecuteMove(GameMananger.instance, bestMove);
+        VirtualSimulation vr = new VirtualSimulation(this);
+        vr.onMoveReady.AddListener(onMoveReady);
+        //Task.Factory.StartNew(() => vr.WaitingMove());
+        vr.WaitingMove();
+        //VMove bestMove = 
+        //vr.GetBestMove(this);
+        //VMove.ExecuteMove(GameMananger.instance, bestMove);
+    }
+
+    private void onMoveReady()
+    {
+        Debug.Log("Ураа!");
     }
 
     public void Pass()

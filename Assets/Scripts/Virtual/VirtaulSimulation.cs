@@ -1,80 +1,50 @@
+
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Jobs;
-
+using UnityEngine.UIElements;
 
 
 public class VirtualSimulation
 {
-    public MoveStruct GetBestMove(Player player)
+    VGame vGame;
+    public UnityEvent onMoveReady;
+
+    public VirtualSimulation(Player player)
     {
-        VGMstruct vgm = GameMananger.instance.GetStruct(player);
-        NativeList<MoveStruct> moves = vgm.GetAllPossibleMoves();
-        NativeArray<VGMstruct> vgms = new(1, Allocator.Persistent);
-        vgms[0] = vgm;
-        MoveStruct.ExecuteMove(ref vgm, moves[0]);
-        List<CalculateMoveJob> jobs = new();
-        List<JobHandle> jobHandles = new();
-        for (int i = 0; i < 1; i++)
-        {
+        vGame = GameMananger.instance.GetVirtual(player);
 
-            CalculateMoveJob job = new CalculateMoveJob(vgm, moves[i], GameMananger.instance.currentTurn);
-            jobs.Add(job);
-            jobHandles.Add(job.Schedule());
-        }
-        foreach (var job in jobHandles)
-        {
-            job.Complete();
-        }
-        for (int i = 0; i < moves.Length; i++)
-        {
-            Debug.Log(jobs[i].rating);
-        }
-        return moves[0];
-        
+        onMoveReady = new();
+    }
 
-        //VirtualMove bestMove = moves[0];
-        //for (int i = 0; i < moves.Count; i++)
+
+
+
+    public void WaitingMove()
+    {
+        //List<VMove> moves = vGame.GetLegalMoves();
+        //float[] ratings = new float[4];
+        //for(int i = 0; i < 1000; i++)
         //{
-        //    if (moves[i].rating > bestMove.rating) bestMove = moves[i];
+        //    int j = 0;
+        //    VGame vGameCopy = vGame.DeepCopy();
+        //    while (!vGameCopy.IsGameOver())
+        //    {
+        //        vGameCopy.MakeRandomMove();
+        //        if (j > 2000) throw new Exception("Inf game");
+        //    }
         //}
-        //return bestMove;
+
+        VMove move = GameAI.Algorithms.MonteCarlo.RandomSimulation<VGame, VMove, VPlayer>.Search(vGame, 10, GameMananger.rng);
+        Debug.Log("Finisging");
+        onMoveReady.Invoke();
     }
 
-
-}
-
-[BurstCompile(DisableDirectCall = true)]
-public struct CalculateMoveJob : IJob
-{
-
-    [ReadOnly] VGMstruct vgmStruct;
-    [ReadOnly] MoveStruct vMove;
-    [ReadOnly] int targetPlayer;
-    public float rating;
-
-    public CalculateMoveJob(VGMstruct vgmStruct, MoveStruct move, int targetPlayerId)
-    {
-        this.vgmStruct = vgmStruct;
-        this.vMove = move;
-        this.targetPlayer = targetPlayerId;
-        rating = 0;
-    }
-
-    public void Execute()
-    {
-        int winRank = 0;
-        int attempts = 100;
-        for (int i = 0; i < attempts; i++)
-        {
-            VGMstruct vgmInit = vgmStruct;
-            MoveStruct.ExecuteMove(ref vgmInit, vMove);
-            winRank += vgmInit.MakeRandomMovesUntilTerminate(targetPlayer) ? 1 : 0;
-        }
-        rating = (winRank + 0f) / attempts;
-    }
 }

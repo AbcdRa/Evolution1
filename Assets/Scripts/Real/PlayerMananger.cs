@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 
 public class PlayerMananger : MonoBehaviour, IPlayerMananger
@@ -114,13 +116,115 @@ public class PlayerMananger : MonoBehaviour, IPlayerMananger
         }
     }
 
-    public PlayerManangerStruct GetStruct()
+    public Hands GetHandsStruct(int targetId, List<CardStruct> deck)
     {
-        List<PlayerStruct> list = new List<PlayerStruct>();
+        List<CardStruct>[] hands = new List<CardStruct>[4] { new(), new(), new(), new() };
+        int[] handLs = new int[4] { players[0].hand.amount, players[1].hand.amount, players[2].hand.amount, players[3].hand.amount };
+        for (int i = 0; i < handLs[0]; i++) { 
+            if(targetId == 0) hands[0].Add(players[0].hand.cards[i].GetStruct());
+            else deck.Add(players[0].hand.cards[i].GetStruct());
+        }
+        for (int i = 0; i < handLs[1]; i++)
+        {
+            if (targetId == 1) hands[1].Add(players[1].hand.cards[i].GetStruct());
+            else deck.Add(players[1].hand.cards[i].GetStruct());
+
+        }
+        for (int i = 0; i < handLs[2]; i++)
+        {
+            if (targetId == 2) hands[2].Add(players[2].hand.cards[i].GetStruct());
+            else deck.Add(players[2].hand.cards[i].GetStruct());
+
+        }
+        for (int i = 0; i < handLs[3]; i++)
+        {
+            if (targetId == 3) hands[3].Add(players[3].hand.cards[i].GetStruct());
+            else deck.Add(players[3].hand.cards[i].GetStruct());
+        }
+
+        deck = DevExtension.Shuffle(deck, GameMananger.rng);
+        for(int i = 0; i < 4; i++)
+        {
+            if (i == targetId) continue;
+            for(int j = 0; j < handLs[i]; j++)
+            {
+                CardStruct card = deck.Last();
+                deck.Remove(card);
+                hands[i].Add(card);
+            }
+        }
+        return new Hands(hands[0], hands[1], hands[2], hands[3]);
+    }
+
+    public FixedArr4<bool> GetPlayerInfoStruct()
+    {
+        FixedArr4<bool> playerInfos = new();
+
+        for(int i = 0; i < players.Length; i++) {
+            playerInfos[i] = (players[i].isAbleToMove);
+        }
+        return playerInfos;
+    }
+
+    public PlayerSpots GetPlayerSpotStruct()
+    {
+        List<AnimalSpotStruct>[] spots = new List<AnimalSpotStruct>[4] { new(), new(), new(), new() };
+        FixedArr4<bool> isAbleToMove = new();
+        for(int i = 0; i < playerAmount; i++)
+        {
+            isAbleToMove[i] = players[i].isAbleToMove;
+            for(int j = 0; j < players[i].animalArea.amount; j++)
+            {
+                spots[i].Add(players[i].animalArea.spots[j].GetStruct(i));
+            }
+        }
+        return new PlayerSpots(spots[0], spots[1], spots[2], spots[3], isAbleToMove);
+    }
+
+    public IAnimalSpot GetSpot(AnimalId target)
+    {
+        return players[target.ownerId].animalArea.spots[target.localId];
+    }
+
+    public VPlayerMananger GetVirtual(Player player, List<CardStruct> deck)
+    {
+        List<List<AnimalSpotStruct>> spots = new(players.Length);
+        List<List<CardStruct>> hands = new();
+        List<VPlayer> vPlayers = new();
         for (int i = 0; i < players.Length; i++)
         {
-            list.Add(players[i].GetStruct());
+            if (i == player.id) continue;
+            for(int j = 0; j < players[i].hand.amount; j++)
+            {
+                deck.Add(players[i].hand.cards[j].GetStruct());
+            }
         }
-        return new PlayerManangerStruct(list);
+
+        deck = DevExtension.Shuffle(deck, GameMananger.rng);
+
+        for(int i = 0; i < players.Length; i++)
+        {
+            List<AnimalSpotStruct> spotsIn = new();
+            List<CardStruct> handsIn = new();
+            for(int j = 0; j < players[i].animalArea.amount; j++)
+            {
+                spotsIn.Add(players[i].animalArea.spots[j].GetStruct(i));
+            }
+            for(int j = 0; j < players[i].hand.cards.Count; j++)
+            {
+                if(j == player.id) handsIn.Add(players[i].hand.cards[j].GetStruct());
+                else
+                {
+                    handsIn.Add(deck[deck.Count - 1]);
+                    deck.RemoveAt(deck.Count - 1);
+                }
+
+            }
+            spots.Add(spotsIn);
+            hands.Add(handsIn);
+            vPlayers.Add(new VPlayer(players[i].isAbleToMove, players[i].id));
+        }
+        return new VPlayerMananger(spots, hands, vPlayers);
     }
+
 }

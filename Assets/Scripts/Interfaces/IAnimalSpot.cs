@@ -12,7 +12,8 @@ public interface IAnimalSpot
     public bool AddPropToAnimal(ICard card);
     void Destroy();
     public int Feed(int food, int foodIncrease = 1);
-    AnimalSpotStruct GetStruct();
+    ICard FindCard(CardStruct card);
+    AnimalSpotStruct GetStruct(int ownerId);
     void Kill();
     void MakeFree();
     void RemoveProp(AnimalProp animalProp);

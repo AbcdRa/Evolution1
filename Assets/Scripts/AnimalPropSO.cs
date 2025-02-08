@@ -10,7 +10,7 @@ public class AnimalPropSO : ScriptableObject
 
     public AnimalProp BuildProp()
     {
-        AnimalProp animalPropStruct = new AnimalProp();
+        AnimalProp animalPropStruct = new AnimalProp(this);
         return animalPropStruct;
     }
 }

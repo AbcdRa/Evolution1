@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class CardSO : ScriptableObject, ICard
 {
-    public int _id;
+    [SerializeField] private int _id;
     public string cardName;
     public AnimalPropSO mainPropSO;
     public AnimalPropSO secondPropSO;

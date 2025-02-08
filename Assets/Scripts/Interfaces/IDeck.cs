@@ -4,7 +4,7 @@ public interface IDeck
 {
     int amount { get; }
 
-    DeckStruct GetStruct();
+    List<CardStruct> GetCardStruct();
     void SetupGame();
 
     void Shuffle();

@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+
 public interface IPlayerMananger
 {
     public IPlayer[] players { get; }
@@ -7,7 +9,10 @@ public interface IPlayerMananger
     bool AddPropToAnimal(int playerId, ICard card, AnimalId target);
     bool CreateAnimal(int playerId, ICard card);
     int Feed(int playerId, AnimalId target, IFoodMananger foodMananger);
-    PlayerManangerStruct GetStruct();
+    Hands GetHandsStruct(int target, List<CardStruct> deck);
+    PlayerSpots GetPlayerSpotStruct();
+    IAnimalSpot GetSpot(AnimalId target);
+    VPlayerMananger GetVirtual(Player player, List<CardStruct> deck);
     void KillById(AnimalId predatorId, AnimalId victimId);
     void Pass(int playerId);
     void ResetPass();

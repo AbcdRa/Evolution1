@@ -10,9 +10,10 @@ public interface IGameMananger
     public int currentTurn { get; }
     public long turnInfo { get; }
     public bool isOver {  get; }
-    void Pass(int playerId);
-    void CreateAnimal(int playerId, ICard card);
-    void AddPropToAnimal(int playerId, ICard card, in AnimalId target1, bool isRotated);
-    void Feed(int playerId, in AnimalId target1);
-    void PlayProp(int playerId, ICard card, in AnimalId target1, in AnimalId target2, bool isRotated = false);
+    public void Pass(int playerId);
+    public void CreateAnimal(int playerId, ICard card);
+    public void AddPropToAnimal(int playerId, ICard card, in AnimalId target1, bool isRotated);
+    public void Feed(int playerId, in AnimalId target1);
+    public void PlayProp(int playerId, ICard card, in AnimalId target1, in AnimalId target2, bool isRotated = false);
+    public ICard FindCard(CardStruct card, int playerId, AnimalId target);
 }

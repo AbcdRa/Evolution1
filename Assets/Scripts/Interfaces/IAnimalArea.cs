@@ -9,7 +9,6 @@ public interface IAnimalArea
     bool AddPropToAnimal(ICard card, int localId);
     bool CreateAnimal(ICard card);
     int Feed(int localId, IFoodMananger foodMananger, int foodIncrease = 1);
-    AnimalAreaStruct GetStruct();
     void InitReset();
     void Kill(int localId);
     void OrganizateSpots();
