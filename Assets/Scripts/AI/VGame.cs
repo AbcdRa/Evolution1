@@ -13,7 +13,8 @@ using SRandom = Unity.Mathematics.Random;
 
 public enum SideTurnType
 {
-    SuccessAttack, UnSuccessAttack, NotSideRegular, NotSideDestroyFood, NotSidePiracy, WaitingSide, AfterDropTail, Error
+    SuccessAttack, UnSuccessAttack, NotSideRegular, NotSideDestroyFood, NotSidePiracy, WaitingSide, AfterDropTail, Error,
+    NextMove, NotNextTurn
 }
 
 public struct SideTurnInfo
@@ -21,6 +22,9 @@ public struct SideTurnInfo
     public SideTurnType type;
     public AnimalId first;
     public AnimalId second;
+
+    public static readonly SideTurnInfo NotNextTurn = new SideTurnInfo(SideTurnType.NotSideRegular);
+    public static readonly SideTurnInfo NextTurn = new SideTurnInfo(SideTurnType.NotNextTurn);
 
     public SideTurnInfo(SideTurnType type)
     {
@@ -36,10 +40,6 @@ public struct SideTurnInfo
         this.second = second;
     }
 
-    public static SideTurnInfo GetNotSideRegularInfo()
-    {
-        return new SideTurnInfo(SideTurnType.NotSideRegular);
-    }
 
     public static SideTurnInfo GetNotSideDestroyFood()
     {
@@ -74,6 +74,7 @@ public struct SideTurnInfo
     public static SideTurnInfo GetErrorInfo() {
         return new SideTurnInfo(SideTurnType.Error);
     }
+
 }
 
 public enum MoveType { Pass, PlayProp, CreateAnimal, AddPropToAnimal, Feed, ResponseToAttack}
@@ -129,7 +130,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
     public void DoMove(VMove move)
     {
         m = move;
-        //SaveJson();
+        SaveJson();
         switch (move.data.type)
         {
             case MoveType.Pass:
@@ -207,6 +208,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
             currentPhase = 0;
             currentPivot = (currentPivot + 1) % vPM.playersAmount;
             _currentTurn = currentPivot;
+            UpdateTurnCooldown();
         }
         else
         {
@@ -290,9 +292,29 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
             case AnimalPropName.Predator:
                 _sideTurnsInfo = PlayPredator(target1, target2); break;
         }
+        if(_sideTurnsInfo.type == SideTurnType.NextMove)
+        {
+            NextTurn(); return;
+        }
+
         if (_sideTurnsInfo.type == SideTurnType.SuccessAttack)
         {
             NextTurn(); return;
+        }
+        if(_sideTurnsInfo.type == SideTurnType.WaitingSide)
+        {
+            NextTurn(_sideTurnsInfo.second.ownerId); return;
+        } else if (_sideTurnsInfo.type == SideTurnType.NotSideDestroyFood)
+        {
+            if (food > 0) food--;
+        } else if (_sideTurnsInfo.type == SideTurnType.NotSidePiracy)
+        {
+            AnimalSpotStruct pirate = vPM.GetSpot(_sideTurnsInfo.first);
+            AnimalSpotStruct victim = vPM.GetSpot(_sideTurnsInfo.second);
+            pirate.animal.Feed(1);
+            victim.animal.food--;
+            vPM.SetSpot(pirate);
+            vPM.SetSpot(victim);
         }
         //if (_sideTurnsInfo.Equals(PairAnimalId.NOT_DOING_NEXT_TURN)) return;
         //if (_sideTurnsInfo.Equals(PairAnimalId.DESTROY_FOOD)) { food -= 1; return; }
@@ -341,22 +363,11 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
             throw new Exception("GameBreaking Trying to attack immortal victim");
 
         AnimalPropName victimFlags = victim.animal.propFlags;
-        NativeList<AnimalProp> sideProps = new NativeList<AnimalProp>(3, Allocator.Persistent);
-        for (int i = 0; i < victim.animal.props.singlesLength; i++)
-        {
-            AnimalProp prop = victim.animal.props.singles[i];
-            if (!prop.IsActivable) continue;
-            if (GameInteractionStruct.IsSideInteractable(prop.name)) sideProps.Add(prop);
-        }
-        if (sideProps.Length == 0)
+        List<VMove> sideMoves = GetAllPossibleSidesMoves(SideTurnInfo.GetWaitingSideInfo(predatorId, victimId));
+        if (sideMoves.Count == 0)
         {
             vPM.KillById(predatorId, victimId);
-            sideProps.Dispose();
             return SideTurnInfo.GetSuccessAttackInfo();
-        }
-        else
-        {
-            sideProps.Dispose();
         }
         return SideTurnInfo.GetWaitingSideInfo(predatorId, victimId); 
     }
@@ -376,7 +387,12 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
                 int diceResult = GetDiceResult();
                 if (diceResult >= 4)
                 {
-                    _sideTurnsInfo = SideTurnInfo.GetUnsuccessAttackInfo(enemyId, friendId);
+                    //_sideTurnsInfo = SideTurnInfo.GetUnsuccessAttackInfo(enemyId, friendId);
+                    enemySpot.animal.ActivatePredator();
+                    vPM.SetSpot(enemySpot);
+                    _sideTurnsInfo = SideTurnInfo.NextTurn;
+                    NextTurn();
+                    NextTurn();
                     return;
                 }
                 var sideMoves = GetAllPossibleSidesMoves(_sideTurnsInfo);
@@ -394,12 +410,21 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
                 friendSpot.animal.ActivateMimicProp();
                 vPM.SetSpot(friendSpot);
                 _sideTurnsInfo = SideTurnInfo.GetWaitingSideInfo(enemyId, prop.secondAnimalId);
+                sideMoves = GetAllPossibleSidesMoves(_sideTurnsInfo);
+                if(sideMoves.Count == 0)
+                {
+                    vPM.KillById(enemyId, prop.secondAnimalId);
+                    _sideTurnsInfo = SideTurnInfo.GetSuccessAttackInfo();
+                    NextTurn();
+                    NextTurn();
+                }
                 break;
             case AnimalPropName.DropTail:
                 friendSpot.animal.ActivateDropTailProp();
                 _sideTurnsInfo = SideTurnInfo.GetAfterDropTailInfo();
 
                 enemySpot.animal.Feed();
+                enemySpot.animal.ActivatePredator();
                 vPM.SetSpot(enemySpot);
                 AnimalProp targetProp = prop.secondAnimalId.ownerId == 0 ?
                     friendSpot.animal.props.singles[prop.secondAnimalId.localId] :
@@ -408,13 +433,17 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
                 vPM.SetSpot(friendSpot);
                 break;
             case AnimalPropName.ERROR:
+                vPM.KillById(enemyId, friendId);
                 _sideTurnsInfo = SideTurnInfo.GetErrorInfo();
                 break;
         }
-        if(_sideTurnsInfo.Equals(PairAnimalId.DOING_NEXT_TURN))
+        if(_sideTurnsInfo.type == SideTurnType.AfterDropTail)
         {
             NextTurn();
+            NextTurn();
+            _sideTurnsInfo = SideTurnInfo.NextTurn;
         }
+        
     }
 
     private void SetupPhase(int phase)
@@ -518,10 +547,10 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
     private void SaveJson()
     {
 
-        string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+        string json = CompressString(JsonConvert.SerializeObject(this, Formatting.Indented));
         //string baseJson = Base64Encode(json);
         // Записываем JSON строку в файл
-        filePath = Path.Combine(Application.persistentDataPath, "vgame/s" + s.ToString() + ".json");
+        filePath = "C:\\Users\\abdra\\source\\repos\\Ecolution 2d\\Ecolution 2d\\bin\\Release\\"+ s.ToString() + ".vgc";
         File.WriteAllText(filePath, json);
        
     }
@@ -543,7 +572,7 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
             if (!prop.IsActivable) continue;
             if (prop.name == AnimalPropName.Fast)
             {
-                sideMoves.Add(VMove.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                sideMoves.Add(VMove.GetResponceToAttackMove(myAnimalId.ownerId, myAnimalId, enemyId, prop));
             }
             else if (prop.name == AnimalPropName.DropTail)
             {
@@ -551,41 +580,44 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
                 {
                     prop.mainAnimalId = myAnimalId;
                     prop.secondAnimalId = new(0, j);
-                    sideMoves.Add(VMove.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                    sideMoves.Add(VMove.GetResponceToAttackMove(myAnimalId.ownerId, myAnimalId, enemyId, prop));
                 }
                 for (int j = 0; j < vPM.GetSpot(myAnimalId).animal.props.pairsLength; j++)
                 {
                     prop.mainAnimalId = myAnimalId;
                     prop.secondAnimalId = new(1, j);
-                    sideMoves.Add(VMove.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                    sideMoves.Add(VMove.GetResponceToAttackMove(myAnimalId.ownerId, myAnimalId, enemyId, prop));
                 }
 
             }
             else if (prop.name == AnimalPropName.Mimic)
             {
-                for (int j = 0; j < vPM.GetSpotsLength(currentTurn); j++)
+                for (int j = 0; j < vPM.GetSpotsLength(myAnimalId.ownerId); j++)
                 {
                     if (j == myAnimalId.localId) continue;
                     bool isCanMimic = GameInteractionStruct.
                     IsCanAttack(vPM.GetSpot(enemyId).animal,
-                            vPM.GetSpot(new(currentTurn, j)).animal);
+                            vPM.GetSpot(new(myAnimalId.ownerId, j)).animal);
                     if (isCanMimic)
                     {
                         prop.mainAnimalId = myAnimalId;
-                        prop.secondAnimalId = new(currentTurn, j);
-                        sideMoves.Add(VMove.GetResponceToAttackMove(currentTurn, myAnimalId, enemyId, prop));
+                        prop.secondAnimalId = new(myAnimalId.ownerId, j);
+                        sideMoves.Add(VMove.GetResponceToAttackMove(myAnimalId.ownerId, myAnimalId, enemyId, prop));
                     }
                 }
             }
         }
 
-        if(sideMoves.Count == 0)
-        {
-            sideMoves.Add(VMove.GetResponceToAttackMove(myAnimalId.ownerId, myAnimalId, enemyId, AnimalProp.NULL));
-        } 
+        //if(sideMoves.Count == 0)
+        //{
+        //    sideMoves.Add(VMove.GetResponceToAttackMove(myAnimalId.ownerId, myAnimalId, enemyId, AnimalProp.NULL));
+        //} 
         return sideMoves;
 
     }
+
+
+    
 
     public List<VMove> GetAllPossibleMoves()
     {
@@ -769,10 +801,12 @@ public class VGame : RandomSimulation<VGame, VMove, VPlayer>.IGame
                     }
                     else if (prop.name == AnimalPropName.Fasciest)
                     {
+                        if(food > 0)
                         moves.Add(VMove.GetPlayPropMove(currentTurn, prop, new(currentTurn, propId.spotlId), AnimalId.NULL));
                     }
                     else if (prop.name == AnimalPropName.Piracy)
                     {
+                        if (!vPM.CanFeed(new(currentTurn, propId.spotlId))) continue;
                         for (int i = 0; i < enemySpots.Count; i++)
                         {
                             if (vPM.GetSpot(enemySpots[i]).animal.IsPiracyTarget())

@@ -322,6 +322,10 @@ public struct FixedListProps20
         { 
             if (el.SoftEquals(this[i]))
             {
+                for(int j = i+1; j < Length; j++ )
+                {
+                    this[j-1] = this[j]; 
+                }
                 Length--;
                 return true;
             }

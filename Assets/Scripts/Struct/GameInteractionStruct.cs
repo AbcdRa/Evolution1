@@ -82,7 +82,7 @@ public struct GameInteractionStruct
     {
         playerMananger.players[target.ownerId].animalArea.spots[target.localId].animal.ActivateSleepProp();
         //TODO именнованым статическим переменным не учили, че за magic number
-        return SideTurnInfo.GetNotSideRegularInfo();
+        return SideTurnInfo.NotNextTurn;
     }
 
     private static SideTurnInfo PlayFasciest(in IPlayerMananger playerMananger, in AnimalId target)
@@ -178,5 +178,7 @@ public struct GameInteractionStruct
             default: return false;
         }
     }
+
+
 }
 

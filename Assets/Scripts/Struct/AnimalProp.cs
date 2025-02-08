@@ -111,6 +111,15 @@ public struct AnimalProp
             case AnimalPropName.Fasciest:
                 turnCooldown++;
                 break;
+            case AnimalPropName.Piracy:
+                phaseCooldown++;
+                break;
+            case AnimalPropName.Fast:
+                turnCooldown++;
+                break;
+            case AnimalPropName.Mimic:
+                turnCooldown++;
+                break;
         }
     }
 

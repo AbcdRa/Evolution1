@@ -300,6 +300,8 @@ public struct AnimalStruct : IDisposable
     public void RemoveProp(in AnimalProp animalProp)
     {
         bool isRemoved = props.Remove(animalProp);
+        if (!isRemoved) throw new Exception("I CAN'T DELETE THIS PROP FUCK");
+        maxFood -= animalProp.hungerIncrease;
         if(!props.HasPropName(animalProp)) propFlags &= ~animalProp.name;
         if(animalProp.name == AnimalPropName.Symbiosis && propFlags.HasFlag(AnimalPropName.RIsSymbiontSlave))
         {
@@ -323,9 +325,7 @@ public struct AnimalStruct : IDisposable
 
     internal int GetScore()
     {
-        int score = 2;
-        score += props.GetScore();
-        return score;
+        return 2 * (maxFood + 1 + props.singlesLength) + props.pairsLength;
     }
 
     internal void UpdatePhaseCooldown()
@@ -355,7 +355,7 @@ public struct AnimalStruct : IDisposable
 
     internal void ActivatePiraceProp()
     {
-        if(props.ActivateProp(AnimalPropName.Piracy)) food++;
+        props.ActivateProp(AnimalPropName.Piracy);
     }
 
     internal void ActivateFastProp()
@@ -400,7 +400,8 @@ public struct AnimalStruct : IDisposable
 
     internal void UpdateIdWhenRemove(int ownerId, int localId)
     {
-        if (localId < this.localId) localId--;
+        if (localId < this.localId) 
+            this.localId--;
         props.UpdateIdWnenRemove(ownerId, localId);
     }
 }

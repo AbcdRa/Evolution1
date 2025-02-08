@@ -44,6 +44,7 @@ public class GameMananger : MonoBehaviour, IGameMananger
 
     public void SetupGame()
     {
+        _sideTurnsInfo = SideTurnInfo.NextTurn;
         currentPivot = 0;
         _currentSideTurn = -1;
         _currentTurn = 0;

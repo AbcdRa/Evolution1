@@ -123,7 +123,7 @@ namespace GameAI.Algorithms.MonteCarlo
                     {
                         
 
-                        throw new Exception($"Cath it {simulations} ~ {k}"+e.Message);
+                        throw new Exception($"Cath it {i} ~ {k}"+e.Message);
                     }
 
                 }

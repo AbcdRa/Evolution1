@@ -145,6 +145,7 @@ public class VPlayerMananger
 
     internal bool IsWinner(VPlayer player)
     {
+        
         int[] scores = new int[players.Count];
         for(int i = 0; i < spots.Count; i++)
         {
@@ -186,6 +187,7 @@ public class VPlayerMananger
         }
         predator.animal.ActivatePredator();
         SetSpot(predator);
+        if(CanFeed(predatorId))
         Feed(predatorId, 2, true, 2);
         
         
@@ -221,6 +223,7 @@ public class VPlayerMananger
     {
         if ((!isFirstInit) && id.Equals(breaking)) return 0;
         if (isConsumedFood && food == 0) return 0;
+        if (!CanFeed(id)) return 0;
         int foodConsumed = 0;
         AnimalSpotStruct spot = GetSpot(id);
         if (isConsumedFood)
@@ -255,7 +258,7 @@ public class VPlayerMananger
             }
         }
         SetSpot(spot);
-        return food;
+        return foodConsumed;
     }
 
 
@@ -266,7 +269,8 @@ public class VPlayerMananger
             int owId = i % spots.Count;
             for (int j = 0; j < spots[owId].Count; j++)
             {
-                if (spots[owId][j].animal.propFlags.HasFlag(AnimalPropName.Scavenger)) return new(owId, j);
+                if (spots[owId][j].animal.propFlags.HasFlag(AnimalPropName.Scavenger) 
+                    && CanFeed(new(owId, j))) return new(owId, j);
             }
         }
         return AnimalId.NULL;
@@ -332,7 +336,7 @@ public class VPlayerMananger
                 AnimalSpotStruct spot = GetSpot(target);
                 spot.animal.ActivateSleepProp();
                 SetSpot(spot);
-                return SideTurnInfo.GetNotSideRegularInfo();
+                return SideTurnInfo.NotNextTurn;
             case AnimalPropName.Fasciest:
                 spot = GetSpot(target);
                 spot.animal.ActivateFasciestProp();
@@ -454,4 +458,5 @@ public class VPlayerMananger
         }
         return true;
     }
+
 }

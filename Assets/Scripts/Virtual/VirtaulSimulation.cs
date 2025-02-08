@@ -42,7 +42,7 @@ public class VirtualSimulation
         //    }
         //}
 
-        VMove move = GameAI.Algorithms.MonteCarlo.RandomSimulation<VGame, VMove, VPlayer>.Search(vGame, 1, GameMananger.rng);
+        VMove move = GameAI.Algorithms.MonteCarlo.RandomSimulation<VGame, VMove, VPlayer>.Search(vGame, 10, GameMananger.rng);
         Debug.Log("Finisging");
         onMoveReady.Invoke();
     }
